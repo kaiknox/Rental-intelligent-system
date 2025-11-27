@@ -1,0 +1,1460 @@
+<?xml version="1.0"?>
+<Ontology xmlns="http://www.w3.org/2002/07/owl#"
+     xml:base="http://www.semanticweb.org/kaiknox/ontologies/2025/10/untitled-ontology-2"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     ontologyIRI="http://www.semanticweb.org/kaiknox/ontologies/2025/10/untitled-ontology-2">
+    <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#"/>
+    <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace"/>
+    <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#"/>
+    <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#"/>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Too_Bargain"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#geo_lat"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#study_long"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#max_budget"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Max_Deposit"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#property_attribute"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#owns_car"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Pets_Allowed"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Single-family_House"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Pool"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Metro_station"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#has_pets"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Green_zone"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Park"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#is_near_service"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Adult"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Museum"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Student"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Transport"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Budget_Is_Strict"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#client_attribute"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Recreation"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Mall"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Nightlife"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Pharmacy"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Min_Bathroom"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#floor_level"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#deposit_months"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#desired_features"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Apartment"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#No_Elderly"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Residential"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Views"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Num_Bathrooms"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Student_Group"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Cinema"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Group"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Elevator"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Num_Double_Rooms"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Noise_level"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#zone_attribute"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Young_No_Kids"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#With_Elderly"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Furnished"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#AC"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Property"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#monthly_price"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Gym"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Penthouse"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Noise_Level"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Healthcare"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Train_station"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Client_Group"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Garden"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#geo_long"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Duplex"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Clinic"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Family"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Parking"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#group_attribute"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Restaurant"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Store"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Couple"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Garage"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Min_Bedroom"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#internal_floors"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Sport_center"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Prefers_Public_Transport"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Terrace"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#monthly_income"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#High_School"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#work_long"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Beach"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Bus_stop"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Condition"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Age"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Clable_car_station"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Education"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Downtown"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Business"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Safety_Level"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Individual"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Triplex"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#University"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Industrial"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Studio"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#study_lat"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Shopping"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#is_located_in_zone"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#School"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Balcony"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Hipermarket"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#square_meters"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Room"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Semidetached_House"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Supermarket"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Young"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Appliances"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Noise_Allowed"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Elderly_Couple"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Pool"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Sun_Time"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Service"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Works_In_City"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Hospital"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Planning_Kids"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Num_Single_Rooms"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Zone"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Detached_House"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Row_House"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Urban_core"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#work_lat"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Elderly"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Study_In_City"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#num_people"/>
+    </Declaration>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Adult"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Individual"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Apartment"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Property"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Beach"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Recreation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Bus_stop"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Transport"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Business"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Zone"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Cinema"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Recreation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Clable_car_station"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Transport"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Clinic"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Healthcare"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Couple"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Group"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Detached_House"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Property"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Downtown"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Zone"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Duplex"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Property"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Education"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Service"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Elderly"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Individual"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Elderly_Couple"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Couple"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Family"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Group"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Green_zone"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Recreation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Group"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Client_Group"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Gym"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Recreation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Healthcare"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Service"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#High_School"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Education"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Hipermarket"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Shopping"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Hospital"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Healthcare"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Individual"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Client_Group"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Industrial"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Zone"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Mall"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Shopping"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Metro_station"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Transport"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Museum"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Recreation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Nightlife"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Recreation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#No_Elderly"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Family"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Park"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Recreation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Parking"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Transport"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Penthouse"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Property"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Pharmacy"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Healthcare"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Planning_Kids"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Couple"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Pool"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Recreation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Recreation"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Service"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Residential"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Zone"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Restaurant"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Recreation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Room"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Property"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Row_House"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Property"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#School"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Education"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Semidetached_House"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Property"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Shopping"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Service"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Single-family_House"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Property"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Sport_center"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Recreation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Store"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Shopping"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Student"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Individual"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Student_Group"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Group"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Studio"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Property"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Supermarket"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Shopping"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Train_station"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Transport"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Transport"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Service"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Triplex"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Property"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#University"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Education"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Urban_core"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Zone"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#With_Elderly"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Family"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Young"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Individual"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Young_No_Kids"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Couple"/>
+    </SubClassOf>
+    <DisjointClasses>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Adult"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Elderly"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Student"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Apartment"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Detached_House"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Duplex"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Penthouse"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Room"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Row_House"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Semidetached_House"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Studio"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Triplex"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Beach"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Cinema"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Gym"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Museum"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Nightlife"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Park"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Pool"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Sport_center"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Bus_stop"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Clable_car_station"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Metro_station"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Parking"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Train_station"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Business"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Downtown"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Industrial"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Residential"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Urban_core"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Client_Group"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Property"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Service"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Zone"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Clinic"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Hospital"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Pharmacy"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Couple"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Family"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Student_Group"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Education"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Healthcare"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Recreation"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Shopping"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Transport"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Elderly_Couple"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Planning_Kids"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Elderly_Couple"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Young_No_Kids"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Group"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Individual"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#High_School"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#School"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#University"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Mall"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Store"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Supermarket"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#No_Elderly"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#With_Elderly"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Planning_Kids"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Young_No_Kids"/>
+    </DisjointClasses>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#is_located_in_zone"/>
+        <ObjectProperty abbreviatedIRI="owl:topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <FunctionalObjectProperty>
+        <ObjectProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#is_located_in_zone"/>
+    </FunctionalObjectProperty>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#is_located_in_zone"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Property"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#is_near_service"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Property"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#is_located_in_zone"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Zone"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#is_near_service"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Service"/>
+    </ObjectPropertyRange>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#AC"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Age"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#client_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Appliances"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Balcony"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Budget_Is_Strict"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#client_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Condition"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Elevator"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Furnished"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Garage"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Garden"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Max_Deposit"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#client_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Min_Bathroom"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#client_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Min_Bedroom"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#client_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Noise_Allowed"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Noise_Level"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#zone_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Noise_level"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Num_Bathrooms"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Num_Double_Rooms"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Num_Single_Rooms"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Pets_Allowed"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Pool"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Prefers_Public_Transport"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#client_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Safety_Level"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#zone_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Study_In_City"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#client_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Sun_Time"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Terrace"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Too_Bargain"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#client_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Views"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Works_In_City"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#client_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#client_attribute"/>
+        <DataProperty abbreviatedIRI="owl:topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#deposit_months"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#desired_features"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#client_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#floor_level"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#geo_lat"/>
+        <DataProperty abbreviatedIRI="owl:topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#geo_long"/>
+        <DataProperty abbreviatedIRI="owl:topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#group_attribute"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#client_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#has_pets"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#client_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#internal_floors"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#max_budget"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#client_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#monthly_income"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#client_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#monthly_price"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#num_people"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#group_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#owns_car"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#client_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#property_attribute"/>
+        <DataProperty abbreviatedIRI="owl:topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#square_meters"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#study_lat"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#client_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#study_long"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#client_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#work_lat"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#client_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#work_long"/>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#client_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#zone_attribute"/>
+        <DataProperty abbreviatedIRI="owl:topDataProperty"/>
+    </SubDataPropertyOf>
+    <FunctionalDataProperty>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#AC"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Appliances"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Balcony"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Budget_Is_Strict"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Condition"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Elevator"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Furnished"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Garage"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Garden"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Max_Deposit"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Min_Bathroom"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Min_Bedroom"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Noise_Allowed"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Noise_Level"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Noise_level"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Num_Bathrooms"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Num_Double_Rooms"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Num_Single_Rooms"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Pets_Allowed"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Pool"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Prefers_Public_Transport"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Safety_Level"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Study_In_City"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Sun_Time"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Terrace"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Too_Bargain"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Views"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Works_In_City"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#deposit_months"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#floor_level"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#geo_lat"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#geo_long"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#has_pets"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#max_budget"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#monthly_income"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#monthly_price"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#num_people"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#owns_car"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#square_meters"/>
+    </FunctionalDataProperty>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#AC"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Age"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Client_Group"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Appliances"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Balcony"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Budget_Is_Strict"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Client_Group"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Condition"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Elevator"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Furnished"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Garage"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Garden"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Max_Deposit"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Client_Group"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Min_Bathroom"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Client_Group"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Min_Bedroom"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Client_Group"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Noise_Allowed"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Noise_Level"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Zone"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Noise_level"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Num_Bathrooms"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Num_Double_Rooms"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Num_Single_Rooms"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Pets_Allowed"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Pool"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Prefers_Public_Transport"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Client_Group"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Safety_Level"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Zone"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Study_In_City"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Client_Group"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Sun_Time"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Terrace"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Too_Bargain"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Client_Group"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Views"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Works_In_City"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Client_Group"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#deposit_months"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#desired_features"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Client_Group"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#floor_level"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Apartment"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#floor_level"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Room"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#floor_level"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Studio"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#geo_lat"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#geo_lat"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Service"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#geo_long"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#geo_long"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Service"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#group_attribute"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Group"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#has_pets"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Client_Group"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#internal_floors"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#max_budget"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Client_Group"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#monthly_income"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Client_Group"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#monthly_price"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#num_people"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Group"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#owns_car"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Client_Group"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#property_attribute"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#square_meters"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#study_lat"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Client_Group"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#study_long"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Client_Group"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#work_lat"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Client_Group"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#work_long"/>
+        <Class IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Client_Group"/>
+    </DataPropertyDomain>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#AC"/>
+        <Datatype abbreviatedIRI="xsd:boolean"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Age"/>
+        <Datatype abbreviatedIRI="xsd:int"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Appliances"/>
+        <Datatype abbreviatedIRI="xsd:boolean"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Balcony"/>
+        <Datatype abbreviatedIRI="xsd:boolean"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Budget_Is_Strict"/>
+        <Datatype abbreviatedIRI="xsd:boolean"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Condition"/>
+        <DataOneOf>
+            <Literal>Good</Literal>
+            <Literal>Needs_Renovation</Literal>
+            <Literal>New</Literal>
+        </DataOneOf>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Elevator"/>
+        <Datatype abbreviatedIRI="xsd:boolean"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Furnished"/>
+        <Datatype abbreviatedIRI="xsd:boolean"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Garage"/>
+        <Datatype abbreviatedIRI="xsd:boolean"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Garden"/>
+        <Datatype abbreviatedIRI="xsd:boolean"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Max_Deposit"/>
+        <Datatype abbreviatedIRI="xsd:float"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Min_Bathroom"/>
+        <Datatype abbreviatedIRI="xsd:int"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Min_Bedroom"/>
+        <Datatype abbreviatedIRI="xsd:int"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Noise_Allowed"/>
+        <DataOneOf>
+            <Literal>High</Literal>
+            <Literal>Low</Literal>
+            <Literal>Medium</Literal>
+        </DataOneOf>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Noise_Level"/>
+        <DataOneOf>
+            <Literal>High</Literal>
+            <Literal>Low</Literal>
+            <Literal>Medium</Literal>
+        </DataOneOf>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Noise_level"/>
+        <DataOneOf>
+            <Literal>High</Literal>
+            <Literal>Low</Literal>
+            <Literal>Medium</Literal>
+        </DataOneOf>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Num_Bathrooms"/>
+        <Datatype abbreviatedIRI="xsd:int"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Num_Double_Rooms"/>
+        <Datatype abbreviatedIRI="xsd:int"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Num_Single_Rooms"/>
+        <Datatype abbreviatedIRI="xsd:int"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Pets_Allowed"/>
+        <Datatype abbreviatedIRI="xsd:boolean"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Pool"/>
+        <Datatype abbreviatedIRI="xsd:boolean"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Prefers_Public_Transport"/>
+        <Datatype abbreviatedIRI="xsd:boolean"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Safety_Level"/>
+        <DataOneOf>
+            <Literal>High</Literal>
+            <Literal>Low</Literal>
+            <Literal>Medium</Literal>
+        </DataOneOf>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Study_In_City"/>
+        <Datatype abbreviatedIRI="xsd:boolean"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Sun_Time"/>
+        <DataOneOf>
+            <Literal>Afternoon</Literal>
+            <Literal>All_Day</Literal>
+            <Literal>Morning</Literal>
+            <Literal>Never</Literal>
+        </DataOneOf>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Terrace"/>
+        <Datatype abbreviatedIRI="xsd:boolean"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Too_Bargain"/>
+        <Datatype abbreviatedIRI="xsd:float"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Views"/>
+        <Datatype abbreviatedIRI="xsd:boolean"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Works_In_City"/>
+        <Datatype abbreviatedIRI="xsd:boolean"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#deposit_months"/>
+        <Datatype abbreviatedIRI="xsd:int"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#desired_features"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#floor_level"/>
+        <Datatype abbreviatedIRI="xsd:int"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#geo_lat"/>
+        <Datatype abbreviatedIRI="xsd:int"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#geo_long"/>
+        <Datatype abbreviatedIRI="xsd:int"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#has_pets"/>
+        <Datatype abbreviatedIRI="xsd:boolean"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#internal_floors"/>
+        <Datatype abbreviatedIRI="xsd:int"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#max_budget"/>
+        <Datatype abbreviatedIRI="xsd:float"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#monthly_income"/>
+        <Datatype abbreviatedIRI="xsd:float"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#monthly_price"/>
+        <Datatype abbreviatedIRI="xsd:float"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#num_people"/>
+        <Datatype abbreviatedIRI="xsd:int"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#owns_car"/>
+        <Datatype abbreviatedIRI="xsd:boolean"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#square_meters"/>
+        <Datatype abbreviatedIRI="xsd:float"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#study_lat"/>
+        <Datatype abbreviatedIRI="xsd:int"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#study_long"/>
+        <Datatype abbreviatedIRI="xsd:int"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#work_lat"/>
+        <Datatype abbreviatedIRI="xsd:int"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#work_long"/>
+        <Datatype abbreviatedIRI="xsd:int"/>
+    </DataPropertyRange>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Downtown</IRI>
+        <Literal>Historic o tourist center</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>http://www.semanticweb.org/kiria/ontologies/2025/10/Rental#Urban_core</IRI>
+        <Literal>Geographical center of the city</Literal>
+    </AnnotationAssertion>
+</Ontology>
+
+
+
+<!-- Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi -->
+

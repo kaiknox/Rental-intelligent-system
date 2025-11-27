@@ -1,0 +1,1461 @@
+<?xml version="1.0"?>
+<Ontology xmlns="http://www.w3.org/2002/07/owl#"
+     xml:base="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     ontologyIRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental">
+    <Prefix name="" IRI="http://www.semanticweb.org/kiria/ontologies/2025/10/Rental/"/>
+    <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#"/>
+    <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace"/>
+    <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#"/>
+    <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#"/>
+    <Declaration>
+        <Class IRI="#Adult"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Apartment"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Beach"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Bus_stop"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Business"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Cinema"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Clable_car_station"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Client_Group"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Clinic"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Couple"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Detached_House"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Downtown"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Duplex"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Education"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Elderly"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Elderly_Couple"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Family"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Green_zone"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Group"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Gym"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Healthcare"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#High_School"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Hipermarket"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Hospital"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Individual"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Industrial"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Mall"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Metro_station"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Museum"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Nightlife"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#No_Elderly"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Park"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Parking"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Penthouse"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Pharmacy"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Planning_Kids"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Pool"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Property"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Recreation"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Residential"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Restaurant"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Room"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Row_House"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#School"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Semidetached_House"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Service"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Shopping"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Single-family_House"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Sport_center"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Store"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Student"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Student_Group"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Studio"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Supermarket"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Train_station"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Transport"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Triplex"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#University"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Urban_core"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#With_Elderly"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Young"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Young_No_Kids"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Zone"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#is_located_in_zone"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#is_near_service"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#AC"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#Age"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#Appliances"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#Balcony"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#Budget_Is_Strict"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#Condition"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#Elevator"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#Furnished"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#Garage"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#Garden"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#Max_Deposit"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#Min_Bathroom"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#Min_Bedroom"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#Noise_Allowed"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#Noise_Level"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#Noise_level"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#Num_Bathrooms"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#Num_Double_Rooms"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#Num_Single_Rooms"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#Pets_Allowed"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#Pool"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#Prefers_Public_Transport"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#Safety_Level"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#Study_In_City"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#Sun_Time"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#Terrace"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#Too_Bargain"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#Views"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#Works_In_City"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#client_attribute"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#deposit_months"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#desired_features"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#floor_level"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#geo_lat"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#geo_long"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#group_attribute"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#has_pets"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#internal_floors"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#max_budget"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#monthly_income"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#monthly_price"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#num_people"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#owns_car"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#property_attribute"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#square_meters"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#study_lat"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#study_long"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#work_lat"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#work_long"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#zone_attribute"/>
+    </Declaration>
+    <SubClassOf>
+        <Class IRI="#Adult"/>
+        <Class IRI="#Individual"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Apartment"/>
+        <Class IRI="#Property"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Beach"/>
+        <Class IRI="#Recreation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Bus_stop"/>
+        <Class IRI="#Transport"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Business"/>
+        <Class IRI="#Zone"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Cinema"/>
+        <Class IRI="#Recreation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Clable_car_station"/>
+        <Class IRI="#Transport"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Clinic"/>
+        <Class IRI="#Healthcare"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Couple"/>
+        <Class IRI="#Group"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Detached_House"/>
+        <Class IRI="#Property"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Downtown"/>
+        <Class IRI="#Zone"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Duplex"/>
+        <Class IRI="#Property"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Education"/>
+        <Class IRI="#Service"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Elderly"/>
+        <Class IRI="#Individual"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Elderly_Couple"/>
+        <Class IRI="#Couple"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Family"/>
+        <Class IRI="#Group"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Green_zone"/>
+        <Class IRI="#Recreation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Group"/>
+        <Class IRI="#Client_Group"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Gym"/>
+        <Class IRI="#Recreation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Healthcare"/>
+        <Class IRI="#Service"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#High_School"/>
+        <Class IRI="#Education"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Hipermarket"/>
+        <Class IRI="#Shopping"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Hospital"/>
+        <Class IRI="#Healthcare"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Individual"/>
+        <Class IRI="#Client_Group"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Industrial"/>
+        <Class IRI="#Zone"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Mall"/>
+        <Class IRI="#Shopping"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Metro_station"/>
+        <Class IRI="#Transport"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Museum"/>
+        <Class IRI="#Recreation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Nightlife"/>
+        <Class IRI="#Recreation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#No_Elderly"/>
+        <Class IRI="#Family"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Park"/>
+        <Class IRI="#Recreation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Parking"/>
+        <Class IRI="#Transport"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Penthouse"/>
+        <Class IRI="#Property"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Pharmacy"/>
+        <Class IRI="#Healthcare"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Planning_Kids"/>
+        <Class IRI="#Couple"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Pool"/>
+        <Class IRI="#Recreation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Recreation"/>
+        <Class IRI="#Service"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Residential"/>
+        <Class IRI="#Zone"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Restaurant"/>
+        <Class IRI="#Recreation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Room"/>
+        <Class IRI="#Property"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Row_House"/>
+        <Class IRI="#Property"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#School"/>
+        <Class IRI="#Education"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Semidetached_House"/>
+        <Class IRI="#Property"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Shopping"/>
+        <Class IRI="#Service"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Single-family_House"/>
+        <Class IRI="#Property"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Sport_center"/>
+        <Class IRI="#Recreation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Store"/>
+        <Class IRI="#Shopping"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Student"/>
+        <Class IRI="#Individual"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Student_Group"/>
+        <Class IRI="#Group"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Studio"/>
+        <Class IRI="#Property"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Supermarket"/>
+        <Class IRI="#Shopping"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Train_station"/>
+        <Class IRI="#Transport"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Transport"/>
+        <Class IRI="#Service"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Triplex"/>
+        <Class IRI="#Property"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#University"/>
+        <Class IRI="#Education"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Urban_core"/>
+        <Class IRI="#Zone"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#With_Elderly"/>
+        <Class IRI="#Family"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Young"/>
+        <Class IRI="#Individual"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Young_No_Kids"/>
+        <Class IRI="#Couple"/>
+    </SubClassOf>
+    <DisjointClasses>
+        <Class IRI="#Adult"/>
+        <Class IRI="#Elderly"/>
+        <Class IRI="#Student"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Apartment"/>
+        <Class IRI="#Detached_House"/>
+        <Class IRI="#Duplex"/>
+        <Class IRI="#Penthouse"/>
+        <Class IRI="#Room"/>
+        <Class IRI="#Row_House"/>
+        <Class IRI="#Semidetached_House"/>
+        <Class IRI="#Studio"/>
+        <Class IRI="#Triplex"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Beach"/>
+        <Class IRI="#Cinema"/>
+        <Class IRI="#Gym"/>
+        <Class IRI="#Museum"/>
+        <Class IRI="#Nightlife"/>
+        <Class IRI="#Park"/>
+        <Class IRI="#Pool"/>
+        <Class IRI="#Sport_center"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Bus_stop"/>
+        <Class IRI="#Clable_car_station"/>
+        <Class IRI="#Metro_station"/>
+        <Class IRI="#Parking"/>
+        <Class IRI="#Train_station"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Business"/>
+        <Class IRI="#Downtown"/>
+        <Class IRI="#Industrial"/>
+        <Class IRI="#Residential"/>
+        <Class IRI="#Urban_core"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Client_Group"/>
+        <Class IRI="#Property"/>
+        <Class IRI="#Service"/>
+        <Class IRI="#Zone"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Clinic"/>
+        <Class IRI="#Hospital"/>
+        <Class IRI="#Pharmacy"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Couple"/>
+        <Class IRI="#Family"/>
+        <Class IRI="#Student_Group"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Education"/>
+        <Class IRI="#Healthcare"/>
+        <Class IRI="#Recreation"/>
+        <Class IRI="#Shopping"/>
+        <Class IRI="#Transport"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Elderly_Couple"/>
+        <Class IRI="#Planning_Kids"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Elderly_Couple"/>
+        <Class IRI="#Young_No_Kids"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Group"/>
+        <Class IRI="#Individual"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#High_School"/>
+        <Class IRI="#School"/>
+        <Class IRI="#University"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Mall"/>
+        <Class IRI="#Store"/>
+        <Class IRI="#Supermarket"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#No_Elderly"/>
+        <Class IRI="#With_Elderly"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Planning_Kids"/>
+        <Class IRI="#Young_No_Kids"/>
+    </DisjointClasses>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#is_located_in_zone"/>
+        <ObjectProperty abbreviatedIRI="owl:topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <FunctionalObjectProperty>
+        <ObjectProperty IRI="#is_located_in_zone"/>
+    </FunctionalObjectProperty>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#is_located_in_zone"/>
+        <Class IRI="#Property"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#is_near_service"/>
+        <Class IRI="#Property"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#is_located_in_zone"/>
+        <Class IRI="#Zone"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#is_near_service"/>
+        <Class IRI="#Service"/>
+    </ObjectPropertyRange>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#AC"/>
+        <DataProperty IRI="#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#Age"/>
+        <DataProperty IRI="#client_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#Appliances"/>
+        <DataProperty IRI="#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#Balcony"/>
+        <DataProperty IRI="#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#Budget_Is_Strict"/>
+        <DataProperty IRI="#client_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#Condition"/>
+        <DataProperty IRI="#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#Elevator"/>
+        <DataProperty IRI="#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#Furnished"/>
+        <DataProperty IRI="#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#Garage"/>
+        <DataProperty IRI="#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#Garden"/>
+        <DataProperty IRI="#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#Max_Deposit"/>
+        <DataProperty IRI="#client_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#Min_Bathroom"/>
+        <DataProperty IRI="#client_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#Min_Bedroom"/>
+        <DataProperty IRI="#client_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#Noise_Allowed"/>
+        <DataProperty IRI="#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#Noise_Level"/>
+        <DataProperty IRI="#zone_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#Noise_level"/>
+        <DataProperty IRI="#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#Num_Bathrooms"/>
+        <DataProperty IRI="#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#Num_Double_Rooms"/>
+        <DataProperty IRI="#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#Num_Single_Rooms"/>
+        <DataProperty IRI="#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#Pets_Allowed"/>
+        <DataProperty IRI="#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#Pool"/>
+        <DataProperty IRI="#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#Prefers_Public_Transport"/>
+        <DataProperty IRI="#client_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#Safety_Level"/>
+        <DataProperty IRI="#zone_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#Study_In_City"/>
+        <DataProperty IRI="#client_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#Sun_Time"/>
+        <DataProperty IRI="#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#Terrace"/>
+        <DataProperty IRI="#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#Too_Bargain"/>
+        <DataProperty IRI="#client_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#Views"/>
+        <DataProperty IRI="#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#Works_In_City"/>
+        <DataProperty IRI="#client_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#client_attribute"/>
+        <DataProperty abbreviatedIRI="owl:topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#deposit_months"/>
+        <DataProperty IRI="#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#desired_features"/>
+        <DataProperty IRI="#client_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#floor_level"/>
+        <DataProperty IRI="#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#geo_lat"/>
+        <DataProperty abbreviatedIRI="owl:topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#geo_long"/>
+        <DataProperty abbreviatedIRI="owl:topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#group_attribute"/>
+        <DataProperty IRI="#client_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#has_pets"/>
+        <DataProperty IRI="#client_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#internal_floors"/>
+        <DataProperty IRI="#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#max_budget"/>
+        <DataProperty IRI="#client_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#monthly_income"/>
+        <DataProperty IRI="#client_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#monthly_price"/>
+        <DataProperty IRI="#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#num_people"/>
+        <DataProperty IRI="#group_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#owns_car"/>
+        <DataProperty IRI="#client_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#property_attribute"/>
+        <DataProperty abbreviatedIRI="owl:topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#square_meters"/>
+        <DataProperty IRI="#property_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#study_lat"/>
+        <DataProperty IRI="#client_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#study_long"/>
+        <DataProperty IRI="#client_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#work_lat"/>
+        <DataProperty IRI="#client_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#work_long"/>
+        <DataProperty IRI="#client_attribute"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#zone_attribute"/>
+        <DataProperty abbreviatedIRI="owl:topDataProperty"/>
+    </SubDataPropertyOf>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#AC"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#Appliances"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#Balcony"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#Budget_Is_Strict"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#Condition"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#Elevator"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#Furnished"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#Garage"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#Garden"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#Max_Deposit"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#Min_Bathroom"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#Min_Bedroom"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#Noise_Allowed"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#Noise_Level"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#Noise_level"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#Num_Bathrooms"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#Num_Double_Rooms"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#Num_Single_Rooms"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#Pets_Allowed"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#Pool"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#Prefers_Public_Transport"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#Safety_Level"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#Study_In_City"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#Sun_Time"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#Terrace"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#Too_Bargain"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#Views"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#Works_In_City"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#deposit_months"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#floor_level"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#geo_lat"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#geo_long"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#has_pets"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#max_budget"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#monthly_income"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#monthly_price"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#num_people"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#owns_car"/>
+    </FunctionalDataProperty>
+    <FunctionalDataProperty>
+        <DataProperty IRI="#square_meters"/>
+    </FunctionalDataProperty>
+    <DataPropertyDomain>
+        <DataProperty IRI="#AC"/>
+        <Class IRI="#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#Age"/>
+        <Class IRI="#Client_Group"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#Appliances"/>
+        <Class IRI="#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#Balcony"/>
+        <Class IRI="#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#Budget_Is_Strict"/>
+        <Class IRI="#Client_Group"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#Condition"/>
+        <Class IRI="#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#Elevator"/>
+        <Class IRI="#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#Furnished"/>
+        <Class IRI="#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#Garage"/>
+        <Class IRI="#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#Garden"/>
+        <Class IRI="#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#Max_Deposit"/>
+        <Class IRI="#Client_Group"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#Min_Bathroom"/>
+        <Class IRI="#Client_Group"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#Min_Bedroom"/>
+        <Class IRI="#Client_Group"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#Noise_Allowed"/>
+        <Class IRI="#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#Noise_Level"/>
+        <Class IRI="#Zone"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#Noise_level"/>
+        <Class IRI="#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#Num_Bathrooms"/>
+        <Class IRI="#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#Num_Double_Rooms"/>
+        <Class IRI="#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#Num_Single_Rooms"/>
+        <Class IRI="#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#Pets_Allowed"/>
+        <Class IRI="#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#Pool"/>
+        <Class IRI="#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#Prefers_Public_Transport"/>
+        <Class IRI="#Client_Group"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#Safety_Level"/>
+        <Class IRI="#Zone"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#Study_In_City"/>
+        <Class IRI="#Client_Group"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#Sun_Time"/>
+        <Class IRI="#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#Terrace"/>
+        <Class IRI="#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#Too_Bargain"/>
+        <Class IRI="#Client_Group"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#Views"/>
+        <Class IRI="#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#Works_In_City"/>
+        <Class IRI="#Client_Group"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#deposit_months"/>
+        <Class IRI="#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#desired_features"/>
+        <Class IRI="#Client_Group"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#floor_level"/>
+        <Class IRI="#Apartment"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#floor_level"/>
+        <Class IRI="#Room"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#floor_level"/>
+        <Class IRI="#Studio"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#geo_lat"/>
+        <Class IRI="#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#geo_lat"/>
+        <Class IRI="#Service"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#geo_long"/>
+        <Class IRI="#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#geo_long"/>
+        <Class IRI="#Service"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#group_attribute"/>
+        <Class IRI="#Group"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#has_pets"/>
+        <Class IRI="#Client_Group"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#internal_floors"/>
+        <Class IRI="#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#max_budget"/>
+        <Class IRI="#Client_Group"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#monthly_income"/>
+        <Class IRI="#Client_Group"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#monthly_price"/>
+        <Class IRI="#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#num_people"/>
+        <Class IRI="#Group"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#owns_car"/>
+        <Class IRI="#Client_Group"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#property_attribute"/>
+        <Class IRI="#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#square_meters"/>
+        <Class IRI="#Property"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#study_lat"/>
+        <Class IRI="#Client_Group"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#study_long"/>
+        <Class IRI="#Client_Group"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#work_lat"/>
+        <Class IRI="#Client_Group"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#work_long"/>
+        <Class IRI="#Client_Group"/>
+    </DataPropertyDomain>
+    <DataPropertyRange>
+        <DataProperty IRI="#AC"/>
+        <Datatype abbreviatedIRI="xsd:boolean"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#Age"/>
+        <Datatype abbreviatedIRI="xsd:int"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#Appliances"/>
+        <Datatype abbreviatedIRI="xsd:boolean"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#Balcony"/>
+        <Datatype abbreviatedIRI="xsd:boolean"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#Budget_Is_Strict"/>
+        <Datatype abbreviatedIRI="xsd:boolean"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#Condition"/>
+        <DataOneOf>
+            <Literal>Good</Literal>
+            <Literal>Needs_Renovation</Literal>
+            <Literal>New</Literal>
+        </DataOneOf>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#Elevator"/>
+        <Datatype abbreviatedIRI="xsd:boolean"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#Furnished"/>
+        <Datatype abbreviatedIRI="xsd:boolean"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#Garage"/>
+        <Datatype abbreviatedIRI="xsd:boolean"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#Garden"/>
+        <Datatype abbreviatedIRI="xsd:boolean"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#Max_Deposit"/>
+        <Datatype abbreviatedIRI="xsd:float"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#Min_Bathroom"/>
+        <Datatype abbreviatedIRI="xsd:int"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#Min_Bedroom"/>
+        <Datatype abbreviatedIRI="xsd:int"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#Noise_Allowed"/>
+        <DataOneOf>
+            <Literal>High</Literal>
+            <Literal>Low</Literal>
+            <Literal>Medium</Literal>
+        </DataOneOf>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#Noise_Level"/>
+        <DataOneOf>
+            <Literal>High</Literal>
+            <Literal>Low</Literal>
+            <Literal>Medium</Literal>
+        </DataOneOf>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#Noise_level"/>
+        <DataOneOf>
+            <Literal>High</Literal>
+            <Literal>Low</Literal>
+            <Literal>Medium</Literal>
+        </DataOneOf>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#Num_Bathrooms"/>
+        <Datatype abbreviatedIRI="xsd:int"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#Num_Double_Rooms"/>
+        <Datatype abbreviatedIRI="xsd:int"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#Num_Single_Rooms"/>
+        <Datatype abbreviatedIRI="xsd:int"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#Pets_Allowed"/>
+        <Datatype abbreviatedIRI="xsd:boolean"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#Pool"/>
+        <Datatype abbreviatedIRI="xsd:boolean"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#Prefers_Public_Transport"/>
+        <Datatype abbreviatedIRI="xsd:boolean"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#Safety_Level"/>
+        <DataOneOf>
+            <Literal>High</Literal>
+            <Literal>Low</Literal>
+            <Literal>Medium</Literal>
+        </DataOneOf>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#Study_In_City"/>
+        <Datatype abbreviatedIRI="xsd:boolean"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#Sun_Time"/>
+        <DataOneOf>
+            <Literal>Afternoon</Literal>
+            <Literal>All_Day</Literal>
+            <Literal>Morning</Literal>
+            <Literal>Never</Literal>
+        </DataOneOf>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#Terrace"/>
+        <Datatype abbreviatedIRI="xsd:boolean"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#Too_Bargain"/>
+        <Datatype abbreviatedIRI="xsd:float"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#Views"/>
+        <Datatype abbreviatedIRI="xsd:boolean"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#Works_In_City"/>
+        <Datatype abbreviatedIRI="xsd:boolean"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#deposit_months"/>
+        <Datatype abbreviatedIRI="xsd:int"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#desired_features"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#floor_level"/>
+        <Datatype abbreviatedIRI="xsd:int"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#geo_lat"/>
+        <Datatype abbreviatedIRI="xsd:int"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#geo_long"/>
+        <Datatype abbreviatedIRI="xsd:int"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#has_pets"/>
+        <Datatype abbreviatedIRI="xsd:boolean"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#internal_floors"/>
+        <Datatype abbreviatedIRI="xsd:int"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#max_budget"/>
+        <Datatype abbreviatedIRI="xsd:float"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#monthly_income"/>
+        <Datatype abbreviatedIRI="xsd:float"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#monthly_price"/>
+        <Datatype abbreviatedIRI="xsd:float"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#num_people"/>
+        <Datatype abbreviatedIRI="xsd:int"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#owns_car"/>
+        <Datatype abbreviatedIRI="xsd:boolean"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#square_meters"/>
+        <Datatype abbreviatedIRI="xsd:float"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#study_lat"/>
+        <Datatype abbreviatedIRI="xsd:int"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#study_long"/>
+        <Datatype abbreviatedIRI="xsd:int"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#work_lat"/>
+        <Datatype abbreviatedIRI="xsd:int"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#work_long"/>
+        <Datatype abbreviatedIRI="xsd:int"/>
+    </DataPropertyRange>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#Downtown</IRI>
+        <Literal>Historic o tourist center</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#Urban_core</IRI>
+        <Literal>Geographical center of the city</Literal>
+    </AnnotationAssertion>
+</Ontology>
+
+
+
+<!-- Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi -->
+
