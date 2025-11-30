@@ -692,7 +692,7 @@
    (bind ?car (ask-yes-no "¿Teneis coche propio?"))
    (bind ?pet (ask-yes-no "¿Teneis mascotas?"))
    
-   (modify ?f (income ?inc) 
+   (modify ?f (income ?inc) 0
               (max_budget ?bud) 
               (budget_is_strict ?strict)
               (owns-car ?car) 
@@ -830,6 +830,61 @@
        )
    )
 
+
+
+
+;; Construir desired_features combinando inferencias por clase + datos del usuario
+   (bind ?feat (create$))
+
+   ;; Inferencias por clase (ejemplos indicativos)
+   (if (or (eq ?class-name Elderly) (eq ?class-name Elderly_Couple) (eq ?class-name With_Elderly)) then
+       (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "elevator"))
+       (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "quiet"))
+       (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "single-floor"))
+       (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "near-healthcare"))
+   )
+
+   (if (or (eq ?class-name Student) (eq ?class-name Student_Group)) then
+       (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "near-education"))
+       (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "near-public-transport"))
+       (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "internet"))
+       (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "cheap"))
+       (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "near-nightlife"))
+   )
+
+   (if (or (eq ?class-name Family) (eq ?class-name No_Elderly) (eq ?class-name With_Elderly)) then
+       (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "garden"))
+       (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "near-recreation"))
+       (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "near-park"))
+       (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "safe-area"))
+   )
+
+   (if (eq ?class-name Planning_Kids) then
+       (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "near-school"))
+       (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "garden"))
+       (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "safe-area"))
+       (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "quiet"))
+   )
+
+   ;; Añadir lo que no se deduce del tipo pero viene del usuario
+   (if (eq ?pet yes) then (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "pets-allowed")))
+   (if (eq ?car yes) then (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "parking")))
+   (if (eq ?strict yes) then (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "cheap")))
+   (if (eq ?w-any yes) then (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "near-work")))
+   (if (eq ?s-any yes) then (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "near-study")))
+
+
+   ;; Normalizar: eliminar duplicados sencillos (construcción nueva)
+   (bind ?uniq (create$))
+   (foreach ?x ?feat
+       (if (eq (member$ ?x ?uniq) FALSE) then
+           (bind ?uniq (insert$ ?uniq (+ (length$ ?uniq) 1) ?x))
+       )
+   )
+
+
+
+
    ;; --- CREACIÓN DE LA INSTANCIA ---
    (printout t ">> Analisis completado. Perfil detectado: " ?class-name crlf)
    
@@ -849,6 +904,7 @@
       (study_lat ?slats)
       (study_long ?slongs)
       (Age ?ages)
+      (desired_features ?uniq)
    )
    
    (retract ?f)
@@ -856,6 +912,7 @@
    (printout t "Cliente " ?new-id " creado correctamente." crlf)
    (printout t "Listo para iniciar reglas de recomendacion automatica..." crlf)
 )
+
 
 (definstances instances
  ; Zonas con centro geográfico para coherencia espacial
