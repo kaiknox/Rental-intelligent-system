@@ -407,6 +407,9 @@
     (slot AC
         (type SYMBOL)
         (create-accessor read-write))
+    (slot Heating
+        (type SYMBOL)
+        (create-accessor read-write))
     (slot Appliances
         (type SYMBOL)
         (create-accessor read-write))
@@ -472,9 +475,6 @@
         (create-accessor read-write))
     (slot monthly_price
         (type FLOAT)
-        (create-accessor read-write))
-    (multislot property_attribute
-        (type SYMBOL)
         (create-accessor read-write))
     (slot square_meters
         (type FLOAT)
@@ -1005,6 +1005,7 @@
  (apt-101 of Apartment
      (is_located_in_zone zone-residential)
      (AC yes)
+     (Heating yes)
      (Appliances full)
      (Balcony yes)
      (Condition good)
@@ -1033,6 +1034,7 @@
  (studio-201 of Studio
      (is_located_in_zone zone-urbancore)
      (AC no)
+     (Heating no)
      (Appliances basic)
      (Balcony no)
      (Condition good)
@@ -1061,6 +1063,7 @@
  (house-301 of Detached_House
      (is_located_in_zone zone-residential)
      (AC yes)
+     (Heating no)
      (Appliances full)
      (Balcony yes)
      (Condition excellent)
@@ -1089,6 +1092,7 @@
  (room-401 of Room
      (is_located_in_zone zone-downtown)
      (AC no)
+     (Heating yes)
      (Appliances basic)
      (Balcony no)
      (Condition good)
@@ -1113,57 +1117,3 @@
      (monthly_price 450.0)
      (property_attribute low-cost near-transport)
      (square_meters 18.0))
-
- ; Client groups
- (student-group-1 of Student
-     (Age 20 21)
-     (Budget_Is_Strict yes)
-     (Max_Deposit 300.0)
-     (Min_Bathroom 1)
-     (Min_Bedroom 0)
-     (Prefers_Public_Transport yes)
-     (Study_In_City yes)
-     (Too_Bargain 50.0)
-     (Works_In_City no)
-     (desired_features "near university" "cheap" "internet")
-     (has_pets no)
-     (max_budget 700.0)
-     (monthly_income 600.0)
-     (owns_car no)
-     (study_lat 80)
-     (study_long 190))
-
- (family-1 of Family
-     (Age 35 33 5)
-     (Budget_Is_Strict yes)
-     (Max_Deposit 3600.0)
-     (Min_Bathroom 2)
-     (Min_Bedroom 2)
-     (Prefers_Public_Transport no)
-     (Study_In_City no)
-     (Too_Bargain 200.0)
-     (Works_In_City yes)
-     (desired_features "garden" "garage" "near school")
-     (has_pets yes)
-     (max_budget 2000.0)
-     (monthly_income 3000.0)
-     (owns_car yes)
-     (work_lat 97)
-     (work_long 204))
-
- (elderly-couple-1 of Elderly_Couple
-     (Age 72 70)
-     (Budget_Is_Strict no)
-     (Max_Deposit 1200.0)
-     (Min_Bathroom 1)
-     (Min_Bedroom 1)
-     (Prefers_Public_Transport yes)
-     (Study_In_City no)
-     (Too_Bargain 0.0)
-     (Works_In_City no)
-     (desired_features "quiet" "single-floor")
-     (has_pets no)
-     (max_budget 900.0)
-     (monthly_income 1500.0)
-     (owns_car no))
-)
