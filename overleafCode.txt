@@ -1,0 +1,303 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{subcaption}
+
+\geometry{margin=2.5cm}
+
+\definecolor{codebg}{rgb}{0.95,0.95,0.95}
+\lstset{
+    backgroundcolor=\color{codebg},
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    frame=single,
+    captionpos=b,
+    showstringspaces=false
+}
+
+\title{Práctica de Sistemas Basados en el Conocimiento \\ Recomendación de Viviendas en Alquiler}
+\author{Grupo XX \\ Nombres de los integrantes}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+% ============================
+% PRIMERA PARTE: PLANTEAMIENTO DEL PROBLEMA
+% ============================
+\section{Introducción y planteamiento del problema}
+\label{sec:intro}
+
+\subsection{Estructura del documento}
+Este documento se organiza en tres partes principales, siguiendo las directrices de la rúbrica de evaluación:
+
+\begin{itemize}
+    \item \textbf{Parte 1 (Introducción)}: Planteamiento del problema, objetivos y metodología.
+    \item \textbf{Parte 2 (Desarrollo)}: Conceptualización, formalización (ontología) e implementación en CLIPS.
+    \item \textbf{Parte 3 (Resultados)}: Casos de prueba, análisis de resultados, conclusiones y trabajo en equipo.
+\end{itemize}
+
+\subsection{Contexto y motivación}
+La práctica plantea el desarrollo de un sistema de recomendación de viviendas en alquiler que pueda ser utilizado por una entidad pública para ayudar a los ciudadanos a encontrar ofertas adecuadas a sus necesidades. 
+
+El problema implica combinar dos tipos de información:
+\begin{itemize}
+    \item \textbf{Características de las viviendas}: precio, superficie, tipo de propiedad, amenities, ubicación, etc.
+    \item \textbf{Perfil y preferencias del usuario}: presupuesto, composición familiar, necesidades de proximidad a servicios, restricciones, etc.
+\end{itemize}
+
+La complejidad del dominio y la necesidad de aplicar conocimiento experto para ponderar múltiples factores convierten este problema en un caso idóneo para un Sistema Basado en el Conocimiento (SBC).
+
+\subsection{Objetivos de la práctica}
+El objetivo principal de esta práctica es diseñar e implementar un \textbf{Sistema Basado en el Conocimiento (SBC)} que emule el razonamiento de un experto inmobiliario para recomendar viviendas en alquiler. Los objetivos específicos son:
+
+\begin{itemize}
+    \item Analizar el dominio del problema e identificar las fuentes de conocimiento necesarias.
+    \item Construir una ontología formal que represente los conceptos clave: \textbf{viviendas}, \textbf{solicitantes}, \textbf{servicios urbanos} y \textbf{zonas de la ciudad}.
+    \item Implementar en CLIPS un sistema de reglas que realice:
+    \begin{itemize}
+        \item Evaluación de compatibilidad entre perfil del solicitante y características de la vivienda.
+        \item Cálculo de proximidad a servicios relevantes (transporte, educación, ocio, salud, etc.).
+        \item Clasificación de las recomendaciones en tres categorías: \textit{parcialmente adecuada}, \textit{adecuada} y \textit{muy recomendable}.
+    \end{itemize}
+    \item Validar el sistema mediante casos de prueba representativos y documentar el proceso de desarrollo siguiendo la metodología de ingeniería del conocimiento.
+\end{itemize}
+
+\subsection{Metodología de desarrollo}
+Para abordar este problema, se ha seguido la metodología de \textbf{Ingeniería del Conocimiento} explicada en clase, estructurada en las siguientes fases:
+
+\begin{enumerate}
+    \item \textbf{Identificación}: Análisis del enunciado, definición de objetivos y alcance.
+    \item \textbf{Conceptualización}: Extracción y organización del conocimiento experto, identificación de conceptos y relaciones.
+    \item \textbf{Formalización}: Construcción de la ontología en Protégé y diseño de la estrategia de razonamiento.
+    \item \textbf{Implementación}: Codificación en CLIPS del sistema de reglas y hechos.
+    \item \textbf{Prueba}: Validación mediante casos de prueba y análisis de resultados.
+\end{enumerate}
+
+% ============================
+% SEGUNDA PARTE: DESARROLLO Y ELABORACIÓN DE LA SOLUCIÓN
+% ============================
+\section{Desarrollo de la solución}
+\label{sec:desarrollo}
+
+\subsection{Conceptualización}
+\label{subsec:conceptualizacion}
+
+\subsubsection{Extracción de conocimiento}
+Si se usó modelo de lenguaje: contexto dado, preguntas realizadas, conocimiento extraído. Si no, explicar cómo se obtuvo el conocimiento (sentido común, investigación).
+
+\subsubsection{Conceptos y relaciones principales}
+A partir del análisis del dominio y de la experiencia en portales inmobiliarios, identificamos los siguientes conceptos clave, que posteriormente se formalizarán en la ontología:
+
+\begin{itemize}
+    \item \textbf{Cliente}: persona o grupo que busca vivienda. Se distingue entre:
+    \begin{itemize}
+        \item \textbf{Individual}: Adulto, Joven, Estudiante, Anciano.
+        \item \textbf{Grupo}: Pareja (con o sin hijos previstos, joven o anciana), Familia (con o sin ancianos), Grupo de estudiantes.
+    \end{itemize}
+    
+    \item \textbf{Vivienda}: oferta de alquiler. Incluye subtipos como:
+    \begin{itemize}
+        \item \textbf{Piso}, \textbf{Dúplex}, \textbf{Ático}, \textbf{Estudio}.
+        \item \textbf{Casa individual}, \textbf{Casa pareada}, \textbf{Casa adosada}.
+        \item \textbf{Habitación} para alquiler individual.
+    \end{itemize}
+    
+    \item \textbf{Servicio}: elemento urbano que influye en la calidad de vida:
+    \begin{itemize}
+        \item \textbf{Transporte}: Parada de autobús, metro, tren, aparcamiento.
+        \item \textbf{Educación}: Colegio, instituto, universidad.
+        \item \textbf{Salud}: Clínica, hospital, farmacia.
+        \item \textbf{Comercio}: Supermercado, hipermercado, centro comercial, tienda.
+        \item \textbf{Ocio}: Parque, piscina, gimnasio, cine, museo, zona de vida nocturna, restaurante, playa, polideportivo.
+    \end{itemize}
+    
+    \item \textbf{Zona}: área de la ciudad con características homogéneas:
+    \begin{itemize}
+        \item \textbf{Residencial}, \textbf{Centro}, \textbf{Núcleo urbano}, \textbf{Negocios}, \textbf{Industrial}.
+    \end{itemize}
+\end{itemize}
+
+\paragraph{Relaciones principales identificadas:}
+\begin{itemize}
+    \item Una \textbf{Vivienda} \textit{está ubicada en} una \textbf{Zona} (relación \texttt{is\_located\_in\_zone}).
+    \item Una \textbf{Vivienda} \textit{está cerca de} uno o más \textbf{Servicios} (relación \texttt{is\_near\_service}).
+    \item Un \textbf{Cliente} \textit{tiene preferencias y restricciones} sobre:
+    \begin{itemize}
+        \item Precio máximo, flexibilidad presupuestaria, precio mínimo sospechoso (\textit{too bargain}).
+        \item Número mínimo de dormitorios y baños.
+        \item Necesidad de transporte público, posesión de coche.
+        \item Ubicación de trabajo/estudio (coordenadas).
+        \item Mascotas, ruido tolerado, características deseadas (terraza, ascensor, amueblado, etc.).
+    \end{itemize}
+    \item Una \textbf{Vivienda} \textit{puede satisfacer o no} dichas preferencias, lo que determina su \textbf{grado de recomendación} (parcialmente adecuada, adecuada, muy recomendable).
+\end{itemize}
+
+\subsubsection{Descomposición en subproblemas}
+Explicar cómo se divide el problema global en tareas más pequeñas:
+\begin{itemize}
+    \item Subproblema 1: Captura de preferencias del usuario.
+    \item Subproblema 2: Evaluación de viviendas respecto a preferencias.
+    \item Subproblema 3: Cálculo de distancias a servicios.
+    \item Subproblema 4: Clasificación y recomendación final.
+\end{itemize}
+
+\subsection{Formalización}
+\label{subsec:formalizacion}
+
+
+\subsubsection{Ontología del dominio}
+La ontología se ha construido en Protégé siguiendo la metodología de desarrollo de ontologías 101, y está compuesta por 4 conceptos raíz principales, sus jerarquías de subclases, propiedades de objeto y datos, y restricciones de dominio/rango.
+
+\paragraph{Jerarquía de clases}
+\begin{itemize}
+    \item \textbf{\texttt{Client\_Group}}: representa a los solicitantes. Se divide en:
+    \begin{itemize}
+        \item \textbf{\texttt{Individual}}: \texttt{Adult}, \texttt{Young}, \texttt{Student}, \texttt{Elderly}.
+        \item \textbf{\texttt{Group}}: \texttt{Couple} (\texttt{Elderly\_Couple}, \texttt{Planning\_Kids}, \texttt{Young\_No\_Kids}), \texttt{Family} (\texttt{No\_Elderly}, \texttt{With\_Elderly}), \texttt{Student\_Group}.
+    \end{itemize}
+    Se ha modelado así para capturar perfiles con necesidades diferenciadas (ej: jóvenes buscan ocio, familias buscan escuelas).
+    
+    \item \textbf{\texttt{Property}}: representa las viviendas en alquiler. Incluye:
+    \begin{itemize}
+        \item Tipos urbanos: \texttt{Apartment}, \texttt{Duplex}, \texttt{Penthouse}, \texttt{Studio}, \texttt{Triplex}, \texttt{Room}.
+        \item Tipos unifamiliares: \texttt{Detached\_House}, \texttt{Semidetached\_House}, \texttt{Row\_House}, \texttt{Single-family\_House}.
+    \end{itemize}
+    Se han definido como \textit{disjoint} para evitar inconsistencias.
+    
+    \item \textbf{\texttt{Service}}: modela los servicios urbanos. Subclases:
+    \begin{itemize}
+        \item \texttt{Transport} (\texttt{Bus\_stop}, \texttt{Metro\_station}, \texttt{Train\_station}, \texttt{Parking}, \texttt{Clable\_car\_station}).
+        \item \texttt{Education} (\texttt{School}, \texttt{High\_School}, \texttt{University}).
+        \item \texttt{Healthcare} (\texttt{Clinic}, \texttt{Hospital}, \texttt{Pharmacy}).
+        \item \texttt{Shopping} (\texttt{Supermarket}, \texttt{Hipermarket}, \texttt{Mall}, \texttt{Store}).
+        \item \texttt{Recreation} (\texttt{Park}, \texttt{Pool}, \texttt{Gym}, \texttt{Beach}, \texttt{Cinema}, \texttt{Museum}, \texttt{Nightlife}, etc.).
+    \end{itemize}
+    Esta categorización permite evaluar la proximidad a servicios de forma estructurada.
+    
+    \item \textbf{\texttt{Zone}}: describe zonas de la ciudad:
+    \begin{itemize}
+        \item \texttt{Residential}, \texttt{Business}, \texttt{Downtown}, \texttt{Industrial}, \texttt{Urban\_core}.
+    \end{itemize}
+    Cada zona tiene atributos como nivel de ruido y seguridad.
+\end{itemize}
+
+\paragraph{Propiedades de objeto}
+\begin{itemize}
+    \item \texttt{is\_located\_in\_zone}: relaciona una \texttt{Property} con una \texttt{Zone}. Es funcional (cada vivienda está en una sola zona).
+    \item \texttt{is\_near\_service}: relaciona una \texttt{Property} con un \texttt{Service}. Permite modelar proximidad a múltiples servicios.
+\end{itemize}
+
+\paragraph{Propiedades de datos}
+Se han agrupado en tres categorías para facilitar la modularidad:
+\begin{itemize}
+    \item \texttt{property\_attribute}: atributos de la vivienda (precio, metros², habitaciones, terraza, ascensor, amueblado, etc.).
+    \item \texttt{client\_attribute}: atributos del solicitante (edad, presupuesto, preferencias, ubicación trabajo/estudio, etc.).
+    \item \texttt{zone\_attribute}: atributos de la zona (nivel de ruido, seguridad).
+\end{itemize}
+Se han usado tipos de datos específicos (\texttt{boolean}, \texttt{int}, \texttt{float}) y enumerados (ej: \texttt{Sun\_Time}: \texttt{Morning}, \texttt{Afternoon}, \texttt{All\_Day}, \texttt{Never}).
+
+\paragraph{Decisiones de diseño justificadas}
+\begin{itemize}
+    \item \textbf{Coordenadas enteras}: se usan \texttt{geo\_lat} y \texttt{geo\_long} como enteros para simplificar el cálculo de distancias en CLIPS.
+    \item \texttt{floor\_level} solo aplica a \texttt{Apartment}, \texttt{Room} y \texttt{Studio}, no a viviendas unifamiliares.
+    \item \texttt{Too\_Bargain}: se incluye como atributo del cliente para detectar precios sospechosamente bajos.
+    \item \textit{Disjoint} entre clases: evita que una misma instancia sea, por ejemplo, un \texttt{Apartment} y una \texttt{Detached\_House}.
+\end{itemize}
+
+\subsubsection{Metodología de resolución de problemas}
+Explicar qué metodología se ha elegido (p. ej., clasificación, razonamiento basado en casos) y cómo los subproblemas identificados encajan en ella.
+
+\subsubsection{Representación en reglas}
+Descripción de cómo se traduce el conocimiento en reglas de producción. Estructura general del sistema de reglas (módulos, estrategia de control).
+
+\subsection{Implementación en CLIPS}
+\label{subsec:implementacion}
+
+\subsubsection{Estructura del proyecto}
+Organización de módulos, templates, hechos iniciales.
+
+\subsubsection{Ejemplo de reglas clave}
+Fragmentos de código comentados que ilustren el razonamiento.
+
+\begin{lstlisting}[language=Lisp, caption=Ejemplo de regla en CLIPS]
+(defrule evaluar-precio
+    ?s <- (solicitante (precio-max ?pmax) (flexible ?flex))
+    ?v <- (vivienda (precio ?p) (id ?id))
+    (test (<= ?p ?pmax))
+    =>
+    (assert (candidata (id ?id) (motivo "Dentro de presupuesto"))))
+\end{lstlisting}
+
+\subsubsection{Desarrollo incremental}
+Descripción de los prototipos desarrollados, evolución desde el primer prototipo funcional hasta la versión final.
+
+% ============================
+% TERCERA PARTE: RESULTADOS Y CONCLUSIONES
+% ============================
+\section{Resultados y validación}
+\label{sec:resultados}
+
+\subsection{Juegos de prueba}
+Explicación de cómo se seleccionaron los casos: perfiles variados (estudiante, familia, pareja), casos límite, cobertura de funcionalidades.
+
+\subsection{Ejecución de pruebas}
+Tabla resumen con al menos 6 casos diferentes, mostrando:
+\begin{itemize}
+    \item Perfil de entrada.
+    \item Viviendas recomendadas (adecuadas, parcialmente adecuadas, muy recomendables).
+    \item Criterios incumplidos o características destacadas.
+\end{itemize}
+
+\begin{table}[h]
+\centering
+\caption{Ejemplo de casos de prueba}
+\begin{tabular}{p{3cm}|p{3cm}|p{3cm}|p{3cm}}
+\toprule
+\textbf{Perfil} & \textbf{Vivienda} & \textbf{Grado} & \textbf{Observaciones} \\
+\midrule
+Estudiante, precio bajo & Atico céntrico & Parcial & Sin terraza \\
+Familia con hijos & Dúplex con jardín & Muy recomendable & Cerca de colegio y parque \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Análisis de resultados}
+Explicación de por qué el sistema toma ciertas decisiones, ejemplos concretos basados en el conocimiento codificado.
+
+\subsection{Conclusiones}
+\label{subsec:conclusiones}
+
+\subsubsection{Logros y dificultades}
+Qué se ha conseguido, qué partes fueron más complejas, limitaciones del sistema.
+
+\subsubsection{Trabajo en equipo}
+Breve descripción de cómo se organizó el grupo, reuniones, reparto de tareas, uso de la planificación propuesta.
+
+\subsubsection{Posibles mejoras}
+Extensiones futuras: integración con datos reales de mapas, más factores de ponderación, interfaz gráfica.
+
+% ============================
+% ANEXOS
+% ============================
+\appendix
+\section{Anexo A: Ontología completa}
+Gráfico exportado desde Protégé con la jerarquía de clases y propiedades.
+
+\section{Anexo B: Diálogo con modelo de lenguaje}
+Si aplica: contexto usado, preguntas más relevantes y respuestas resumidas.
+
+\section{Anexo C: Código fuente completo}
+Listado completo del código CLIPS (o enlace al repositorio).
+
+\end{document}
