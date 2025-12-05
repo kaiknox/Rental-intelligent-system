@@ -622,19 +622,19 @@
    (multislot ages)
    (slot income (type NUMBER))
    (slot max_budget (type NUMBER))
-   (slot budget_is_strict (type SYMBOL)) 
+   (slot budget_is_strict (type SYMBOL))
    (slot has-pets (type SYMBOL))
    (slot owns-car (type SYMBOL))
    (slot planning_kids (type SYMBOL) (default no))
    
    ;; Logística Avanzada
-   (slot works_any (type SYMBOL))     
-   (multislot work_lats)              
-   (multislot work_longs)             
+   (slot works_any (type SYMBOL))
+   (multislot work_lats)
+   (multislot work_longs)
    
-   (slot studies_any (type SYMBOL))   
-   (multislot study_lats)             
-   (multislot study_longs)            
+   (slot studies_any (type SYMBOL))
+   (multislot study_lats)
+   (multislot study_longs)
 )
 
 ;;; =========================================================
@@ -649,7 +649,7 @@
 ;; 2. Regla de inicio: Espera a que termine la proximidad (salience -10)
 ;;    y consume el hecho 'start-execution' para arrancar.
 (defrule init-questionnaire
-   (declare (salience -10)) 
+   (declare (salience -10))
    ?f <- (start-execution) ;; Escuchamos nuestro hecho propio
    =>
    (retract ?f) ;; Lo borramos para que no moleste
@@ -693,10 +693,10 @@
    (bind ?pet (ask-yes-no "¿Teneis mascotas?"))
    
    (modify ?f (income ?inc) 0
-              (max_budget ?bud) 
+              (max_budget ?bud)
               (budget_is_strict ?strict)
-              (owns-car ?car) 
-              (has-pets ?pet) 
+              (owns-car ?car)
+              (has-pets ?pet)
               (step ask-work-logistics))
 )
 
@@ -785,7 +785,7 @@
                          (study_longs $?slongs))
    =>
    ;; CORRECCIÓN 1: Usamos Simbolos (sin comillas) en lugar de Strings
-   (bind ?class-name Individual) 
+   (bind ?class-name Individual)
 
    ;; --- ANALISIS DEMOGRÁFICO ---
    (bind ?has-elderly FALSE)
@@ -801,12 +801,12 @@
    
    ;; CASO 1: INDIVIDUAL
    (if (= ?np 1) then
-       (if ?has-elderly then 
+       (if ?has-elderly then
            (bind ?class-name Elderly) ;; Sin comillas
-       else 
-           (if (eq ?s-any yes) then 
+       else
+           (if (eq ?s-any yes) then
                (bind ?class-name Student) ;; Sin comillas
-           else 
+           else
                (if (<= (nth$ 1 ?ages) 30) then (bind ?class-name Young) else (bind ?class-name Adult))
            )
        )

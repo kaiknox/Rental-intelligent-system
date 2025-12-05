@@ -25,7 +25,7 @@
 }
 
 \title{Práctica de Sistemas Basados en el Conocimiento \\ Recomendación de Viviendas en Alquiler}
-\author{Grupo XX \\ Nombres de los integrantes}
+\author{Grupo XX \\ Iván Alcubierre, Kai Knox y Kirian Roca}
 \date{\today}
 
 \begin{document}
@@ -94,8 +94,131 @@ Para abordar este problema, se ha seguido la metodología de \textbf{Ingeniería
 \label{subsec:conceptualizacion}
 
 \subsubsection{Extracción de conocimiento}
-Si se usó modelo de lenguaje: contexto dado, preguntas realizadas, conocimiento extraído. Si no, explicar cómo se obtuvo el conocimiento (sentido común, investigación).
+\textbf{Entrevista con experto IA (Gemini 3.0)}\\\\
+%
+    \textbf{Interviewer:} "We are going to do a role playing exercise. You are going to help a knowledge engineer perform knowledge elicitation for building a rule-based expert system for the recommendation of home rentals. You are a real estate agent with wide experience in this problem who knows how to match different kinds of people (families with or without children, students, single people, elderly) according to the characteristics of the home and its neighborhood. The knowledge engineer is going to ask about the characteristics, criteria, and knowledge that you use for making the decisions. Your answer should be direct and precise. The answers should be helpful for building rules for making decisions from the answers of people who are looking to rent a flat or a house."
+% Contexto
+	\textbf{Expert:} To build a robust recommendation system, we must classify clients into four specific archetypes, each with distinct priorities:
+\begin{itemize}
+\item \textbf{Elderly:} Their non-negotiable priority is Accessibility. If a property is not on the ground floor, it must have an elevator. They require essential services (Pharmacy, Supermarket) within short walking distance and strictly reject "Nightlife" zones due to noise.
+\item \textbf{Families:} They prioritize Space and Safety. They need a specific number of bedrooms to match their family size. They prioritize proximity to Schools and Green Areas and avoid "High Noise" or "Tourist" districts.
+\item \textbf{Students:} They are budget-driven but have specific technical needs. Internet and Furnishing are mandatory hard constraints. They will tolerate noise or older building conditions if the price is right. They prioritize proximity to the University or Public Transport.
+\item \textbf{Young Couples/Professionals:} They prioritize Lifestyle. They value proximity to Gyms, Restaurants, and Leisure. If they own a car, a Garage becomes a critical requirement due to the Lifestyle urban location.
+\end{itemize}
 
+% Atributos iniciales proporcionados
+	\textbf{Interviewer:} "Now I will send you a basis of the attributes for clients and properties that I am sure they have to be. Can you use your expert knowledge to suggest some attributes to make it more complete? 
+
+% Property
+\begin{enumerate}
+\item Monthly price in euros.
+\item Location (city district, address, GPS coordinates).
+\item Usable floor area in m$^2$.
+\item Number of bedrooms and whether they are double or single.
+\item Whether the dwelling has a terrace or balcony.
+\item Whether the dwelling is rented furnished and/or with appliances.
+\item Type of dwelling: flat, duplex, single-family house. For flats or duplexes, the floor level (mezzanine, first, second...).
+\item Other features such as: no-pets rule, heating/air conditioning, whether the flat gets sunlight (morning, afternoon, all day), access to a communal pool, parking space included, property with views. 
+\end{enumerate}
+
+% Clients
+\begin{enumerate}
+\item Maximum price they are willing to pay and whether the limit is strict or they could pay more if the offer is worth it.
+\item Restrictions regarding the number/size of the bedrooms.
+\item Minimum price, below which they believe the offer is too cheap to be adequate.
+\item Specific restriction or preference regarding distance to certain services (schools nearby, public transport nearby...).
+\item Whether they prefer to use public transport for commuting.
+\item Age of the applicants.
+\item Type of applicants: couple without children, couple planning to have children soon, family (single-parent, two-parent) with children/elderly dependents (number), group of students (number), individual...
+\item Whether they work/study in the city and where the workplace/place of study is located.
+\item Whether they own a car."
+\end{enumerate}
+
+% Atributos añadidos por el experto
+	\textbf{Expert:} To strengthen the system and reduce ambiguity in decision rules, we need additional measurable attributes for both Property and Clients. These enable clearer constraints, preference scoring, and rule branching.
+\paragraph{Property – Suggested Additional Attributes}
+\begin{itemize}
+\item Noise Level Classification: Quiet / Moderate / High. Necessary for Families and Elderly.
+\item Accessibility Indicators: Presence of elevator, ramp access, door width for wheelchair. Critical for Elderly.
+\item Energy Efficiency Rating: Impacts long-term cost; students and families react strongly to energy bills.
+\item Internet Availability and Speed: Mandatory for Students; highly relevant for Couples/Professionals working remotely.
+\item Heating Type and Insulation Quality: Relevant in older buildings; impacts comfort and utility expenses.
+\item Proximity Metrics: Walking time (not just distance) to public transport, university/schools, supermarkets, pharmacy.
+\item Neighborhood Category: Residential / Tourist / Nightlife / Business. Used to match lifestyle vs. noise tolerance.
+\item Safety Indicators: Crime level or “perceived safe area” flag. Families care; students tolerate lower.
+\item Building Age and Renovation Condition: Students tolerate older; families avoid degraded.
+\item Contract Constraints: Minimum rental duration, deposit size. People with strict budgets (students) react strongly.
+\item Pets Allowed / Forbidden: Already noted, but must be categorical because it blocks many options.
+\end{itemize}
+
+\paragraph{Clients – Suggested Additional Attributes}
+\begin{itemize}
+\item Noise Tolerance Level: Critical decision boundary between Elderly/Families vs. Students/Professionals.
+\item Mobility or Accessibility Needs: Presence of disability or reduced mobility; elevator becomes hard constraint.
+\item Internet Requirement: Binary but decisive.
+\item Expected Lease Duration: Students short-term; families long-term. Impacts landlord suitability.
+\item Work Modality: Remote/hybrid/on-site. Remote workers require strong internet and quiet environment.
+\item Lifestyle Priority: Quiet, central/leisure-oriented, green areas, nightlife. Makes rule pruning more accurate.
+\item Commute Distance Tolerance: Define acceptable walking/public transport travel time.
+\item Car Usage Frequency: Not only ownership; usage defines need for guaranteed parking.
+\end{itemize}
+These additions allow the rules to be actionable and conflict-resolving instead of vague.
+
+\subparagraph{}
+	\textbf{Interviewer:} “Can you suggest some filters that you apply to decide if a Property is good to a certain client?”
+	\textbf{Expert:} First, we must apply a hard financial filter before looking at preferences.
+\paragraph{Financial Filters}
+\begin{itemize}
+\item The 40\% Rule: The monthly rent must not exceed 40\% of the household's total monthly income. This is a safety check for solvency.
+\item Budget Limit: We respect the client's "Maximum Price," but we should allow a small margin (e.g., +10\%) if the property is "Ideal," unless the client marks their budget as "Strict."
+\end{itemize}
+Next, we apply structural and capacity filters to guarantee functional suitability:
+\paragraph{Structural Filters}
+\begin{itemize}
+\item Bedroom/Occupancy Consistency: The number and type of bedrooms must align with the household size. A family of four cannot be matched with a single-bedroom flat. Couples planning children should not be placed in a studio.
+\item Accessibility Compliance: If any applicant has reduced mobility or is elderly, the property must have either ground-floor access or a functioning elevator. Absence of these eliminates the property immediately.
+\item Mandatory Utility Requirements: If the client requires high-speed internet (students, remote workers), or heating/air conditioning (elderly, families in cold/hot climates), properties without these features are discarded.
+\item Transportation or Parking Constraint: If the client relies on public transport, the property must be within a reasonable walking radius of a reliable connection. If the client owns a car and parking is required, the property must provide either a garage or a guaranteed parking spot.
+\item Neighborhood Compatibility: Noise and security conditions must be aligned with the sensitivity of the client type. Nightlife areas are automatically excluded for elderly or families. Tourist zones are low priority for families but acceptable for students.
+\end{itemize}
+These filters eliminate structurally incompatible options before any ranking or preference scoring begins.
+
+\paragraph{Relación entre el conocimiento del experto y el código CLIPS:}
+
+\subparagraph{Aplicado}
+\begin{enumerate}
+\item \textbf{Presupuesto}  
+Se solicita precio máximo y si es estricto o flexible.  
+Se descartan propiedades que superan el máximo; si es flexible se permite hasta 10\%.
+\item \textbf{Dormitorios y espacio}  
+Filtrado por número de dormitorios dobles y simples.
+\item \textbf{Mascotas}  
+Se descartan viviendas donde no se permiten mascotas.
+\item \textbf{Coche}  
+Atr. \texttt{owns-car}, propiedades con \texttt{Garage}. Eliminación o penalización según cliente.
+\item \textbf{Trabajo/estudio}  
+Se registran coordenadas de trabajo/estudio.
+\item \textbf{Regla del 40\%}  
+Se registra ingreso mensual total y se descartan viviendas fuera del presupuesto.
+\item \textbf{Accesibilidad}  
+Atributos de ascensor y planta; reglas para clientes sensibles.
+\item \textbf{Ruido}  
+Atributos de ruido recibidos; filtros por tipo de cliente.
+\item \textbf{Seguridad}  
+Atributo de nivel de seguridad; filtrado según cliente.
+\item \textbf{Proximidad a servicios}  
+Coordenadas de servicios y propiedades.
+\item \textbf{Condiciones climáticas (sol)}  
+Atributos de AC, heating y orientación solar.
+\end{enumerate}
+
+\subparagraph{No aplicado}
+\begin{enumerate}
+\item \textbf{Internet}  
+Se considera que cada cliente contrata su propio servicio.
+\item \textbf{Clima adicional no relacionado con sol}  
+Se omiten factores climáticos globales para reducir complejidad del modelo.
+\end{enumerate}
 \subsubsection{Conceptos y relaciones principales}
 A partir del análisis del dominio y de la experiencia en portales inmobiliarios, identificamos los siguientes conceptos clave, que posteriormente se formalizarán en la ontología:
 
@@ -103,7 +226,7 @@ A partir del análisis del dominio y de la experiencia en portales inmobiliarios
     \item \textbf{Cliente}: persona o grupo que busca vivienda. Se distingue entre:
     \begin{itemize}
         \item \textbf{Individual}: Adulto, Joven, Estudiante, Anciano.
-        \item \textbf{Grupo}: Pareja (con o sin hijos previstos, joven o anciana), Familia (con o sin ancianos), Grupo de estudiantes.
+        \item \textbf{Grupo}: Pareja (con o sin hijos previstos, joven o anciana), Familia (con o sin ancianos), Grupo de estudiantes, o por defecto grupo genérico.
     \end{itemize}
     
     \item \textbf{Vivienda}: oferta de alquiler. Incluye subtipos como:
@@ -115,16 +238,16 @@ A partir del análisis del dominio y de la experiencia en portales inmobiliarios
     
     \item \textbf{Servicio}: elemento urbano que influye en la calidad de vida:
     \begin{itemize}
-        \item \textbf{Transporte}: Parada de autobús, metro, tren, aparcamiento.
+        \item \textbf{Transporte}: Parada de autobús, metro, tren, tranvía o aparcamiento.
         \item \textbf{Educación}: Colegio, instituto, universidad.
         \item \textbf{Salud}: Clínica, hospital, farmacia.
         \item \textbf{Comercio}: Supermercado, hipermercado, centro comercial, tienda.
-        \item \textbf{Ocio}: Parque, piscina, gimnasio, cine, museo, zona de vida nocturna, restaurante, playa, polideportivo.
+        \item \textbf{Ocio}: Parque, piscina, gimnasio, cine, museo, zona de vida nocturna, restaurante, playa, polideportivo/centro deportivo.
     \end{itemize}
     
     \item \textbf{Zona}: área de la ciudad con características homogéneas:
     \begin{itemize}
-        \item \textbf{Residencial}, \textbf{Centro}, \textbf{Núcleo urbano}, \textbf{Negocios}, \textbf{Industrial}.
+        \item \textbf{Residencial}, \textbf{Centro} (goeográfico), \textbf{Núcleo urbano} (social/turístico), \textbf{Negocios}, \textbf{Industrial}.
     \end{itemize}
 \end{itemize}
 
@@ -134,11 +257,11 @@ A partir del análisis del dominio y de la experiencia en portales inmobiliarios
     \item Una \textbf{Vivienda} \textit{está cerca de} uno o más \textbf{Servicios} (relación \texttt{is\_near\_service}).
     \item Un \textbf{Cliente} \textit{tiene preferencias y restricciones} sobre:
     \begin{itemize}
-        \item Precio máximo, flexibilidad presupuestaria, precio mínimo sospechoso (\textit{too bargain}).
-        \item Número mínimo de dormitorios y baños.
+        \item Presupuesto máximo para el alquiler, flexibilidad presupuestaria, precio mínimo sospechoso (\textit{too bargain}).
+        \item Número mínimo de dormitorios y baños para la vivienda.
         \item Necesidad de transporte público, posesión de coche.
         \item Ubicación de trabajo/estudio (coordenadas).
-        \item Mascotas, ruido tolerado, características deseadas (terraza, ascensor, amueblado, etc.).
+        \item Mascotas, ruido tolerado, características deseadas/necesidades (cercanía a ciertos servicios, terraza, ascensor, amueblado, etc.).
     \end{itemize}
     \item Una \textbf{Vivienda} \textit{puede satisfacer o no} dichas preferencias, lo que determina su \textbf{grado de recomendación} (parcialmente adecuada, adecuada, muy recomendable).
 \end{itemize}
@@ -146,9 +269,9 @@ A partir del análisis del dominio y de la experiencia en portales inmobiliarios
 \subsubsection{Descomposición en subproblemas}
 Explicar cómo se divide el problema global en tareas más pequeñas:
 \begin{itemize}
-    \item Subproblema 1: Captura de preferencias del usuario.
-    \item Subproblema 2: Evaluación de viviendas respecto a preferencias.
-    \item Subproblema 3: Cálculo de distancias a servicios.
+    \item Subproblema 1: Cálculo de distancias a servicios para inicializar las viviendas.
+    \item Subproblema 2: Captura de preferencias del usuario.
+    \item Subproblema 3: Evaluación de viviendas respecto a preferencias.
     \item Subproblema 4: Clasificación y recomendación final.
 \end{itemize}
 
@@ -209,7 +332,7 @@ Se han usado tipos de datos específicos (\texttt{boolean}, \texttt{int}, \textt
 
 \paragraph{Decisiones de diseño justificadas}
 \begin{itemize}
-    \item \textbf{Coordenadas enteras}: se usan \texttt{geo\_lat} y \texttt{geo\_long} como enteros para simplificar el cálculo de distancias en CLIPS.
+    \item \textbf{Coordenadas enteras}: se usan \texttt{geo\_lat} y \texttt{geo\_long} como enteros (representan metros) para simplificar el cálculo de distancias en CLIPS.
     \item \texttt{floor\_level} solo aplica a \texttt{Apartment}, \texttt{Room} y \texttt{Studio}, no a viviendas unifamiliares.
     \item \texttt{Too\_Bargain}: se incluye como atributo del cliente para detectar precios sospechosamente bajos.
     \item \textit{Disjoint} entre clases: evita que una misma instancia sea, por ejemplo, un \texttt{Apartment} y una \texttt{Detached\_House}.
