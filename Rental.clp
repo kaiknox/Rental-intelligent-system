@@ -404,6 +404,17 @@
     (multislot is_near_service
         (type INSTANCE)
         (create-accessor read-write))
+    (multislot is_semi_near_service
+        (type INSTANCE)
+        (create-accessor read-write))
+    (slot work-place
+        (type SYMBOL)
+        (allowed-symbols cerca media_distancia lejos none)
+        (create-accessor read-write))
+    (slot study-place
+        (type SYMBOL)
+        (allowed-symbols cerca media_distancia lejos none)
+        (create-accessor read-write))
     (slot AC
         (type SYMBOL)
         (create-accessor read-write))
@@ -578,6 +589,20 @@
    (printout t "Sistema: Conectado " (instance-name ?p) " con servicio cercano " (instance-name ?s) crlf)
 )
 
+(defrule inicio-calcular-media-cercania
+   (declare (salience 99)) ; Prioridad alta para ejecutarse antes que nada
+   ?p <- (object (is-a Property) (geo_lat ?plat) (geo_long ?plong) (is_semi_near_service $?lista))
+   ?s <- (object (is-a Service) (geo_lat ?slat) (geo_long ?slong))
+   
+   ;; Condiciones de seguridad:
+   (test (eq (member$ ?s ?lista) FALSE)) ; Solo si NO está ya en la lista
+   (test (>= (euclid-dist ?plat ?plong ?slat ?slong) 200))
+   (test (<= (euclid-dist ?plat ?plong ?slat ?slong) 700)) ; Distancia <= 200m
+   =>
+   ;; Acción: Insertamos el servicio en el multislot de la propiedad
+   (send ?p put-is_semi_near_service (insert$ ?lista 1 ?s))
+   (printout t "Sistema: Conectado " (instance-name ?p) " con servicio media distancia " (instance-name ?s) crlf)
+)
 ;;; =========================================================
 ;;; 2. HERRAMIENTAS DE ENTREVISTA (FUNCIONES)
 ;;; =========================================================
@@ -625,6 +650,7 @@
    (slot budget_is_strict (type SYMBOL))
    (slot has-pets (type SYMBOL))
    (slot owns-car (type SYMBOL))
+   (slot is-couple (type SYMBOL) (default no))
    (slot planning_kids (type SYMBOL) (default no))
    
    ;; Logística Avanzada
@@ -749,15 +775,20 @@
    )
 )
 
-;; Paso 6: Detalles de Pareja
-(defrule ask-couple-details
+;; Paso 6: Pregunta de Pareja (solo si son 2 personas)
+(defrule ask-if-couple
    ?f <- (user-responses (step check-couple) (num-people 2))
    =>
-   (bind ?pk (ask-yes-no "¿Sois una pareja que planea tener hijos pronto?"))
-   (modify ?f (planning_kids ?pk) (step create-profile))
+   (bind ?couple (ask-yes-no "¿Son ustedes una pareja?"))
+   (if (eq ?couple yes) then
+       (bind ?pk (ask-yes-no "¿Planean tener hijos pronto?"))
+       (modify ?f (is-couple yes) (planning_kids ?pk) (step create-profile))
+   else
+       (modify ?f (is-couple no) (step create-profile))
+   )
 )
 
-(defrule skip-couple-details
+(defrule skip-couple-question
    ?f <- (user-responses (step check-couple) (num-people ?np))
    (test (neq ?np 2))
    =>
@@ -777,6 +808,7 @@
                          (budget_is_strict ?strict)
                          (has-pets ?pet)
                          (owns-car ?car)
+                         (is-couple ?couple)
                          (planning_kids ?pk)
                          (works_any ?w-any)
                          (work_lats $?wlats)
@@ -785,6 +817,12 @@
                          (study_lats $?slats)
                          (study_longs $?slongs))
    =>
+   ;; DEBUG: Imprimir entrada
+   (printout t crlf "=== DEBUG: INICIANDO CLASIFICACIÓN ===" crlf)
+   (printout t "NumPersonas: " ?np ", Edades: " ?ages crlf)
+   (printout t "EsPareja: " ?couple ", PlaneanHijos: " ?pk crlf)
+   (printout t "Trabaja: " ?w-any ", Estudia: " ?s-any crlf)
+   
    ;; CORRECCIÓN 1: Usamos Simbolos (sin comillas) en lugar de Strings
    (bind ?class-name Individual)
 
@@ -797,42 +835,85 @@
        (if (>= ?a 65) then (bind ?has-elderly TRUE) else (bind ?all-elderly FALSE))
        (if (< ?a 18) then (bind ?has-minor TRUE))
    )
+   
+   (printout t "DEBUG: TieneAnciano: " ?has-elderly ", TieneMenor: " ?has-minor ", TodosAnciano: " ?all-elderly crlf)
 
    ;; --- ARBOL DE DECISIÓN DE CLASE ---
+   (printout t "DEBUG: Entrando en arbol de decisión (np=" ?np ")" crlf)
    
    ;; CASO 1: INDIVIDUAL
    (if (= ?np 1) then
+       (printout t "DEBUG: Rama INDIVIDUAL" crlf)
        (if ?has-elderly then
-           (bind ?class-name Elderly) ;; Sin comillas
+           (bind ?class-name Elderly)
+           (printout t "DEBUG: Asignado ELDERLY" crlf)
        else
            (if (eq ?s-any yes) then
-               (bind ?class-name Student) ;; Sin comillas
+               (bind ?class-name Student)
+               (printout t "DEBUG: Asignado STUDENT" crlf)
            else
-               (if (<= (nth$ 1 ?ages) 30) then (bind ?class-name Young) else (bind ?class-name Adult))
-           )
-       )
-   )
-   
-   ;; CASO 2: GRUPO
-   (if (> ?np 1) then
-       (if (and (eq ?s-any yes) (eq ?w-any no) (not ?has-minor) (not ?has-elderly)) then
-           (bind ?class-name Student_Group) ;; Sin comillas
-       else
-           (if ?has-minor then
-               (if ?has-elderly then (bind ?class-name With_Elderly) else (bind ?class-name No_Elderly))
-           else
-               (if (= ?np 2) then
-                   (if ?all-elderly then (bind ?class-name Elderly_Couple)
-                   else (if (eq ?pk yes) then (bind ?class-name Planning_Kids) else (bind ?class-name Young_No_Kids)))
-               else
-                   (bind ?class-name Group)
+               (if (<= (nth$ 1 ?ages) 30) then 
+                   (bind ?class-name Young)
+                   (printout t "DEBUG: Asignado YOUNG" crlf)
+               else 
+                   (bind ?class-name Adult)
+                   (printout t "DEBUG: Asignado ADULT" crlf)
                )
            )
        )
    )
-
-
-
+   
+   ;; CASO 2: GRUPO (>1 persona)
+   (if (> ?np 1) then
+       (printout t "DEBUG: Rama GRUPO (>1 persona)" crlf)
+       
+       ;; Si son estudiantes sin trabajo, sin menores, sin ancianos -> Student_Group
+       (if (and (eq ?s-any yes) (eq ?w-any no) (not ?has-minor) (not ?has-elderly)) then
+           (bind ?class-name Student_Group)
+           (printout t "DEBUG: Asignado STUDENT_GROUP" crlf)
+       else
+           ;; Si hay menores -> Es FAMILIA (prioridad alta)
+           (if ?has-minor then
+               (printout t "DEBUG: Tiene menores, clasificando como FAMILIA" crlf)
+               (if ?has-elderly then 
+                   (bind ?class-name With_Elderly)
+                   (printout t "DEBUG: Asignado WITH_ELDERLY (familia con ancianos)" crlf)
+               else 
+                   (bind ?class-name No_Elderly)
+                   (printout t "DEBUG: Asignado NO_ELDERLY (familia sin ancianos)" crlf)
+               )
+           else
+               ;; No hay menores: decidir entre pareja o grupo genérico
+               (printout t "DEBUG: Sin menores, decidiendo entre pareja/grupo" crlf)
+               (if (= ?np 2) then
+                   (printout t "DEBUG: Rama de 2 personas (posible pareja)" crlf)
+                   (if ?all-elderly then 
+                       (bind ?class-name Elderly_Couple)
+                       (printout t "DEBUG: Asignado ELDERLY_COUPLE" crlf)
+                   else 
+                       ;; Solo si dicen que SON pareja y planean hijos
+                       (if (and (eq ?couple yes) (eq ?pk yes)) then 
+                           (bind ?class-name Planning_Kids)
+                           (printout t "DEBUG: Asignado PLANNING_KIDS (pareja, sin hijos aun, planean)" crlf)
+                       else 
+                           (bind ?class-name Young_No_Kids)
+                           (printout t "DEBUG: Asignado YOUNG_NO_KIDS (2 personas, no pareja o no planean)" crlf)
+                       )
+                   )
+               else
+                   ;; Mas de 2 personas sin menores
+                   (printout t "DEBUG: Rama de >2 personas sin menores" crlf)
+                   (if ?has-elderly then 
+                       (bind ?class-name With_Elderly)
+                       (printout t "DEBUG: Asignado WITH_ELDERLY (grupo con ancianos)" crlf)
+                   else 
+                       (bind ?class-name Group)
+                       (printout t "DEBUG: Asignado GROUP (grupo genérico)" crlf)
+                   )
+               )
+           )
+       )
+   )
 
 ;; Construir desired_features combinando inferencias por clase + datos del usuario
    (bind ?feat (create$))
@@ -874,7 +955,6 @@
    (if (eq ?w-any yes) then (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "work")))
    (if (eq ?s-any yes) then (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "study")))
 
-
    ;; Normalizar: eliminar duplicados sencillos (construcción nueva)
    (bind ?uniq (create$))
    (foreach ?x ?feat
@@ -882,8 +962,6 @@
            (bind ?uniq (insert$ ?uniq (+ (length$ ?uniq) 1) ?x))
        )
    )
-
-
 
    ;; --- CREACIÓN DE LA INSTANCIA ---
    (printout t ">> Analisis completado. Perfil detectado: " ?class-name crlf)
@@ -913,27 +991,94 @@
    (printout t "Listo para iniciar reglas de recomendacion automatica..." crlf)
 )
 
+;;; =========================================================
+;;; 6. CÁLCULO DE DISTANCIAS TRABAJO/ESTUDIO PARA PROPIEDADES
+;;; =========================================================
 
+;; Función auxiliar para calcular la distancia máxima entre una propiedad y múltiples ubicaciones
+(deffunction max-distance (?prop-lat ?prop-long $?coords)
+   (bind ?max-dist 0)
+   (bind ?i 1)
+   (while (<= ?i (length$ ?coords)) do
+      (bind ?lat (nth$ ?i ?coords))
+      (bind ?long (nth$ (+ ?i 1) ?coords))
+      (bind ?dist (euclid-dist ?prop-lat ?prop-long ?lat ?long))
+      (if (> ?dist ?max-dist) then (bind ?max-dist ?dist))
+      (bind ?i (+ ?i 2))
+   )
+   (return ?max-dist)
+)
 
+;; Función para clasificar distancia según umbrales
+(deffunction classify-distance (?dist)
+   (if (< ?dist 1000) then (return cerca)
+   else (if (< ?dist 3500) then (return media_distancia)
+   else (return lejos)))
+)
 
+;; Regla para calcular distancias de trabajo para todas las propiedades
+(defrule calculate-work-distances
+   (declare (salience -20))
+   (current-client ?client-id)
+   ?client <- (object (is-a Client_Group) 
+                      (Works_In_City ?works)
+                      (work_lat $?wlats)
+                      (work_long $?wlongs))
+   ?prop <- (object (is-a Property) 
+                    (geo_lat ?plat) 
+                    (geo_long ?plong))
+   =>
+   (if (eq ?works yes) then
+       ;; Intercalar lats y longs en una sola lista
+       (bind ?coords (create$))
+       (bind ?i 1)
+       (while (<= ?i (length$ ?wlats)) do
+           (bind ?coords (insert$ ?coords (+ (length$ ?coords) 1) (nth$ ?i ?wlats)))
+           (bind ?coords (insert$ ?coords (+ (length$ ?coords) 1) (nth$ ?i ?wlongs)))
+           (bind ?i (+ ?i 1))
+       )
+       (bind ?max-dist (max-distance ?plat ?plong ?coords))
+       (bind ?category (classify-distance ?max-dist))
+       (send ?prop put-work-place ?category)
+       (printout t "Propiedad " (instance-name ?prop) ": distancia trabajo max=" 
+                 (round ?max-dist) "m -> " ?category crlf)
+   else
+       (send ?prop put-work-place none)
+       (printout t "Propiedad " (instance-name ?prop) ": trabajo=none (no trabajan en ciudad)" crlf)
+   )
+)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+;; Regla para calcular distancias de estudio para todas las propiedades
+(defrule calculate-study-distances
+   (declare (salience -20))
+   (current-client ?client-id)
+   ?client <- (object (is-a Client_Group) 
+                      (Study_In_City ?studies)
+                      (study_lat $?slats)
+                      (study_long $?slongs))
+   ?prop <- (object (is-a Property) 
+                    (geo_lat ?plat) 
+                    (geo_long ?plong))
+   =>
+   (if (eq ?studies yes) then
+       ;; Intercalar lats y longs en una sola lista
+       (bind ?coords (create$))
+       (bind ?i 1)
+       (while (<= ?i (length$ ?slats)) do
+           (bind ?coords (insert$ ?coords (+ (length$ ?coords) 1) (nth$ ?i ?slats)))
+           (bind ?coords (insert$ ?coords (+ (length$ ?coords) 1) (nth$ ?i ?slongs)))
+           (bind ?i (+ ?i 1))
+       )
+       (bind ?max-dist (max-distance ?plat ?plong ?coords))
+       (bind ?category (classify-distance ?max-dist))
+       (send ?prop put-study-place ?category)
+       (printout t "Propiedad " (instance-name ?prop) ": distancia estudio max=" 
+                 (round ?max-dist) "m -> " ?category crlf)
+   else
+       (send ?prop put-study-place none)
+       (printout t "Propiedad " (instance-name ?prop) ": estudio=none (no estudian en ciudad)" crlf)
+   )
+)
 
 (definstances instances
  ; Zonas con centro geográfico para coherencia espacial
