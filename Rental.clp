@@ -698,10 +698,7 @@
               (owns-car ?car)
               (has-pets ?pet)
               (step ask-work-logistics))
-
 )
-
-
 
 
 ;; Paso 4: Logística Trabajo
@@ -1052,7 +1049,6 @@
     (geo_long 20400)
      (internal_floors 2)
      (monthly_price 850.0)
-     (property_attribute furnished balcony parking)
      (square_meters 55.0))
 
  (studio-201 of Studio
@@ -1081,7 +1077,6 @@
     (geo_long 20000)
      (internal_floors 5)
      (monthly_price 650.0)
-     (property_attribute central-location)
      (square_meters 28.0))
 
  (house-301 of Detached_House
@@ -1110,7 +1105,6 @@
     (geo_long 20500)
      (internal_floors 1 2)
      (monthly_price 1800.0)
-     (property_attribute garden pool garage)
      (square_meters 120.0))
 
  (room-401 of Room
@@ -1139,5 +1133,5 @@
     (geo_long 19900)
      (internal_floors 3)
      (monthly_price 450.0)
-     (property_attribute low-cost near-transport)
      (square_meters 18.0))
+)
