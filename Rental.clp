@@ -692,13 +692,17 @@
    (bind ?car (ask-yes-no "¿Teneis coche propio?"))
    (bind ?pet (ask-yes-no "¿Teneis mascotas?"))
    
-   (modify ?f (income ?inc) 0
+   (modify ?f (income ?inc)
               (max_budget ?bud)
               (budget_is_strict ?strict)
               (owns-car ?car)
               (has-pets ?pet)
               (step ask-work-logistics))
+
 )
+
+
+
 
 ;; Paso 4: Logística Trabajo
 (defrule ask-work-logistics
@@ -915,170 +919,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Candidate / scoring / recommendation pipeline
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(deftemplate candidate
-   (slot property)                ; instance-name symbol
-   (slot price (type FLOAT))
-   (multislot matched_features (type SYMBOL)) ; features detected (symbols)
-   (slot base_score (type INTEGER) (default 0))
-)
-
-(deftemplate recommendation
-   (slot property)
-   (slot score (type INTEGER))
-   (multislot matched_features (type SYMBOL))
-)
-
-;; Limpia candidates/recommendations previos antes de generar nuevos
-(defrule clear-old-candidates
-   (declare (salience 50))
-   ?_ <- (current-client ?_)
-   =>
-   (do-for-all-facts (?f candidate) (retract ?f))
-   (do-for-all-facts (?r recommendation) (retract ?r))
-)
-
-;; Regla que genera un candidate por cada Property válida (aplica hard-constraints básicos)
-(defrule generate-candidates
-   (declare (salience 40))
-   ?cur <- (current-client ?clientInst)
-   ?cli <- (object (is-a Client_Group) (desired_features $?df) (max_budget ?mb) (Budget_Is_Strict ?strict) (has_pets ?haspet))
-   ?p   <- (object (is-a Property) (monthly_price ?price) (Elevator ?elev) (Garden ?garden) (Garage ?garage) (Pets_Allowed ?pallowed) (Geo_Lat ?plat? FALSE) (geo_lat ?plat) (geo_long ?plong) (Num_Bathrooms ?nb) (Num_Double_Rooms ?br) (Furnished ?furn) (property_attribute $?patts))
-   =>
-   ;; Hard constraints check (simple)
-   (bind ?reject FALSE)
-   ;; presupuesto estricto
-   (if (eq ?strict yes) then (if (> ?price ?mb) then (bind ?reject TRUE)))
-   ;; mascotas
-   (if (and (eq ?haspet yes) (eq ?pallowed no)) then (bind ?reject TRUE))
-   ;; si el cliente requiere "elevator" en desired_features y elevador=no => reject
-   (if (and (member$ elevator ?df) (eq ?elev no)) then (bind ?reject TRUE))
-
-   (if (not ?reject) then
-       ;; construir matched_features
-       (bind ?mf (create$))
-       (if (eq ?elev yes) then (bind ?mf (insert$ ?mf (+ (length$ ?mf) 1) elevator)))
-       (if (eq ?garden yes) then (bind ?mf (insert$ ?mf (+ (length$ ?mf) 1) garden)))
-       (if (eq ?garage yes) then (bind ?mf (insert$ ?mf (+ (length$ ?mf) 1) parking)))
-       (if (eq ?pallowed yes) then (bind ?mf (insert$ ?mf (+ (length$ ?mf) 1) pets-allowed)))
-       (if (eq ?furn yes) then (bind ?mf (insert$ ?mf (+ (length$ ?mf) 1) furnished)))
-
-       ;; comprobar servicios cercanos haciendo distancia euclidiana contra instancias Service
-       (bind ?near-healthcare FALSE)
-       (bind ?near-education FALSE)
-       (bind ?near-transport FALSE)
-       (do-for-all-instances (?svc Healthcare) 
-           (if (<= (euclid-dist ?plat ?plong (send ?svc get-geo_lat) (send ?svc get-geo_long)) 200) then
-               (bind ?near-healthcare TRUE)
-           )
-       )
-       (if ?near-healthcare then (bind ?mf (insert$ ?mf (+ (length$ ?mf) 1) near-healthcare)))
-
-       (do-for-all-instances (?svc Education) 
-           (if (<= (euclid-dist ?plat ?plong (send ?svc get-geo_lat) (send ?svc get-geo_long)) 200) then
-               (bind ?near-education TRUE)
-           )
-       )
-       (if ?near-education then (bind ?mf (insert$ ?mf (+ (length$ ?mf) 1) near-education)))
-
-       (do-for-all-instances (?svc Transport) 
-           (if (<= (euclid-dist ?plat ?plong (send ?svc get-geo_lat) (send ?svc get-geo_long)) 200) then
-               (bind ?near-transport TRUE)
-           )
-       )
-       (if ?near-transport then (bind ?mf (insert$ ?mf (+ (length$ ?mf) 1) near-public-transport)))
-
-       ;; base score simple (ejemplo: nº de coincidencias inicial)
-       (bind ?base 0)
-       (foreach ?x ?mf (bind ?base (+ ?base 1)))
-
-       (assert (candidate (property (instance-name ?p)) (price ?price) (matched_features ?mf) (base_score ?base)))
-       (printout t "[candidate-created] " (instance-name ?p) " price=" ?price " matches=" ?mf crlf)
-   else
-       (printout t "[candidate-rejected] " (instance-name ?p) " hard-constraint" crlf)
-   )
-)
-
-;; Regla que calcula la puntuacion final a partir de candidate facts y desired_features del cliente
-(defrule compute-candidate-scores
-   (declare (salience 10))
-   ?c <- (candidate (property ?pn) (price ?price) (matched_features $?mf) (base_score ?bs))
-   ?cur <- (current-client ?cid)
-   ?cli <- (object (is-a Client_Group) (desired_features $?df) (max_budget ?mb) (Budget_Is_Strict ?strict) (has_pets ?haspet))
-   (test (eq ?cid (instance-name ?cli)))
-   =>
-   (bind ?final ?bs)
-
-   ;; pesos por feature (puedes refactorizar a facts de peso)
-   (foreach ?f ?mf
-      (if (eq ?f near-healthcare) then (bind ?final (+ ?final 30)))
-      (if (eq ?f near-education) then (bind ?final (+ ?final 25)))
-      (if (eq ?f near-public-transport) then (bind ?final (+ ?final 20)))
-      (if (eq ?f internet) then (bind ?final (+ ?final 10)))
-      (if (eq ?f garden) then (bind ?final (+ ?final 15)))
-      (if (eq ?f parking) then (bind ?final (+ ?final 10)))
-      (if (eq ?f elevator) then (bind ?final (+ ?final 100)))
-      (if (eq ?f pets-allowed) then (bind ?final (+ ?final 18)))
-      (if (eq ?f furnished) then (bind ?final (+ ?final 5)))
-      (if (eq ?f near-nightlife) then (bind ?final (+ ?final 5)))
-      (if (eq ?f cheap) then (bind ?final (+ ?final 8)))
-   )
-
-   ;; ajustar por precio relativo al presupuesto
-   (if (eq ?strict yes) then
-       (if (> ?price ?mb) then (bind ?final -100000)) ;; fuerza rechazo seguro
-   else
-       (bind ?delta (- ?mb ?price))
-       (if (> ?delta 0) then (bind ?final (+ ?final (min 10 (floor (/ ?delta (max 1 (/ ?mb 10))))))))
-   )
-
-   ;; penalizacion si cliente tiene mascotas y property no lo permite (seguridad)
-   (if (and (eq ?haspet yes) (not (member$ pets-allowed ?mf))) then
-       (bind ?final (- ?final 200))
-   )
-
-   ;; creamos recommendation y retiramos candidate
-   (assert (recommendation (property ?pn) (score ?final) (matched_features $?mf)))
-   (printout t "[scored] " ?pn " -> score=" ?final " matches=" ?mf crlf)
-   (retract ?c)
-)
-
-;; Regla que imprime recomendaciones ordenadas (simple: imprime y elimina)
-(defrule print-recommendations
-   (declare (salience -100))
-   ?r <- (recommendation (property ?pn) (score ?sc) (matched_features $?mf))
-   =>
-   (printout t "RECOMMEND -> " ?pn " score=" ?sc " matches=" ?mf crlf)
-   (retract ?r)
-)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Fin pipeline
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 
