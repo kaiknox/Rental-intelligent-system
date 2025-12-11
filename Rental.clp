@@ -251,6 +251,9 @@
     (multislot Age
         (type INTEGER)
         (create-accessor read-write))
+    (slot num_people
+        (type INTEGER)
+        (create-accessor read-write))
     (slot Budget_Is_Strict
         (type SYMBOL)
         (allowed-symbols yes no)
@@ -643,6 +646,26 @@
    (return ?answer)
 )
 
+;; Pide un entero minimo; repite hasta recibirlo
+(deffunction ask-int-min (?question ?min)
+    (bind ?answer (ask-number ?question))
+    (while (or (not (integerp ?answer)) (< ?answer ?min)) do
+        (printout t "Por favor, introduce un entero mayor o igual a " ?min ". ")
+        (bind ?answer (ask-number ?question))
+    )
+    (return ?answer)
+)
+
+;; Pide un entero en rango [min,max]; repite hasta recibirlo
+(deffunction ask-int-range (?question ?min ?max)
+    (bind ?answer (ask-number ?question))
+    (while (or (not (integerp ?answer)) (< ?answer ?min) (> ?answer ?max)) do
+        (printout t "Por favor, introduce un entero entre " ?min " y " ?max ". " ?question " ")
+        (bind ?answer (ask-number ?question))
+    )
+    (return ?answer)
+)
+
 (deffunction ask-coordinate (?msg)
    (printout t ?msg " ")
    (bind ?val (read))
@@ -715,7 +738,7 @@
 (defrule ask-num-people
    ?f <- (user-responses (step ask-people))
    =>
-   (bind ?num (ask-number "¿Cuantas personas viviran en la vivienda?"))
+   (bind ?num (ask-int-min "¿Cuantas personas viviran en la vivienda?" 1))
    (modify ?f (num-people ?num) (step ask-ages))
 )
 
@@ -999,6 +1022,7 @@
       (monthly_income ?inc)
       (max_budget ?bud)
       (Budget_Is_Strict ?strict)
+      (num_people ?np)
       (has_pets ?pet)
       (owns_car ?car)
       (Works_In_City ?w-any)
@@ -1264,7 +1288,7 @@
      (Noise_level medium)
      (Num_Bathrooms 1)
      (Num_Double_Rooms 0)
-     (Num_Single_Rooms 0)
+     (Num_Single_Rooms 1)
      (Pets_Allowed no)
      (Pool no)
      (Sun_Time all_day)
