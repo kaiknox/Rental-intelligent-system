@@ -713,7 +713,7 @@
 )
 
 ;;; =========================================================
-;;; 4. REGLAS DEL FLUJO DE PREGUNTAS (CORREGIDO)
+;;; 4. REGLAS DEL FLUJO DE PREGUNTAS
 ;;; =========================================================
 
 ;; 1. Creamos un "detonador" explícito para la entrevista
@@ -1077,6 +1077,7 @@
    ?prop <- (object (is-a Property) 
                     (geo_lat ?plat) 
                     (geo_long ?plong))
+   (not (work-distance-done ?prop))
    =>
    (if (eq ?works yes) then
        ;; Intercalar lats y longs en una sola lista
@@ -1096,6 +1097,7 @@
        (send ?prop put-work-place none)
        (printout t "Propiedad " (instance-name ?prop) ": trabajo=none (no trabajan en ciudad)" crlf)
    )
+   (assert (work-distance-done ?prop))
 )
 
 ;; Regla para calcular distancias de estudio para todas las propiedades
@@ -1109,6 +1111,7 @@
    ?prop <- (object (is-a Property) 
                     (geo_lat ?plat) 
                     (geo_long ?plong))
+   (not (study-distance-done ?prop))
    =>
    (if (eq ?studies yes) then
        ;; Intercalar lats y longs en una sola lista
@@ -1128,6 +1131,7 @@
        (send ?prop put-study-place none)
        (printout t "Propiedad " (instance-name ?prop) ": estudio=none (no estudian en ciudad)" crlf)
    )
+   (assert (study-distance-done ?prop))
 )
 
 ;; Regla para calcular densidad de dormitorios
@@ -1139,6 +1143,7 @@
    ?prop <- (object (is-a Property) 
                     (Num_Double_Rooms ?double-rooms)
                     (Num_Single_Rooms ?single-rooms))
+    (not (room-density-done ?prop))
    =>
    ;; Calcular capacidad total: habitaciones dobles cuentan como 2
    (bind ?capacity (+ (* ?double-rooms 2) ?single-rooms))
@@ -1155,7 +1160,111 @@
    (send ?prop put-room-density ?density)
    (printout t "Propiedad " (instance-name ?prop) ": capacidad=" ?capacity 
              " personas=" ?num-people " ratio=" ?ratio " -> " ?density crlf)
+   (assert (room-density-done ?prop))
 )
+
+;; ---------------------------------------------------------
+;; 7. RECOMENDACIÓN CUALITATIVA POR CRITERIOS (sin puntuar)
+;; ---------------------------------------------------------
+
+(deftemplate prop-assessment
+   (slot prop)
+   (multislot failed-criteria)
+   (multislot met-criteria)
+   (slot category))
+
+;; Helper: ¿la propiedad tiene un servicio cercano de cierta clase?
+(deffunction has-near-service-of-class (?prop ?cls)
+   (bind ?svcs (send ?prop get-is_near_service))
+   (foreach ?s ?svcs
+      (if (eq (class ?s) ?cls) then (return TRUE)))
+   (return FALSE))
+
+;; Evalúa criterios básicos y registra qué se cumple y qué falla
+(defrule evaluate-basic-criteria
+   (declare (salience -40))
+   (current-client ?cid)
+   ?c <- (object (is-a Client_Group)
+                 (has_pets ?pets)
+                 (max_budget ?maxb)
+                 (Works_In_City ?works)
+                 (Study_In_City ?studies))
+   ?p <- (object (is-a Property)
+                 (monthly_price ?price)
+                 (Pets_Allowed ?pets-ok)
+                 (room-density ?dens)
+                 (work-place ?workplace)
+                 (study-place ?studyplace))
+   =>
+   (bind ?fails (create$))
+   (bind ?mets  (create$))
+
+   ;; C1: Presupuesto
+   (if (> ?price ?maxb)
+       then (bind ?fails (insert$ ?fails (+ (length$ ?fails) 1) presupuesto))
+       else (bind ?mets  (insert$ ?mets  (+ (length$ ?mets)  1) presupuesto)))
+
+   ;; C2: Mascotas
+   (if (and (eq ?pets yes) (eq ?pets-ok no))
+       then (bind ?fails (insert$ ?fails (+ (length$ ?fails) 1) mascotas))
+       else (bind ?mets  (insert$ ?mets  (+ (length$ ?mets)  1) mascotas)))
+
+   ;; C3: Densidad de habitaciones
+   (if (eq ?dens saturated)
+       then (bind ?fails (insert$ ?fails (+ (length$ ?fails) 1) densidad))
+       else (bind ?mets  (insert$ ?mets  (+ (length$ ?mets)  1) densidad)))
+
+   ;; C4: Distancia trabajo
+   (if (eq ?works yes)
+       then
+         (if (eq ?workplace lejos)
+             then (bind ?fails (insert$ ?fails (+ (length$ ?fails) 1) trabajo))
+             else (bind ?mets  (insert$ ?mets  (+ (length$ ?mets)  1) trabajo)))
+       else
+         (bind ?mets (insert$ ?mets (+ (length$ ?mets) 1) trabajo))) ;; auto-cumple
+
+   ;; C5: Distancia estudio
+   (if (eq ?studies yes)
+       then
+         (if (eq ?studyplace lejos)
+             then (bind ?fails (insert$ ?fails (+ (length$ ?fails) 1) estudio))
+             else (bind ?mets  (insert$ ?mets  (+ (length$ ?mets)  1) estudio)))
+       else
+         (bind ?mets (insert$ ?mets (+ (length$ ?mets) 1) estudio))) ;; auto-cumple
+
+   (assert (prop-assessment (prop (instance-name ?p))
+                            (failed-criteria ?fails)
+                            (met-criteria ?mets)))
+)
+
+;; Clasifica: >=1 fallo -> parcial; 0 fallos + sin extra -> adecuado; 0 fallos + extra -> muy-adecuado
+(defrule classify-property
+   (declare (salience -45))
+   ?pa <- ( prop-assessment (prop ?p)
+                           (failed-criteria $?fails)
+                           (met-criteria $?mets)
+                           (category ?cat&:(eq ?cat nil)))
+   ?pobj <- (object (is-a Property)
+                    (name ?p)
+                    (Condition ?cond))
+   =>
+   (bind ?fail-count (length$ ?fails))
+
+   ;; Extras (ejemplo inicial): condición excelente o parque cercano
+   (bind ?extra-ok (or (eq ?cond excellent)
+                       (has-near-service-of-class ?p Park)))
+
+   (bind ?cat
+      (if (> ?fail-count 0)
+          then (if (> ?fail-count 3) then no-recomendado else parcial)
+          else (if ?extra-ok then muy-adecuado else adecuado)))
+
+   (modify ?pa (category ?cat))
+
+   (printout t "Propiedad " (instance-name ?p) " -> " ?cat crlf
+             "  Cumple: " ?mets crlf
+             "  Falla: " (if (= ?fail-count 0) then "ninguno" else ?fails) crlf
+             "  Extras: " (if ?extra-ok then "si" else "no") crlf))
 
 (definstances instances
  ; Zonas con centro geográfico para coherencia espacial
@@ -1356,4 +1465,88 @@
      (internal_floors 3)
      (monthly_price 450.0)
      (square_meters 18.0))
+
+ (loft-999 of Apartment
+     (is_located_in_zone zone-industrial)
+     (AC no)
+     (Heating no)
+     (Appliances none)
+     (Balcony no)
+     (Condition bad)
+     (Elevator no)
+     (Furnished no)
+     (Garage no)
+     (Garden no)
+     (Noise_Allowed yes)
+     (Noise_level high)
+     (Num_Bathrooms 1)
+     (Num_Double_Rooms 0)
+     (Num_Single_Rooms 1)
+     (Pets_Allowed no)
+     (Pool no)
+     (Sun_Time all_day)
+     (Terrace no)
+     (Views street)
+     (deposit_months 3)
+     (geo_lat 50000)
+     (geo_long 50000)
+     (internal_floors 1)
+     (monthly_price 2000.0)
+     (square_meters 20.0))
+
+ (flat-202 of Apartment
+     (is_located_in_zone zone-residential)
+     (AC yes)
+     (Heating yes)
+     (Appliances full)
+     (Balcony yes)
+     (Condition good)
+     (Elevator yes)
+     (Furnished partial)
+     (Garage yes)
+     (Garden no)
+     (Noise_Allowed no)
+     (Noise_level medium)
+     (Num_Bathrooms 1)
+     (Num_Double_Rooms 1)
+     (Num_Single_Rooms 1)
+     (Pets_Allowed yes)
+     (Pool no)
+     (Sun_Time morning)
+     (Terrace no)
+     (Views street)
+     (deposit_months 1)
+     (geo_lat 9800)
+     (geo_long 20250)
+     (internal_floors 1)
+     (monthly_price 1100.0)
+     (square_meters 68.0))
+
+ (house-401 of Row_House
+     (is_located_in_zone zone-urbancore)
+     (AC yes)
+     (Heating yes)
+     (Appliances full)
+     (Balcony yes)
+     (Condition excellent)
+     (Elevator no)
+     (Furnished yes)
+     (Garage yes)
+     (Garden yes)
+     (Noise_Allowed no)
+     (Noise_level low)
+     (Num_Bathrooms 2)
+     (Num_Double_Rooms 2)
+     (Num_Single_Rooms 0)
+     (Pets_Allowed yes)
+     (Pool no)
+     (Sun_Time afternoon)
+     (Terrace yes)
+     (Views garden)
+     (deposit_months 2)
+     (geo_lat 10450)
+     (geo_long 19780)
+     (internal_floors 1 2)
+     (monthly_price 1000.0)
+     (square_meters 95.0))
 )
