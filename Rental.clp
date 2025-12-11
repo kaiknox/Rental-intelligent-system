@@ -253,6 +253,7 @@
         (create-accessor read-write))
     (slot Budget_Is_Strict
         (type SYMBOL)
+        (allowed-symbols yes no)
         (create-accessor read-write))
     (slot Max_Deposit
         (type FLOAT)
@@ -265,21 +266,25 @@
         (create-accessor read-write))
     (slot Prefers_Public_Transport
         (type SYMBOL)
+        (allowed-symbols yes no)
         (create-accessor read-write))
     (slot Study_In_City
         (type SYMBOL)
+        (allowed-symbols yes no)
         (create-accessor read-write))
     (slot Too_Bargain
         (type FLOAT)
         (create-accessor read-write))
     (slot Works_In_City
         (type SYMBOL)
+        (allowed-symbols yes no)
         (create-accessor read-write))
     (multislot desired_features
         (type STRING)
         (create-accessor read-write))
     (slot has_pets
         (type SYMBOL)
+        (allowed-symbols yes no)
         (create-accessor read-write))
     (slot max_budget
         (type FLOAT)
@@ -289,6 +294,7 @@
         (create-accessor read-write))
     (slot owns_car
         (type SYMBOL)
+        (allowed-symbols yes no)
         (create-accessor read-write))
     (multislot study_lat
         (type INTEGER)
@@ -415,37 +421,52 @@
         (type SYMBOL)
         (allowed-symbols cerca media_distancia lejos none)
         (create-accessor read-write))
+    (slot room-density
+        (type SYMBOL)
+        (allowed-symbols saturated sufficient spacious)
+        (create-accessor read-write))
     (slot AC
         (type SYMBOL)
+        (allowed-symbols yes no)
         (create-accessor read-write))
     (slot Heating
         (type SYMBOL)
+        (allowed-symbols yes no)
         (create-accessor read-write))
     (slot Appliances
         (type SYMBOL)
+        (allowed-symbols none basic full)
         (create-accessor read-write))
     (slot Balcony
         (type SYMBOL)
+        (allowed-symbols yes no)
         (create-accessor read-write))
     (slot Condition
         (type SYMBOL)
+        (allowed-symbols bad good excellent)
         (create-accessor read-write))
     (slot Elevator
         (type SYMBOL)
+        (allowed-symbols yes no)
         (create-accessor read-write))
     (slot Furnished
         (type SYMBOL)
+        (allowed-symbols yes no partial)
         (create-accessor read-write))
     (slot Garage
         (type SYMBOL)
+        (allowed-symbols yes no)
         (create-accessor read-write))
     (slot Garden
         (type SYMBOL)
+        (allowed-symbols yes no)
         (create-accessor read-write))
     (slot Noise_Allowed
         (type SYMBOL)
+        (allowed-symbols yes no)
         (create-accessor read-write))
     (slot Noise_level
+        (allowed-symbols low medium high)
         (type SYMBOL)
         (create-accessor read-write))
     (slot Num_Bathrooms
@@ -459,18 +480,23 @@
         (create-accessor read-write))
     (slot Pets_Allowed
         (type SYMBOL)
+        (allowed-symbols yes no)
         (create-accessor read-write))
     (slot Pool
         (type SYMBOL)
+        (allowed-symbols yes no)
         (create-accessor read-write))
     (slot Sun_Time
         (type SYMBOL)
+        (allowed-symbols morning afternoon all_day)
         (create-accessor read-write))
     (slot Terrace
         (type SYMBOL)
+        (allowed-symbols yes no)
         (create-accessor read-write))
     (slot Views
         (type SYMBOL)
+        (allowed-symbols garden street)
         (create-accessor read-write))
     (slot deposit_months
         (type INTEGER)
@@ -1080,6 +1106,33 @@
    )
 )
 
+;; Regla para calcular densidad de dormitorios
+(defrule calculate-room-density
+   (declare (salience -20))
+   (current-client ?client-id)
+   ?client <- (object (is-a Client_Group) 
+                      (num_people ?num-people))
+   ?prop <- (object (is-a Property) 
+                    (Num_Double_Rooms ?double-rooms)
+                    (Num_Single_Rooms ?single-rooms))
+   =>
+   ;; Calcular capacidad total: habitaciones dobles cuentan como 2
+   (bind ?capacity (+ (* ?double-rooms 2) ?single-rooms))
+   
+   ;; Calcular ratio: capacidad / número de personas
+   (bind ?ratio (/ ?capacity ?num-people))
+   
+   ;; Clasificar densidad
+   (bind ?density
+       (if (< ?ratio 1.0) then saturated
+        else (if (= ?ratio 1.0) then sufficient
+              else spacious)))
+   
+   (send ?prop put-room-density ?density)
+   (printout t "Propiedad " (instance-name ?prop) ": capacidad=" ?capacity 
+             " personas=" ?num-people " ratio=" ?ratio " -> " ?density crlf)
+)
+
 (definstances instances
  ; Zonas con centro geográfico para coherencia espacial
  (zone-urbancore of Urban_core
@@ -1214,7 +1267,7 @@
      (Num_Single_Rooms 0)
      (Pets_Allowed no)
      (Pool no)
-     (Sun_Time all-day)
+     (Sun_Time all_day)
      (Terrace no)
      (Views street)
      (deposit_months 2)
