@@ -510,7 +510,7 @@
     (slot geo_long
         (type INTEGER)
         (create-accessor read-write))
-    (multislot internal_floors
+    (slot internal_floors
         (type INTEGER)
         (create-accessor read-write))
     (slot monthly_price
@@ -945,8 +945,11 @@
                            (bind ?class-name Planning_Kids)
                            (printout t "DEBUG: Asignado PLANNING_KIDS (pareja, sin hijos aun, planean)" crlf)
                        else 
-                           (bind ?class-name Young_No_Kids)
-                           (printout t "DEBUG: Asignado YOUNG_NO_KIDS (2 personas, no pareja o no planean)" crlf)
+                           (if ?has-elderly then (bind ?class-name With_Elderly)
+                           (printout t "DEBUG: Asignado With_Elderly (2 personas)" crlf)
+                           else (bind ?class-name Young_No_Kids)
+                           (printout t "DEBUG: Asignado YOUNG_NO_KIDS (2 personas, no pareja o no planean)" crlf))
+                           
                        )
                    )
                else
@@ -1000,9 +1003,6 @@
    ;; Añadir lo que no se deduce del tipo pero viene del usuario
    (if (eq ?pet yes) then (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "pets-allowed")))
    (if (eq ?car yes) then (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "parking")))
-   (if (eq ?strict yes) then (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "cheap")))
-   (if (eq ?w-any yes) then (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "work")))
-   (if (eq ?s-any yes) then (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "study")))
 
    ;; Normalizar: eliminar duplicados sencillos (construcción nueva)
    (bind ?uniq (create$))
@@ -1171,6 +1171,7 @@
    (slot prop)
    (multislot failed-criteria)
    (multislot met-criteria)
+   (multislot extra-criteria)
    (slot category))
 
 ;; Helper: ¿la propiedad tiene un servicio cercano de cierta clase?
@@ -1180,6 +1181,39 @@
       (if (eq (class ?s) ?cls) then (return TRUE)))
    (return FALSE))
 
+(deffunction feature-satisfied (?p ?feat)
+   (switch ?feat
+      (case "garden" then (return (eq (send ?p get-Garden) yes)))
+      (case "parking" then (return (eq (send ?p get-Garage) yes)))
+      (case "pets-allowed" then (return (eq (send ?p get-Pets_Allowed) yes)))
+      (case "elevator" then
+         (return (or
+                  ;; Tiene ascensor
+                  (eq (send ?p get-Elevator) yes)
+                  ;; Es casa de una sola planta (no necesita ascensor)
+                  (and (<= (send ?p get-internal_floors) 1)
+                       (or (eq (class ?p) Detached_House)
+                           (eq (class ?p) Row_House)
+                           (eq (class ?p) Semidetached_House)
+                           (eq (class ?p) Single-family_House)))
+                  ;; Es bajo en edificio (solo clases con floor_level)
+                  (and (or (eq (class ?p) Apartment)
+                           (eq (class ?p) Studio)
+                           (eq (class ?p) Room))
+                       (<= (send ?p get-floor_level) 1)))))
+      (case "quiet" then (return (eq (send ?p get-Noise_level) low)))
+      (case "single-floor" then (return ( eq (send ?p get-internal_floors) 1)))
+      (case "public-transport" then (return (or (has-near-service-of-class ?p Bus_stop)
+                                                (has-near-service-of-class ?p Metro_station))))
+      (case "healthcare" then (return (or (has-near-service-of-class ?p Clinic)
+                                          (has-near-service-of-class ?p Hospital))))
+      (case "park" then (return (has-near-service-of-class ?p Park)))
+      (case "pharmacy" then (return (has-near-service-of-class ?p Pharmacy)))
+      (case "school" then (return (has-near-service-of-class ?p School)))
+      (case "education" then (return (or (has-near-service-of-class ?p School)
+                                         (has-near-service-of-class ?p University))))
+      (default (return FALSE))))
+
 ;; Evalúa criterios básicos y registra qué se cumple y qué falla
 (defrule evaluate-basic-criteria
    (declare (salience -40))
@@ -1188,83 +1222,106 @@
                  (has_pets ?pets)
                  (max_budget ?maxb)
                  (Works_In_City ?works)
-                 (Study_In_City ?studies))
+                 (Study_In_City ?studies)
+                 (desired_features $?feat))
    ?p <- (object (is-a Property)
                  (monthly_price ?price)
                  (Pets_Allowed ?pets-ok)
                  (room-density ?dens)
                  (work-place ?workplace)
-                 (study-place ?studyplace))
+                 (study-place ?studyplace)
+                 (Condition ?cond)
+                 (Pool ?pool)
+                 (Terrace ?terrace)
+                 (Garage ?garage)
+                 (Elevator ?elevator)
+                 (Garden ?garden)
+                 (Noise_level ?noise)
+                 (is_located_in_zone ?zone)
+                 (internal_floors $?floors))
    =>
    (bind ?fails (create$))
-   (bind ?mets  (create$))
+   (bind ?mets (create$))
+   (bind ?extras (create$))
 
    ;; C1: Presupuesto
    (if (> ?price ?maxb)
-       then (bind ?fails (insert$ ?fails (+ (length$ ?fails) 1) presupuesto))
-       else (bind ?mets  (insert$ ?mets  (+ (length$ ?mets)  1) presupuesto)))
+       then (bind ?fails (insert$ ?fails (+ (length$ ?fails) 1) fuera-de-presupuesto))
+       else (bind ?mets  (insert$ ?mets  (+ (length$ ?mets)  1) entra-en-presupuesto)))
 
    ;; C2: Mascotas
-   (if (and (eq ?pets yes) (eq ?pets-ok no))
-       then (bind ?fails (insert$ ?fails (+ (length$ ?fails) 1) mascotas))
-       else (bind ?mets  (insert$ ?mets  (+ (length$ ?mets)  1) mascotas)))
+   (if (eq ?pets yes) then
+       (if (eq ?pets-ok no)
+            then (bind ?fails (insert$ ?fails (+ (length$ ?fails) 1) no-admite-mascotas))
+            else (bind ?mets  (insert$ ?mets  (+ (length$ ?mets)  1) admite-mascotas))))
 
    ;; C3: Densidad de habitaciones
    (if (eq ?dens saturated)
-       then (bind ?fails (insert$ ?fails (+ (length$ ?fails) 1) densidad))
-       else (bind ?mets  (insert$ ?mets  (+ (length$ ?mets)  1) densidad)))
+       then (bind ?fails (insert$ ?fails (+ (length$ ?fails) 1) poco-espacio))
+       else (bind ?mets  (insert$ ?mets  (+ (length$ ?mets)  1) mucho-espacio)))
 
    ;; C4: Distancia trabajo
    (if (eq ?works yes)
        then
          (if (eq ?workplace lejos)
-             then (bind ?fails (insert$ ?fails (+ (length$ ?fails) 1) trabajo))
-             else (bind ?mets  (insert$ ?mets  (+ (length$ ?mets)  1) trabajo)))
-       else
-         (bind ?mets (insert$ ?mets (+ (length$ ?mets) 1) trabajo))) ;; auto-cumple
+             then (bind ?fails (insert$ ?fails (+ (length$ ?fails) 1) lejos-trabajo))
+             else (bind ?mets  (insert$ ?mets  (+ (length$ ?mets)  1) cerca-trabajo))))
 
    ;; C5: Distancia estudio
    (if (eq ?studies yes)
        then
          (if (eq ?studyplace lejos)
-             then (bind ?fails (insert$ ?fails (+ (length$ ?fails) 1) estudio))
-             else (bind ?mets  (insert$ ?mets  (+ (length$ ?mets)  1) estudio)))
-       else
-         (bind ?mets (insert$ ?mets (+ (length$ ?mets) 1) estudio))) ;; auto-cumple
+             then (bind ?fails (insert$ ?fails (+ (length$ ?fails) 1) lejos-estudio))
+             else (bind ?mets  (insert$ ?mets  (+ (length$ ?mets)  1) cerca-estudio))))
+
+   ;; Criterios dinámicos según desired_features
+   (foreach ?f ?feat
+     (if (feature-satisfied ?p ?f)
+         then (bind ?mets  (insert$ ?mets  (+ (length$ ?mets)  1) (sym-cat cumple- ?f)))
+         else (bind ?fails (insert$ ?fails (+ (length$ ?fails) 1) (sym-cat falta- ?f)))))
+
+   ;; Extras manuales
+   (if (eq ?cond excellent)
+     then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) estado-excelente)))
+   (if (has-near-service-of-class ?p Park)
+     then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) parque-cerca)))
+   (if (eq ?terrace yes)
+     then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) tiene-terraza)))
+   (if (eq ?pool yes)
+     then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) tiene-piscina)))
 
    (assert (prop-assessment (prop (instance-name ?p))
                             (failed-criteria ?fails)
-                            (met-criteria ?mets)))
-)
+                            (met-criteria ?mets)
+                            (extra-criteria ?extras)))
+ )
 
-;; Clasifica: >=1 fallo -> parcial; 0 fallos + sin extra -> adecuado; 0 fallos + extra -> muy-adecuado
+;; Clasifica: >=2 fallo -> parcial; 0 fallos + sin extra -> adecuado; 0 fallos + extra -> muy-adecuado
 (defrule classify-property
    (declare (salience -45))
    ?pa <- ( prop-assessment (prop ?p)
                            (failed-criteria $?fails)
                            (met-criteria $?mets)
+                           (extra-criteria $?extras)
                            (category ?cat&:(eq ?cat nil)))
    ?pobj <- (object (is-a Property)
-                    (name ?p)
-                    (Condition ?cond))
+                    (name ?p))
    =>
+   (bind ?mets-count (length$ ?mets))
    (bind ?fail-count (length$ ?fails))
-
-   ;; Extras (ejemplo inicial): condición excelente o parque cercano
-   (bind ?extra-ok (or (eq ?cond excellent)
-                       (has-near-service-of-class ?p Park)))
+   (bind ?extra-count (length$ ?extras))
 
    (bind ?cat
       (if (> ?fail-count 0)
           then (if (> ?fail-count 3) then no-recomendado else parcial)
-          else (if ?extra-ok then muy-adecuado else adecuado)))
+          else (if (> (length$ ?extras) 0) then muy-adecuado else adecuado)))
 
    (modify ?pa (category ?cat))
 
    (printout t "Propiedad " (instance-name ?p) " -> " ?cat crlf
-             "  Cumple: " ?mets crlf
-             "  Falla: " (if (= ?fail-count 0) then "ninguno" else ?fails) crlf
-             "  Extras: " (if ?extra-ok then "si" else "no") crlf))
+             "  Pros: " (if (= ?mets-count 0) then "ninguno" else ?mets) crlf
+             "  Contras: " (if (= ?fail-count 0) then "ninguno" else ?fails) crlf
+             "  Extras: " (if (= ?extra-count 0) then "ninguno" else ?extras) crlf))
 
 (definstances instances
  ; Zonas con centro geográfico para coherencia espacial
@@ -1353,6 +1410,32 @@
  (serv-busstop-19 of Bus_stop (geo_lat 10900) (geo_long 20900))
  (serv-busstop-20 of Bus_stop (geo_lat 10600) (geo_long 20700))
 
+ (serv-clinic-2 of Clinic (geo_lat 10350) (geo_long 19650))
+ (serv-clinic-3 of Clinic (geo_lat 9700) (geo_long 20650))
+ (serv-pharmacy-1 of Pharmacy (geo_lat 9950) (geo_long 20150))
+ (serv-pharmacy-2 of Pharmacy (geo_lat 9600) (geo_long 20450))
+ (serv-pharmacy-3 of Pharmacy (geo_lat 10400) (geo_long 19750))
+ (serv-pharmacy-4 of Pharmacy (geo_lat 10150) (geo_long 19950))
+ (serv-gym-1 of Gym (geo_lat 10250) (geo_long 19850))
+ (serv-gym-2 of Gym (geo_lat 9450) (geo_long 20550))
+ (serv-gym-3 of Gym (geo_lat 10800) (geo_long 20850))
+ (serv-park-2 of Park (geo_lat 9400) (geo_long 20600))
+ (serv-park-3 of Park (geo_lat 10750) (geo_long 19750))
+ (serv-park-4 of Park (geo_lat 9900) (geo_long 20550))
+ (serv-green-1 of Green_zone (geo_lat 11100) (geo_long 21050))
+ (serv-green-2 of Green_zone (geo_lat 9300) (geo_long 20350))
+ (serv-pool-1 of Pool (geo_lat 10550) (geo_long 19950))
+ (serv-pool-2 of Pool (geo_lat 9550) (geo_long 20250))
+ (serv-cinema-1 of Cinema (geo_lat 10200) (geo_long 19700))
+ (serv-cinema-2 of Cinema (geo_lat 9800) (geo_long 20480))
+ (serv-museum-1 of Museum (geo_lat 10050) (geo_long 19850))
+ (serv-sport-1 of Sport_center (geo_lat 9700) (geo_long 20050))
+ (serv-sport-2 of Sport_center (geo_lat 10900) (geo_long 20950))
+ (serv-beach-1 of Beach (geo_lat 12000) (geo_long 21500))
+ (serv-restaurant-1 of Restaurant (geo_lat 10300) (geo_long 19880))
+ (serv-restaurant-2 of Restaurant (geo_lat 9600) (geo_long 20480))
+ (serv-nightlife-1 of Nightlife (geo_lat 10150) (geo_long 19820))
+
  ; Propiedades ubicadas coherentemente cerca del centro de su zona
  (apt-101 of Apartment
      (is_located_in_zone zone-residential)
@@ -1376,9 +1459,9 @@
      (Terrace no)
      (Views garden)
      (deposit_months 1)
-    (geo_lat 9500)
-    (geo_long 20400)
-     (internal_floors 2)
+     (geo_lat 9500)
+     (geo_long 20400)
+     (internal_floors 1)
      (monthly_price 850.0)
      (square_meters 55.0))
 
@@ -1404,9 +1487,9 @@
      (Terrace no)
      (Views street)
      (deposit_months 2)
-    (geo_lat 10000)
-    (geo_long 20000)
-     (internal_floors 5)
+     (geo_lat 10000)
+     (geo_long 20000)
+     (internal_floors 1)
      (monthly_price 650.0)
      (square_meters 28.0))
 
@@ -1432,9 +1515,9 @@
      (Terrace yes)
      (Views garden)
      (deposit_months 2)
-    (geo_lat 9600)
-    (geo_long 20500)
-     (internal_floors 1 2)
+     (geo_lat 9600)
+     (geo_long 20500)
+     (internal_floors 2)
      (monthly_price 1800.0)
      (square_meters 120.0))
 
@@ -1460,9 +1543,9 @@
      (Terrace no)
      (Views street)
      (deposit_months 1)
-    (geo_lat 10100)
-    (geo_long 19900)
-     (internal_floors 3)
+     (geo_lat 10100)
+     (geo_long 19900)
+     (internal_floors 1)
      (monthly_price 450.0)
      (square_meters 18.0))
 
@@ -1546,7 +1629,7 @@
      (deposit_months 2)
      (geo_lat 10450)
      (geo_long 19780)
-     (internal_floors 1 2)
+     (internal_floors 1)
      (monthly_price 1000.0)
      (square_meters 95.0))
 )
