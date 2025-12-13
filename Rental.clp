@@ -1243,13 +1243,16 @@
                  (study-place ?studyplace)
                  (Condition ?cond)
                  (Pool ?pool)
+                 (Sun_Time ?sun_time)
                  (Terrace ?terrace)
                  (Garage ?garage)
                  (Elevator ?elevator)
                  (Garden ?garden)
                  (Noise_level ?noise)
                  (is_located_in_zone ?zone)
-                 (internal_floors $?floors))
+                 (internal_floors $?floors)
+                 (AC ?ac)
+                 (Heating ?heating))
    =>
    (bind ?fails (create$))
    (bind ?mets (create$))
@@ -1300,6 +1303,20 @@
      then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) tiene-terraza)))
    (if (eq ?pool yes)
      then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) tiene-piscina)))
+   (if (eq ?heating yes)
+     then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) tiene-calentamiento)))
+   (if (eq ?ac yes)
+      then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) tiene-aire-acondicionado)))
+   (if (eq ?sun_time all_day) ;;De momento solo cuenta si hay luz solar todo el día pq si es parcial no es tan bueno
+      then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) tiene-sol-todo-dia)))
+    
+    ;; Garaje, ascensor y quiet como extras si no son requeridos
+    (if (and (feature-satisfied ?p "quiet") (eq (member$ "quiet" ?feat) FALSE))
+        then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) tiene-quiet)))
+    (if (and (eq ?garage yes) (eq (member$ "parking" ?feat) FALSE))
+        then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) tiene-garaje)))
+    (if (and (eq ?elevator yes) (eq (member$ "elevator" ?feat) FALSE))
+      then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) tiene-ascensor)))
 
    (assert (prop-assessment (prop (instance-name ?p))
                             (failed-criteria ?fails)
