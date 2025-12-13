@@ -721,17 +721,28 @@
    (start-execution)
 )
 
+;; Evitar entrevista en modo test (Option A):
+;; Si ya hay respuestas con step=create-profile, retiramos el disparador de entrevista.
+(defrule skip-interview-when-test
+    (declare (salience 50))
+    (user-responses (step create-profile))
+    ?f <- (start-execution)
+    =>
+    (retract ?f)
+)
+
 ;; 2. Regla de inicio: Espera a que termine la proximidad (salience -10)
 ;;    y consume el hecho 'start-execution' para arrancar.
 (defrule init-questionnaire
-   (declare (salience -10))
-   ?f <- (start-execution) ;; Escuchamos nuestro hecho propio
-   =>
-   (retract ?f) ;; Lo borramos para que no moleste
-   (printout t "--------------------------------------------------" crlf)
-   (printout t "   BENVINGUT AL SISTEMA DE RECOMANACIO D'HABITATGE" crlf)
-   (printout t "--------------------------------------------------" crlf)
-   (assert (user-responses (step ask-people)))
+    (declare (salience -10))
+    ?f <- (start-execution) ;; Escuchamos nuestro hecho propio
+    (not (user-responses (step create-profile))) ;; Evitar entrevista si ya hay respuestas para tests
+    =>
+    (retract ?f) ;; Lo borramos para que no moleste
+    (printout t "--------------------------------------------------" crlf)
+    (printout t "   BENVINGUT AL SISTEMA DE RECOMANACIO D'HABITATGE" crlf)
+    (printout t "--------------------------------------------------" crlf)
+    (assert (user-responses (step ask-people)))
 )
 
 ;; Paso 1: Personas
