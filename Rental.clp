@@ -1382,6 +1382,8 @@
    ?c <- (object (is-a Client_Group)
                  (has_pets ?pets)
                  (max_budget ?maxb)
+                 (monthly_income ?monthinc)
+                 (Budget_Is_Strict ?strict)
                  (Works_In_City ?works)
                  (Study_In_City ?studies)
                  (desired_features $?feat))
@@ -1415,7 +1417,11 @@
 
    ;; C1: Presupuesto
    (if (> ?price ?maxb)
-       then (bind ?fails (insert$ ?fails (+ (length$ ?fails) 1) fuera-de-presupuesto))
+       then (if (eq ?strict no)
+            then (if (> ?price (* ?maxb 1.1))
+                then (bind ?fails (insert$ ?fails (+ (length$ ?fails) 1) fuera-de-presupuesto))
+                else (bind ?mets  (insert$ ?mets  (+ (length$ ?mets)  1) entra-en-presupuesto)))
+            else (bind ?fails (insert$ ?fails (+ (length$ ?fails) 1) fuera-de-presupuesto)))
        else (bind ?mets  (insert$ ?mets  (+ (length$ ?mets)  1) entra-en-presupuesto)))
 
    ;; C2: Mascotas
