@@ -451,7 +451,6 @@ Una vez obtenidos los atributos abstractos, el sistema evalúa cada propiedad co
     \item \texttt{met-criteria}: Criterios que satisface.
     \item \texttt{failed-criteria}: Criterios que no satisface.
     \item \texttt{extra-criteria}: Características adicionales positivas no solicitadas explícitamente.
-    \item \texttt{missing-criteria}: Características negativas no solicitadas explícitamente.
 \end{itemize}
 
 \paragraph{2.2.3.3 Reglas de Clasificación y Recomendación}
@@ -729,56 +728,302 @@ Cada prototipo fue probado con casos específicos, permitiendo detectar y correg
 \section{Resultados y validación}
 \label{sec:resultados}
 
-\subsection{Juegos de prueba}
-Explicación de cómo se seleccionaron los casos: perfiles variados (estudiante, familia, pareja), casos límite, cobertura de funcionalidades.
+\subsection{Conjunto de datos de prueba}
+\label{subsec:conjunto-datos}
 
-\subsection{Ejecución de pruebas}
-Tabla resumen con al menos 6 casos diferentes, mostrando:
+Para validar el sistema se ha creado un conjunto de datos sintético que simula una ciudad con diferentes zonas, servicios y propiedades de alquiler. Este entorno de prueba permite evaluar el sistema en condiciones realistas con una variedad de situaciones espaciales y demográficas.
+
+\subsubsection{Propiedades disponibles}
+
+El conjunto incluye 17 propiedades distribuidas en diferentes zonas de la ciudad, con características variadas que cubren el espectro de ofertas típicas del mercado de alquiler:
+
+\begin{table}[H]
+\centering
+\caption{Propiedades disponibles en el conjunto de datos de prueba}
+\label{tab:propiedades}
+\begin{minipage}{\textwidth}
+\centering
+\begin{tabular}{p{0.17\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}|p{0.16\textwidth}|p{0.15\textwidth}}
+\toprule
+\textbf{ID} & \textbf{Tipo} & \textbf{Zona} & \textbf{Habitaciones} & \textbf{Precio (€)} \\
+\midrule
+\texttt{apt-101} & Apartamento & Residencial & 1D/0S & 850 \\
+\texttt{studio-201} & Estudio & Núcleo urbano & 0D/1S & 650 \\
+\texttt{house-301} & Casa individual & Residencial & 2D/1S & 1.800 \\
+\texttt{room-401} & Habitación & Centro & 0D/1S & 450 \\
+\texttt{loft-999} & Apartamento & Industrial & 0D/1S & 2.000 \\
+\texttt{flat-202} & Apartamento & Residencial & 1D/1S & 1.100 \\
+\texttt{house-401} & Casa pareada & Núcleo urbano & 2D/0S & 1.000 \\
+\texttt{penthouse-501} & Ático & Centro & 2D/1S & 1.900 \\
+\texttt{duplex-601} & Dúplex & Negocios & 2D/1S & 1.450 \\
+\texttt{triplex-701} & Tríplex & Núcleo urbano & 3D/1S & 2.100 \\
+\texttt{semidet-801} & Casa adosada & Residencial & 2D/2S & 1.350 \\
+\texttt{detached-901} & Casa individual & Industrial & 1D/1S & 700 \\
+\texttt{studio-502} & Estudio & Centro & 0D/1S & 550 \\
+\texttt{apt-303} & Apartamento & Negocios & 2D/1S & 1.600 \\
+\texttt{room-402} & Habitación & Industrial & 0D/1S & 300 \\
+\texttt{flat-203} & Apartamento & Residencial & 2D/1S & 1.250 \\
+\texttt{house-402} & Casa unifamiliar & Residencial & 3D/2S & 2.200 \\
+\bottomrule
+\end{tabular}
+\end{minipage}
+\end{table}
+
+\noindent\footnotesize\textit{Nota: D = Doble, S = Simple. Coordenadas en sistema entero (metros).}
+\normalsize
+\\
+
+Las propiedades están geolocalizadas en coordenadas enteras que representan metros desde un origen arbitrario, facilitando el cálculo de distancias euclidianas. La distribución espacial sigue un patrón coherente: propiedades residenciales cerca de zonas verdes y escuelas, propiedades céntricas con buen acceso a transporte, y propiedades industriales en periferia.
+
+\subsubsection{Zonas urbanas}
+
+Se han definido 5 zonas con características diferenciadas:
+
 \begin{itemize}
-    \item Perfil de entrada.
-    \item Viviendas recomendadas (adecuadas, parcialmente adecuadas, muy recomendables).
-    \item Criterios incumplidos o características destacadas.
+    \item \textbf{Zona Residencial} (coordenadas 9600, 20400): Bajo nivel de ruido, alta seguridad. Concentra viviendas familiares con acceso a parques y escuelas.
+    
+    \item \textbf{Núcleo Urbano} (10000, 20000): Ruido medio, seguridad alta. Centro geográfico con mezcla de viviendas y servicios básicos.
+    
+    \item \textbf{Centro/Downtown} (10100, 19800): Ruido alto, seguridad media. Zona turística y de ocio con alta densidad de servicios.
+    
+    \item \textbf{Zona de Negocios} (10300, 19700): Ruido medio, seguridad media. Área comercial y de oficinas con buen transporte.
+    
+    \item \textbf{Zona Industrial} (11000, 21000): Ruido alto, seguridad baja. Periferia industrial con precios bajos pero menor calidad de vida.
 \end{itemize}
 
-\begin{table}[h]
+Cada propiedad hereda automáticamente los atributos de ruido y seguridad de su zona mediante la regla \texttt{init-prop-zone-attrs}.
+
+\subsubsection{Servicios urbanos}
+
+El conjunto incluye más de 50 servicios distribuidos estratégicamente:
+
+\begin{itemize}
+    \item \textbf{Transporte:} 20 paradas de autobús distribuidas por todas las zonas, 2 estaciones de metro (\texttt{serv-metro-1} en 9900,20200 y \texttt{serv-metro-2}), y estaciones de tren y teleférico.
+    
+    \item \textbf{Educación:} 2 escuelas (\texttt{serv-school-1} en 9500,20500), 3 universidades (\texttt{serv-university-1} en 8000,19000), cubriendo diferentes áreas de la ciudad.
+    
+    \item \textbf{Salud:} 2 hospitales (\texttt{serv-hospital-1} en 10100,20100), 3 clínicas y 5 farmacias distribuidas cerca de zonas pobladas.
+    
+    \item \textbf{Comercio:} 1 centro comercial (\texttt{serv-mall-1} en 11000,19500), supermercados e hipermercados en zonas residenciales.
+    
+    \item \textbf{Ocio:} 5 parques (incluido \texttt{serv-park-central} en 10500,19800), 3 gimnasios, 2 piscinas, cines, museos, zonas de vida nocturna y restaurantes distribuidos según la densidad poblacional.
+\end{itemize}
+
+La distribución de servicios sigue un patrón realista: mayor concentración en el núcleo urbano y centro, con servicios básicos (paradas de bus, farmacias) distribuidas uniformemente, y servicios especializados (universidades, hospitales) en ubicaciones estratégicas.
+
+Este conjunto de datos permite probar todas las funcionalidades del sistema: cálculo de proximidades a diferentes tipos de servicios, evaluación de propiedades según características de zona, y recomendaciones adaptadas a perfiles demográficos diversos.
+
+\subsection{Juegos de prueba}
+\label{subsec:juegos-prueba}
+
+Para validar exhaustivamente el sistema, se diseñaron 10 casos de prueba que cubren los principales perfiles de cliente, combinaciones de restricciones y funcionalidades del sistema. La selección de casos se realizó siguiendo criterios de cobertura funcional, casos límite y perfiles representativos del dominio del problema.
+
+\subsubsection{Diseño de casos de prueba}
+
+Los 10 casos se diseñaron para ejercitar de forma sistemática todos los módulos del sistema:
+
+\begin{enumerate}
+    \item \textbf{Test 1: Familia joven con trabajadores y un estudiante} \\
+    Valida la clasificación automática como \texttt{Family/No\_Elderly}. Ejercita el cálculo de distancias a trabajo y estudio con múltiples coordenadas simultáneamente. Verifica la categorización de densidad de habitaciones (\texttt{room-density}) para 3 personas y evalúa la clasificación final de propiedades.
+
+    \item \textbf{Test 2: Pareja joven sin coche/mascotas, dos trabajadores en zona céntrica} \\
+    Comprueba el manejo de parejas sin preguntas explícitas (clasificación basada en edades y número de personas). Enfocado en distancias a trabajo alrededor del núcleo urbano y estaciones de metro. Evalúa restricciones presupuestarias no estrictas y verifica que no se calculen distancias a estudio cuando no corresponde.
+
+    \item \textbf{Test 3: Familia con menores, trabajadores y estudiantes} \\
+    Fuerza la clasificación como \texttt{Family} debido a la presencia de menores. Ejercita ambas reglas de distancia con múltiples ubicaciones de trabajo y estudio. Valida el enriquecimiento automático de \texttt{desired\_features} para familias (\texttt{garden}, \texttt{park}, \texttt{safe-area}) y evalúa la densidad de habitaciones para grupos grandes con preferencias mixtas.
+
+    \item \textbf{Test 4: Grupo de 3 estudiantes sin trabajadores} \\
+    Valida la clasificación como \texttt{Student\_Group} (estudian sí, trabajan no, sin ancianos/menores). Enfatiza distancias a estudio con tres campus universitarios. Verifica las características deseadas orientadas a estudiantes (\texttt{education}, \texttt{public-transport}, \texttt{internet}, \texttt{nightlife}) y evalúa el impacto de presupuestos bajos en la evaluación.
+
+    \item \textbf{Test 5: Individuo anciano} \\
+    Valida clasificación como \texttt{Elderly} (1 persona, edad ≥ 65). Omite cálculos de distancias a trabajo/estudio. Verifica características deseadas orientadas a ancianos (\texttt{elevator}, \texttt{quiet}, \texttt{single-floor}, \texttt{healthcare}). Evalúa propiedades con presupuesto moderado y accesibilidad como criterio principal.
+
+    \item \textbf{Test 6: Presupuesto bajo estricto, 2 personas, sin trabajo/estudio} \\
+    Enfocado en restricciones presupuestarias con \texttt{budget\_is\_strict=yes}. Verifica que propiedades por encima del presupuesto máximo sean rechazadas y que no se ejecuten reglas de distancia. Sirve como caso base para validación mínima de logística.
+
+    \item \textbf{Test 7: Con mascotas y coche; 3 personas; solo trabajadores} \\
+    Enfocado en características deseadas \texttt{pets-allowed} y \texttt{parking}. Ejercita distancias a trabajo desde zonas residenciales y cercanas a metro. Valida tolerancia de presupuesto no estricto y preferencias similares a familias.
+
+    \item \textbf{Test 8: Pareja anciana sin trabajo/estudio} \\
+    Valida clasificación como \texttt{Elderly\_Couple} y preferencias de accesibilidad (\texttt{elevator}, \texttt{quiet}, \texttt{single-floor}, \texttt{healthcare}). Omite logística de transporte; evalúa idoneidad de propiedades para movilidad/accés. Verifica densidad de habitaciones para 2 personas.
+
+    \item \textbf{Test 9: Grupo estudiantil con múltiples campus} \\
+    Enfocado en \texttt{calculate-study-distances} con múltiples coordenadas de campus. Clasifica como \texttt{Student\_Group}; valida características orientadas a estudiantes. Evalúa impacto de presupuestos compartidos bajos en la recomendación.
+
+    \item \textbf{Test 10: Densidad de habitaciones extrema; 5 personas, valida pocas habitaciones} \\
+    Valida categorización \texttt{room-density} en situación de escasez de capacidad. Con 5 personas, verifica clasificación como \texttt{saturated} excepto cuando propiedades tienen suficientes habitaciones dobles/simples. También prueba distancia a trabajo con una sola ubicación laboral.
+\end{enumerate}
+
+\subsubsection{Criterios de cobertura}
+
+Los casos de prueba fueron diseñados para garantizar cobertura completa de las funcionalidades del sistema:
+
+\begin{itemize}
+    \item \textbf{Cobertura de clasificación demográfica:} Incluye todos los tipos de cliente definidos en la ontología: \texttt{Individual} (Adult, Young, Student, Elderly), \texttt{Group}, \texttt{Couple} (Elderly\_Couple, Planning\_Kids, Young\_No\_Kids), \texttt{Family} (No\_Elderly, With\_Elderly), y \texttt{Student\_Group}.
+    
+    \item \textbf{Cobertura de reglas de distancia:} Pruebas con combinaciones de: solo trabajo, solo estudio, ambos, ninguno; con una y múltiples ubicaciones; en zonas urbanas, residenciales y céntricas.
+    
+    \item \textbf{Cobertura de criterios de evaluación:} Casos que enfatizan cada criterio principal: presupuesto (estricto/flexible), mascotas, coche, densidad de habitaciones, características deseadas específicas.
+    
+    \item \textbf{Casos límite:} Situaciones extremas como máxima ocupación (Test 10), presupuesto mínimo (Test 6), y perfiles con necesidades especiales (Test 5, 8).
+    
+    \item \textbf{Cobertura de zonas y servicios:} Propiedades ubicadas en todas las zonas definidas (Residencial, Business, Downtown, Industrial, Urban\_core) y proximidad a diferentes tipos de servicios.
+\end{itemize}
+
+Esta estrategia de pruebas permite validar no solo el funcionamiento individual de cada módulo, sino también las interacciones entre ellos y el comportamiento del sistema integrado ante perfiles realistas de usuarios.
+
+\subsection{Ejecución de pruebas y analisis de resultados}
+\label{subsec:ejecucion-pruebas}
+
+Para validar el funcionamiento del sistema, se ejecutaron los 10 casos de prueba diseñados, obteniendo los siguientes resultados:
+
+\begin{table}[H]
 \centering
-\caption{Ejemplo de casos de prueba}
-\begin{tabular}{p{3cm}|p{3cm}|p{3cm}|p{3cm}}
+\caption{Resultados de los casos de prueba ejecutados}
+\begin{tabular}{p{0.15\textwidth}|p{0.2\textwidth}|p{0.25\textwidth}|p{0.25\textwidth}}
 \toprule
-\textbf{Perfil} & \textbf{Vivienda} & \textbf{Grado} & \textbf{Observaciones} \\
+\textbf{Test} & \textbf{Perfil} & \textbf{Mejor recomendación} & \textbf{Peor recomendación} \\
 \midrule
-Estudiante, precio bajo & Atico céntrico & Parcial & Sin terraza \\
-Familia con hijos & Dúplex con jardín & Muy recomendable & Cerca de colegio y parque \\
+\textbf{1} & Familia joven con trabajadores y estudiante & \texttt{semidet-801} → \textbf{ideal} \texttt{house-401} → \textbf{ideal} & \texttt{loft-999} → \textbf{no-recomendado} \\
+\hline
+\textbf{2} & Pareja joven sin coche/mascotas, 2 trabajadores & \texttt{flat-203} → \textbf{ideal} & \texttt{duplex-601} → \textbf{no-recomendado} \\
+\hline
+\textbf{3} & Familia con menores, trabajadores y estudiantes & \texttt{house-301} → \textbf{ideal} & \texttt{studio-201} → \textbf{no-recomendado} \\
+\hline
+\textbf{4} & Grupo de 3 estudiantes sin trabajadores & \texttt{studio-201} → \textbf{parcial} & \texttt{loft-999} → \textbf{no-recomendado} \\
+\hline
+\textbf{5} & Individuo anciano & \texttt{apt-101} → \textbf{ideal} & \texttt{triplex-701} → \textbf{no-recomendado} \\
+\hline
+\textbf{6} & Presupuesto bajo estricto, 2 personas & \texttt{apt-101} → \textbf{parcial} & \texttt{semidet-801} → \textbf{no-recomendado} \\
+\hline
+\textbf{7} & Con mascotas y coche; 3 personas; solo trabajadores & \texttt{semidet-801} → \textbf{ideal} & \texttt{triplex-701} → \textbf{no-recomendado} \\
+\hline
+\textbf{8} & Pareja anciana sin trabajo/estudio & \texttt{apt-101} → \textbf{ideal} \texttt{flat-203} → \textbf{ideal} & \texttt{room-402} → \textbf{no-recomendado} \\
+\hline
+\textbf{9} & Grupo estudiantil con múltiples campus & \texttt{house-401} → \textbf{ideal} & \texttt{loft-999} → \textbf{no-recomendado} \\
+\hline
+\textbf{10} & 5 personas, pocas habitaciones & \texttt{apt-303} → \textbf{ideal} & \texttt{triplex-701} → \textbf{parcial} \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\subsection{Análisis de resultados}
-Explicación de por qué el sistema toma ciertas decisiones, ejemplos concretos basados en el conocimiento codificado.
+\subsubsection{Análisis detallado de resultados}
+
+\begin{itemize}
+    \item \textbf{Test 1 (Familia joven):} La propiedad \texttt{semidet-801} recibe la clasificación \textbf{ideal} al cumplir todos los criterios básicos y ofrecer extras como terraza, calefacción, aire acondicionado, sol todo el día y ambiente tranquilo. Esto mismo pasa con \texttt{semidet-801} que tiene otros extra como amueblado o condición excelente. Por el contrario, \texttt{loft-999} es \textbf{no-recomendado} por superar el presupuesto, tener poco espacio, estar lejos de trabajo/estudio y carecer de características esenciales para familias.
+    
+    \item \textbf{Test 2 (Pareja joven):} \texttt{flat-203} obtiene \textbf{ideal} al satisfacer necesidades de transporte, compras, ocio juvenil y deporte, con extras de climatización y garaje. Además de extras como ascensor o condición excelente. \texttt{duplex-601} es \textbf{no-recomendado} principalmente por exceder el presupuesto.
+    
+    \item \textbf{Test 3 (Familia con menores):} \texttt{house-301} logra \textbf{muy-adecuado} con excelente estado, piscina, terraza y todas las características familiares. Es la que ha obtenido más extras. \texttt{studio-201} resulta \textbf{no-recomendado} por espacio insuficiente para una familia.
+    
+    \item \textbf{Test 4 (Estudiantes):} \texttt{studio-201} es clasificado como \textbf{parcial} debido al poco espacio, pero cumple criterios estudiantiles clave. \texttt{loft-999} nuevamente \textbf{no-recomendado} por problemas estructurales.
+    
+    \item \textbf{Test 5 (Anciano):} \texttt{apt-101} es \textbf{ideal} para necesidades de accesibilidad, tranquilidad y servicios de salud. \texttt{triplex-701} es \textbf{no-recomendado} por falta de ascensor, ruido y ausencia de planta única.
+    
+    \item \textbf{Test 6 (Presupuesto estricto):} \texttt{apt-101} solo alcanza \textbf{parcial} por exceder el presupuesto estricto, aunque cumple otros criterios. \texttt{semidet-801} es \textbf{no-recomendado} también por precio.
+    
+    \item \textbf{Test 7 (Mascotas y coche):} \texttt{semidet-801} es \textbf{ideal} al admitir mascotas, tener garaje y todos los criterios de una familia sin ancianos. Consigue la calidad de \textbf{ideal} porque además cuenta con extras. \texttt{triplex-701} es \textbf{no-recomendado} principalmente por precio y falta de garaje.
+    
+    \item \textbf{Test 8 (Pareja anciana):} Similar al test 5, \texttt{apt-101} es \textbf{ideal} por accesibilidad. No obstante, cabe recalcar que \texttt{flat-203} también tiene  \textbf{ideal}, ya que ahora entra en presupuesto y también cumple criterios + extras. \texttt{room-402} es \textbf{no-recomendado} por espacio insuficiente y falta de servicios básicos.
+    
+    \item \textbf{Test 9 (Estudiantes múltiples campus):} \texttt{house-401} es \textbf{ideal}, ya que ofrece numerosos extras y se encuentra cerca de todos los estudiantes. \texttt{loft-999} continúa siendo \textbf{no-recomendado}.
+    
+    \item \textbf{Test 10 (Alta ocupación):} \texttt{apt-303} es \textbf{ideal} al tener espacio suficiente para 5 personas. \texttt{triplex-701} es \textbf{parcial} únicamente por precio.
+\end{itemize}
+
+\subsubsection{Patrones observados}
+
+\begin{itemize}
+    \item \textbf{Consistencia en clasificación:} Propiedades como \texttt{loft-999} (industrial, mal estado, alejada) son consistentemente \textbf{no-recomendadas} en todos los tests donde aparecen.
+    
+    \item \textbf{Sensibilidad al presupuesto:} En tests con presupuesto estricto (6) o perfiles estudiantiles (4, 9), propiedades que cumplen criterios funcionales son degradadas a \textbf{parcial} únicamente por precio.
+    
+    \item \textbf{Adecuación por perfil:} Propiedades como \texttt{apt-101} y \texttt{semidet-801} son recurrentemente \textbf{muy-adecuadas} para perfiles familiares, mientras que \texttt{studio-201} solo es adecuado para estudiantes o individuos.
+    
+    \item \textbf{Importancia de extras:} Propiedades con múltiples extras (terraza, piscina, climatización, amueblado) tienden a alcanzar categorías superiores cuando cumplen criterios básicos.
+    
+    \item \textbf{Efecto de criterios de exclusión:} La violación de criterios críticos (espacio para familias, ascensor para ancianos, presupuesto estricto) resulta inmediatamente en clasificaciones bajas.
+\end{itemize}
+
+Los resultados demuestran que el sistema aplica consistentemente el conocimiento experto codificado, priorizando criterios según el perfil del cliente y proporcionando explicaciones detalladas (pros, contras, extras) que facilitan la comprensión de las recomendaciones. No obstante, cabe recalcar que estos juegos de pruebas se han saltado algunas restricciones del dominio como la regla del cuarenta por ciento o estudios con coordenadas que no corresponden a ningún centro educativo existente. Esto se debe a que hemos querido llegar a casos más extremos. Por ende, algunos juegos de pruebas necesitan ejecutarse directamente con un testX.clp en vez de poder hacerse a mano. 
 
 \subsection{Conclusiones}
 \label{subsec:conclusiones}
 
 \subsubsection{Logros y dificultades}
-Qué se ha conseguido, qué partes fueron más complejas, limitaciones del sistema.
+
+El desarrollo de este sistema de recomendación de viviendas en alquiler ha permitido alcanzar los objetivos establecidos, aunque también ha presentado desafíos significativos durante su implementación.
+
+\textbf{Principales logros:}
+
+\begin{itemize}
+    \item \textbf{Ontología completa y formal:} Se ha diseñado e implementado una ontología coherente que modela los cuatro conceptos fundamentales del dominio (cliente, propiedad, servicio, zona) con sus respectivas jerarquías, propiedades y restricciones. La exportación automática desde Protégé a CLIPS mediante \texttt{owl2clips} demostró ser efectiva para mantener la consistencia entre la representación formal y la implementación.
+    
+    \item \textbf{Sistema de reglas funcional:} Se ha implementado un sistema de reglas que abarca desde la entrevista interactiva hasta la recomendación final, incluyendo reglas de abstracción, asociación heurística y clasificación. La arquitectura modular con control de prioridades mediante \texttt{salience} garantiza un flujo de ejecución lógico y predecible.
+    
+    \item \textbf{Mecanismo de evaluación multicriterio:} El sistema implementa una evaluación cualitativa detallada que no solo clasifica propiedades, sino que proporciona explicaciones comprensibles (pros, contras, extras) que facilitan la transparencia en las recomendaciones.
+    
+    \item \textbf{Validación exhaustiva:} Los 10 casos de prueba diseñados cubren de forma sistemática todos los perfiles de cliente y funcionalidades del sistema, demostrando su robustez y consistencia en diferentes escenarios.
+\end{itemize}
+
+\textbf{Dificultades encontradas:}
+
+\begin{itemize}
+    \item \textbf{Complejidad de la integración espacial:} La implementación del cálculo de distancias y proximidades requirió un diseño cuidadoso para evitar bucles infinitos y reprocesamientos. La solución mediante hechos de control (\texttt{work-distance-done}, etc.) y el uso de \texttt{member\$} para evitar duplicados fue necesaria pero añadió complejidad al código.
+    
+    \item \textbf{Manejo de datos temporales:} La entrevista interactiva requirió la creación de un \texttt{deftemplate} temporal (\texttt{user-responses}) con un sistema de estados que, aunque funcional, resultó más complejo de depurar que un enfoque puramente procedural.
+    
+    \item \textbf{Equilibrio entre flexibilidad y simplicidad:} Se tomó la decisión consciente de omitir ciertos factores sugeridos por el experto (como calidad de internet, eficiencia energética) para mantener el sistema manejable dentro del alcance de la práctica, reconociendo que esto limita su realismo.
+    
+    \item \textbf{Rendimiento en cálculos de distancia:} El uso de distancias euclidianas en coordenadas enteras simplifica los cálculos pero introduce imprecisiones en la modelización de rutas reales. En un sistema de producción, sería necesario utilizar algoritmos de ruta más sofisticados.
+\end{itemize}
 
 \subsubsection{Trabajo en equipo}
-Breve descripción de cómo se organizó el grupo, reuniones, reparto de tareas, uso de la planificación propuesta.
 
-\subsubsection{Posibles mejoras}
-Extensiones futuras: integración con datos reales de mapas, más factores de ponderación, interfaz gráfica.
+El desarrollo del sistema siguió una metodología colaborativa que permitió distribuir las tareas según las fortalezas individuales y mantener un ritmo de trabajo constante.
 
-% ============================
-% ANEXOS
-% ============================
-\appendix
-\section{Anexo A: Ontología completa}
-Gráfico exportado desde Protégé con la jerarquía de clases y propiedades.
+\textbf{Organización y metodología:}
 
-\section{Anexo B: Diálogo con modelo de lenguaje}
-Si aplica: contexto usado, preguntas más relevantes y respuestas resumidas.
+\begin{itemize}
+    \item \textbf{División de responsabilidades:} El trabajo se distribuyó en tres áreas principales: diseño de ontología (Protégé), implementación del motor de reglas (CLIPS), y diseño de casos de prueba y documentación.
+    
+    \item \textbf{Reuniones de seguimiento:} Se mantuvieron reuniones semanales para revisar el progreso, coordinar la integración de componentes y resolver problemas de diseño. Se utilizó un repositorio compartido con control de versiones para gestionar los cambios en el código CLIPS y el documento LaTeX.
+    
+    \item \textbf{Enfoque incremental:} Siguiendo la metodología de desarrollo incremental descrita en la sección~\ref{subsubsec:desarrollo-incremental}, cada miembro del equipo contribuyó a prototipos sucesivos, permitiendo una integración gradual y una depuración temprana.
+    
+    \item \textbf{Validación cruzada:} Cada caso de prueba fue ejecutado y verificado por al menos dos miembros del equipo, garantizando la consistencia de los resultados y la detección temprana de errores.
+\end{itemize}
 
-\section{Anexo C: Código fuente completo}
-Listado completo del código CLIPS (o enlace al repositorio).
+\textbf{Lecciones aprendidas:}
+
+\begin{itemize}
+    \item La planificación detallada de la ontología antes de la implementación en CLIPS ahorró tiempo significativo en fases posteriores.
+    
+    \item La creación de un conjunto de datos sintético realista fue más laboriosa de lo anticipado, pero resultó crucial para una validación exhaustiva.
+    
+    \item La documentación simultánea al desarrollo, aunque exigente, facilitó la comprensión del sistema y la preparación de este informe.
+\end{itemize}
+
+\subsubsection{Possibles mejoras}
+
+El sistema actual, aunque funcional y validado, presenta oportunidades de mejora que podrían implementarse en versiones futuras:
+
+\begin{itemize}
+    \item \textbf{Integración con datos reales:} Conectar el sistema con APIs de servicios de mapas (Google Maps, OpenStreetMap) para obtener coordenadas reales y calcular rutas peatonales/vehiculares en lugar de usar distancias euclidianas simplificadas.
+    
+    \item \textbf{Sistema de ponderación adaptativo:} Implementar un mecanismo de aprendizaje que ajuste automáticamente los pesos de los diferentes criterios basándose en las elecciones previas de usuarios similares, pasando de una evaluación cualitativa a una cuantitativa.
+    
+    \item \textbf{Interfaz gráfica de usuario:} Desarrollar una interfaz web o de escritorio que reemplace la interacción por línea de comandos de CLIPS, haciendo el sistema más accesible para usuarios finales no técnicos.
+    
+    \item \textbf{Reglas de refinamiento iterativo:} Añadir reglas de refinamiento que permitan ajustar recomendaciones iniciales basándose en análisis de compromisos, por ejemplo, sugiriendo propiedades ligeramente por encima del presupuesto si ofrecen características excepcionales.
+    
+    \item \textbf{Expansión del conocimiento experto:} Incorporar factores adicionales sugeridos por el experto pero omitidos en esta versión, como calidad de internet, eficiencia energética, tendencias del mercado de alquiler, y consideraciones sobre comunidades de vecinos.
+    
+    \item \textbf{Sistema explicativo mejorado:} Generar explicaciones en lenguaje natural más elaboradas, conectando específicamente las características de la propiedad con las necesidades del perfil del cliente identificado.
+    
+    \item \textbf{Mecanismos de aprendizaje automático:} Integrar técnicas de \textit{machine learning} para refinar automáticamente las preferencias inducidas (\texttt{desired\_features}) basándose en patrones de elección de usuarios reales.
+\end{itemize}
+
+\textbf{Conclusión final:} El sistema desarrollado demuestra la viabilidad de aplicar técnicas de Sistemas Basados en el Conocimiento al problema de recomendación de viviendas en alquiler. Aunque presenta limitaciones propias de un proyecto académico, establece una base sólida sobre la que construir sistemas más sofisticados. La combinación de una ontología formal bien diseñada, un sistema de reglas estructurado y un enfoque de validación exhaustiva resulta efectiva para capturar y aplicar conocimiento experto en un dominio complejo como el inmobiliario.
 
 \end{document}

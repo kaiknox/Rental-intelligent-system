@@ -982,6 +982,7 @@
    (bind ?has-elderly FALSE)
    (bind ?has-minor FALSE)
    (bind ?all-elderly TRUE)
+   (bind ?all-study (= (length$ ?slats) ?np))
    
    (progn$ (?a ?ages)
        (if (>= ?a 65) then (bind ?has-elderly TRUE) else (bind ?all-elderly FALSE))
@@ -1004,10 +1005,10 @@
                (bind ?class-name Student)
                (printout t "DEBUG: Asignado STUDENT" crlf)
            else
-               (if (<= (nth$ 1 ?ages) 30) then 
+               (if (<= (nth$ 1 ?ages) 30) then
                    (bind ?class-name Young)
                    (printout t "DEBUG: Asignado YOUNG" crlf)
-               else 
+               else
                    (bind ?class-name Adult)
                    (printout t "DEBUG: Asignado ADULT" crlf)
                )
@@ -1020,7 +1021,7 @@
        (printout t "DEBUG: Rama GRUPO (>1 persona)" crlf)
        
        ;; Si son estudiantes sin trabajo, sin menores, sin ancianos -> Student_Group
-       (if (and (eq ?s-any yes) (eq ?w-any no) (not ?has-minor) (not ?has-elderly)) then
+       (if (and (eq ?s-any yes) (eq ?w-any no) (not ?has-minor) (not ?has-elderly) (eq ?all-study TRUE)) then
            (bind ?class-name Student_Group)
            (printout t "DEBUG: Asignado STUDENT_GROUP" crlf)
        else
@@ -1093,7 +1094,6 @@
    )
 
    (if (or (eq ?class-name Student) (eq ?class-name Student_Group)) then
-       (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "education"))
        (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "recreation-youth"))
        (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "transport"))
        (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "nightlife"))
@@ -1466,7 +1466,7 @@
      then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) tiene-piscina)))
 
    (if (eq ?heating yes)
-     then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) tiene-calefacción)))
+     then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) tiene-calefaccion)))
 
    (if (eq ?ac yes)
       then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) tiene-aire-acondicionado)))
