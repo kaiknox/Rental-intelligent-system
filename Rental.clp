@@ -690,6 +690,52 @@
    (if (or (eq ?answer s) (eq ?answer yes)) then (return yes) else (return no))
 )
 
+;; Lista y obtiene coordenadas de centros educativos existentes
+(deffunction list-education-centers ()
+    (bind ?catalog (create$))
+    (printout t "Centros educativos disponibles:" crlf)
+    (do-for-all-instances ((?c Education)) TRUE
+        (bind ?catalog (insert$ ?catalog (+ (length$ ?catalog) 1) (instance-name ?c)))
+        (printout t " - " (instance-name ?c) " (" (class ?c) ") lat=" (send ?c get-geo_lat)
+                     " long=" (send ?c get-geo_long) crlf))
+    (if (= (length$ ?catalog) 0) then
+        (printout t "  (ningun centro cargado)" crlf))
+    (return ?catalog)
+)
+
+(deffunction education-coords-by-name (?center-name)
+    (do-for-all-instances ((?c Education)) TRUE
+        (if (eq (instance-name ?c) ?center-name) then
+            (return (create$ (send ?c get-geo_lat) (send ?c get-geo_long)))))
+    (return FALSE)
+)
+
+(deffunction ask-education-center-name (?catalog)
+    ;; Lee y normaliza a INSTANCE-NAME aceptando con o sin corchetes
+    (bind ?raw (read))
+    (bind ?sym (if (stringp ?raw) then (string-to-field ?raw) else ?raw))
+    (if (instance-namep ?sym) then
+            (bind ?iname ?sym)
+         else
+            (if (symbolp ?sym) then
+                (bind ?iname (symbol-to-instance-name ?sym))
+             else
+                (bind ?iname ?sym)))
+    (while (eq (member$ ?iname ?catalog) FALSE) do
+        (printout t "Nombre no valido. Opciones: " ?catalog crlf)
+        (printout t "Nombre del centro: ")
+        (bind ?raw (read))
+        (bind ?sym (if (stringp ?raw) then (string-to-field ?raw) else ?raw))
+        (if (instance-namep ?sym) then
+            (bind ?iname ?sym)
+         else
+            (if (symbolp ?sym) then
+                (bind ?iname (symbol-to-instance-name ?sym))
+             else
+                (bind ?iname ?sym))))
+    (return ?iname)
+)
+
 ;;; =========================================================
 ;;; 3. ESTRUCTURA DE DATOS TEMPORAL
 ;;; =========================================================
@@ -820,23 +866,37 @@
    ?f <- (user-responses (step ask-study-logistics) (num-people ?np))
    =>
    (bind ?n-students (ask-number "¿Cuantos estudian en algun centro de la ciudad?"))
-   
    (bind ?lats (create$))
    (bind ?longs (create$))
    
    (if (> ?n-students 0) then
-       (printout t "Indica las coordenadas de los centros de estudio (Ej. Universidad en 8000, 19000)." crlf)
-       (loop-for-count (?i 1 ?n-students) do
-           (printout t "--- Estudiante " ?i " ---" crlf)
-           (bind ?x (ask-coordinate "Coordenada X (Lat):"))
-           (bind ?y (ask-coordinate "Coordenada Y (Long):"))
-           (bind ?lats (insert$ ?lats (+ (length$ ?lats) 1) ?x))
-           (bind ?longs (insert$ ?longs (+ (length$ ?longs) 1) ?y))
-       )
+       (bind ?catalog (list-education-centers))
+       (printout t "Tutorial: se muestran los centros existentes. Escribe el nombre tal cual (con o sin corchetes, ej. serv-school-1)." crlf)
+       (if (= (length$ ?catalog) 0) then
+           (printout t "No hay centros educativos cargados; introduce coordenadas manualmente (ej. lat 8000, long 19000)." crlf)
+           (loop-for-count (?i 1 ?n-students) do
+               (printout t "--- Estudiante " ?i " ---" crlf)
+               (bind ?x (ask-coordinate "Coordenada X (Lat):"))
+               (bind ?y (ask-coordinate "Coordenada Y (Long):"))
+               (bind ?lats (insert$ ?lats (+ (length$ ?lats) 1) ?x))
+               (bind ?longs (insert$ ?longs (+ (length$ ?longs) 1) ?y)))
+       else
+           (loop-for-count (?i 1 ?n-students) do
+               (printout t "--- Estudiante " ?i " ---" crlf)
+               (printout t "Nombre del centro: ")
+               (bind ?center-name (ask-education-center-name ?catalog))
+               (bind ?coords (education-coords-by-name ?center-name))
+               (while (eq ?coords FALSE) do
+                   (printout t "Nombre no encontrado; usa exactamente uno de la lista mostrada." crlf)
+                   (printout t "Nombre del centro: ")
+                   (bind ?center-name (ask-education-center-name ?catalog))
+                   (bind ?coords (education-coords-by-name ?center-name)))
+               (bind ?lats (insert$ ?lats (+ (length$ ?lats) 1) (nth$ 1 ?coords)))
+               (bind ?longs (insert$ ?longs (+ (length$ ?longs) 1) (nth$ 2 ?coords)))))
        (modify ?f (studies_any yes) (study_lats ?lats) (study_longs ?longs) (step check-couple))
    else
        (modify ?f (studies_any no) (step check-couple))
-   )
+    )
 )
 
 ;; Paso 6: Pregunta de Pareja (solo si son 2 personas)
@@ -963,7 +1023,7 @@
                            (if ?has-elderly then (bind ?class-name With_Elderly)
                            (printout t "DEBUG: Asignado With_Elderly (2 personas)" crlf)
                            else (bind ?class-name Young_No_Kids)
-                           (printout t "DEBUG: Asignado YOUNG_NO_KIDS (2 personas, no pareja o no planean)" crlf))
+                           (printout t "DEBUG: Asignado NO_KIDS (2 personas, no pareja o no planean)" crlf))
                            
                        )
                    )
@@ -989,16 +1049,33 @@
    (if (or (eq ?class-name Elderly) (eq ?class-name Elderly_Couple) (eq ?class-name With_Elderly)) then
        (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "elevator"))
        (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "quiet"))
+       (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "park"))
        (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "single-floor"))
        (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "healthcare"))
+       (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "groceries"))
+   )
+
+    (if (or (eq ?class-name Young) (eq ?class-name Young_No_Kids)) then
+       (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "transport"))
+       (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "groceries"))
+       (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "shopping"))
+       (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "recreation-youth"))
+       (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "nightlife"))
+       (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "sport"))
    )
 
    (if (or (eq ?class-name Student) (eq ?class-name Student_Group)) then
        (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "education"))
-       (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "public-transport"))
-       (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "internet"))
-       (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "cheap"))
+       (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "recreation-youth"))
+       (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "transport"))
        (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "nightlife"))
+   )
+
+    (if (eq ?class-name Adult) then
+       (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "transport"))
+       (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "groceries"))
+       (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "recreation-adult"))
+       (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "restaurant"))
    )
 
    (if (or (eq ?class-name Family) (eq ?class-name No_Elderly) (eq ?class-name With_Elderly)) then
@@ -1006,6 +1083,7 @@
        (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "recreation"))
        (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "park"))
        (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "safe-area"))
+       (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "groceries"))
    )
 
    (if (eq ?class-name Planning_Kids) then
@@ -1013,6 +1091,8 @@
        (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "garden"))
        (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "safe-area"))
        (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "quiet"))
+       (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "groceries"))
+       (bind ?feat (insert$ ?feat (+ (length$ ?feat) 1) "recreation-adult"))
    )
 
    ;; Añadir lo que no se deduce del tipo pero viene del usuario
@@ -1187,7 +1267,6 @@
    (multislot failed-criteria)
    (multislot met-criteria)
    (multislot extra-criteria)
-   (multislot missing-criteria)
    (slot category))
 
 (deftemplate zone-attrs-initialized
@@ -1219,32 +1298,43 @@
                        (<= (send ?p get-floor_level) 1)))))
       (case "quiet" then (return (eq (send ?p get-Noise_level) low)))
       (case "single-floor" then (return (eq (send ?p get-internal_floors) 1)))
-      (case "public-transport" then (return (or (has-near-service-of-class ?p Bus_stop)
-                                                (has-near-service-of-class ?p Metro_station))))
       (case "transport" then (return (or (has-near-service-of-class ?p Bus_stop)
-                                         (has-near-service-of-class ?p Metro_station)
-                                         (has-near-service-of-class ?p Train_station)
-                                         (has-near-service-of-class ?p Clable_car_station)
-                                         (has-near-service-of-class ?p Parking))))
+                                        (has-near-service-of-class ?p Metro_station)
+                                        (has-near-service-of-class ?p Train_station)
+                                        (has-near-service-of-class ?p Clable_car_station))))
       (case "healthcare" then (return (or (has-near-service-of-class ?p Clinic)
-                                          (has-near-service-of-class ?p Hospital))))
+                                        (has-near-service-of-class ?p Hospital))))
+      (case "groceries" then (return (or (has-near-service-of-class ?p Supermarket)
+                                         (has-near-service-of-class ?p Hipermarket))))
+      (case "shopping" then (return (or (has-near-service-of-class ?p Mall)
+                                         (has-near-service-of-class ?p Store))))
       (case "pharmacy" then (return (has-near-service-of-class ?p Pharmacy)))
       (case "education" then (return (or (has-near-service-of-class ?p School)
-                                         (has-near-service-of-class ?p University))))
+                                        (has-near-service-of-class ?p University) (has-near-service-of-class ?p High_School))))
       (case "school" then (return (has-near-service-of-class ?p School)))
       (case "park" then (return (has-near-service-of-class ?p Park)))
-      (case "recreation" then (return (or (has-near-service-of-class ?p Park)
-                                          (has-near-service-of-class ?p Green_zone)
-                                          (has-near-service-of-class ?p Beach)
-                                          (has-near-service-of-class ?p Pool))))
+      (case "recreation-adult" then (return (or (has-near-service-of-class ?p Museum)
+                                        (has-near-service-of-class ?p Restaurant)
+                                        (has-near-service-of-class ?p Green_zone)
+                                        (has-near-service-of-class ?p Beach)
+                                        (has-near-service-of-class ?p Pool))))
       (case "sport" then (return (or (has-near-service-of-class ?p Sport_center)
                                      (has-near-service-of-class ?p Gym))))
+      (case "recreation-youth" then (return (or (has-near-service-of-class ?p Mall)
+                                        (has-near-service-of-class ?p Cinema)
+                                        (has-near-service-of-class ?p Park)
+                                        (has-near-service-of-class ?p Beach))))
+      (case "recreation" then (return (or (has-near-service-of-class ?p Museum)
+                                        (has-near-service-of-class ?p Restaurant)
+                                        (has-near-service-of-class ?p Green_zone)
+                                        (has-near-service-of-class ?p Beach)
+                                        (has-near-service-of-class ?p Pool)
+                                        (has-near-service-of-class ?p Mall)
+                                        (has-near-service-of-class ?p Cinema)
+                                        (has-near-service-of-class ?p Park)
+                                        (has-near-service-of-class ?p Beach))))
       (case "nightlife" then (return (has-near-service-of-class ?p Nightlife)))
       (case "restaurant" then (return (has-near-service-of-class ?p Restaurant)))
-      (case "shopping" then (return (or (has-near-service-of-class ?p Mall)
-                                        (has-near-service-of-class ?p Supermarket)
-                                        (has-near-service-of-class ?p Store)
-                                        (has-near-service-of-class ?p Hipermarket))))
       (case "beach" then (return (has-near-service-of-class ?p Beach)))
       (case "gym" then (return (has-near-service-of-class ?p Gym)))
       (case "safe-area" then
@@ -1282,7 +1372,6 @@
                  (Pool ?pool)
                  (Sun_Time ?sun_time)
                  (Terrace ?terrace)
-                 (Balcony ?balcony)
                  (Garage ?garage)
                  (Elevator ?elevator)
                  (Garden ?garden)
@@ -1295,7 +1384,6 @@
    (bind ?fails (create$))
    (bind ?mets (create$))
    (bind ?extras (create$))
-   (bind ?missing (create$))
 
    ;; C1: Presupuesto
    (if (> ?price ?maxb)
@@ -1336,26 +1424,32 @@
    ;; Extras manuales
    (if (eq ?cond excellent)
      then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) estado-excelente)))
+
    (if (has-near-service-of-class ?p Park)
      then
-       (if (eq (member$ "park" ?feat) FALSE)
-         then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) parque-cerca))))
+        (if (eq (member$ "park" ?feat) FALSE)
+            then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) parque-cerca))))
+
    (if (eq ?terrace yes)
      then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) tiene-terraza)))
+
    (if (eq ?pool yes)
      then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) tiene-piscina)))
+
    (if (eq ?heating yes)
      then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) tiene-calefacción)))
+
    (if (eq ?ac yes)
       then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) tiene-aire-acondicionado)))
+
    (if (eq ?sun_time all_day) ;;De momento solo cuenta si hay luz solar todo el día pq si es parcial no es tan bueno
       then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) tiene-sol-todo-dia)))
     
    (if (eq ?furnished yes)
-      then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) tiene-mobiliario)))
+      then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) amueblado)))
     
    (if (eq ?appliances yes)
-      then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) tiene-electrodomésticos)))
+      then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) electrodomésticos-incluidos)))
     
     ;; Garaje, ascensor y quiet como extras si no son requeridos
     (if (and (feature-satisfied ?p "quiet") (eq (member$ "quiet" ?feat) FALSE))
@@ -1365,20 +1459,10 @@
     (if (and (eq ?elevator yes) (eq (member$ "elevator" ?feat) FALSE))
       then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) tiene-ascensor)))
 
-    ;; Añadimos cosas "malas" que no forme parte de requisitos en missing
-    ;; Se podria añadir a fails pero entinces contaria igual que la falta de requisitos obligatorios
-   (if (not (eq ?sun_time all_day))
-      then (bind ?missing (insert$ ?missing (+ (length$ ?missing) 1) falta-sol-todo-dia)))
-   (if (and (and (eq ?balcony no) (eq ?garden no)) (eq ?terrace no))
-      then (bind ?missing (insert$ ?missing (+ (length$ ?missing) 1) falta-exterior)))
-    (if (eq ?noise high)
-      then (bind ?missing (insert$ ?missing (+ (length$ ?missing) 1) falta-quiet))) 
-
    (assert (prop-assessment (prop (instance-name ?p))
                             (failed-criteria ?fails)
                             (met-criteria ?mets)
-                            (extra-criteria ?extras)
-                            (missing-criteria ?missing)))
+                            (extra-criteria ?extras)))
  )
 
 ;; Clasifica: >=2 fallo -> parcial; 0 fallos + sin extra -> adecuado; 0 fallos + extra -> muy-adecuado
@@ -1388,7 +1472,6 @@
                            (failed-criteria $?fails)
                            (met-criteria $?mets)
                            (extra-criteria $?extras)
-                           (missing-criteria $?missing)
                            (category ?cat&:(eq ?cat nil)))
    ?pobj <- (object (is-a Property)
                     (name ?p))
@@ -1396,26 +1479,163 @@
    (bind ?mets-count (length$ ?mets))
    (bind ?fail-count (length$ ?fails))
    (bind ?extra-count (length$ ?extras))
-   (bind ?missing-count (length$ ?missing))
 
    (bind ?cat
       (if (> ?fail-count 0)
           then (if (> ?fail-count 3) then no-recomendado else parcial)
-          else (if (> (length$ ?extras) 0) 
-            then (if (and (> ?extra-count 3) (< ?missing-count 1)) then ideal else muy-adecuado)
+          else (if (> (length$ ?extras) 0)
+            then if (> (length$ ?extras) 3) then ideal else muy-adecuado
             else adecuado)))
 
    (modify ?pa (category ?cat))
 
-
    (printout t "Propiedad " (instance-name ?p) " -> " ?cat crlf
              "  Pros: " (if (= ?mets-count 0) then "ninguno" else ?mets) crlf
              "  Contras: " (if (= ?fail-count 0) then "ninguno" else ?fails) crlf
-             "  Extras: " (if (= ?extra-count 0) then "ninguno" else ?extras) crlf
-             "  Faltantes: " (if (= ?missing-count 0) then "ninguno" else ?missing) crlf))
+             "  Extras: " (if (= ?extra-count 0) then "ninguno" else ?extras) crlf crlf))
 
 (definstances instances
  ; Zonas con centro geográfico para coherencia espacial
+ (zone-urbancore of Urban_core
+     (Noise_Level medium)
+     (Safety_Level high)
+     (geo_lat 10000)
+     (geo_long 20000))
+
+ (zone-downtown of Downtown
+     (Noise_Level high)
+     (Safety_Level medium)
+     (geo_lat 10100)
+     (geo_long 19800))
+
+ (zone-residential of Residential
+     (Noise_Level low)
+     (Safety_Level high)
+     (geo_lat 9600)
+     (geo_long 20400))
+
+ (zone-business of Business
+     (Noise_Level medium)
+     (Safety_Level medium)
+     (geo_lat 10300)
+     (geo_long 19700))
+
+ (zone-industrial of Industrial
+     (Noise_Level high)
+     (Safety_Level low)
+     (geo_lat 11000)
+     (geo_long 21000))
+
+ ; Servicios distribuidos cerca de centros de zona
+ (serv-hospital-1 of Hospital
+     (geo_lat 10100)
+     (geo_long 20100))
+
+ (serv-clinic-1 of Clinic
+     (geo_lat 10200)
+     (geo_long 19900))
+
+ (serv-school-1 of School
+     (geo_lat 9500)
+     (geo_long 20500))
+
+ (serv-university-1 of University
+     (geo_lat 8000)
+     (geo_long 19000))
+
+ (serv-university-2 of University
+     (geo_lat 10300)
+     (geo_long 19800))
+
+ (serv-mall-1 of Mall
+     (geo_lat 11000)
+     (geo_long 19500))
+
+ (serv-park-central of Park
+     (geo_lat 10500)
+     (geo_long 19800))
+
+ (serv-metro-1 of Metro_station
+     (geo_lat 9900)
+     (geo_long 20200))
+
+ ; Muchas paradas de bus (ejemplo: 20) distribuidas por zonas
+ (serv-busstop-1 of Bus_stop (geo_lat 9800) (geo_long 20300))
+ (serv-busstop-2 of Bus_stop (geo_lat 9700) (geo_long 20200))
+ (serv-busstop-3 of Bus_stop (geo_lat 9900) (geo_long 20400))
+ (serv-busstop-4 of Bus_stop (geo_lat 9600) (geo_long 20500))
+ (serv-busstop-5 of Bus_stop (geo_lat 10000) (geo_long 20100))
+ (serv-busstop-6 of Bus_stop (geo_lat 10100) (geo_long 20000))
+ (serv-busstop-7 of Bus_stop (geo_lat 10200) (geo_long 19900))
+ (serv-busstop-8 of Bus_stop (geo_lat 10000) (geo_long 20300))
+ (serv-busstop-9 of Bus_stop (geo_lat 9500) (geo_long 20300))
+ (serv-busstop-10 of Bus_stop (geo_lat 10300) (geo_long 19600))
+ (serv-busstop-11 of Bus_stop (geo_lat 10400) (geo_long 19700))
+ (serv-busstop-12 of Bus_stop (geo_lat 9900) (geo_long 19800))
+ (serv-busstop-13 of Bus_stop (geo_lat 9700) (geo_long 20600))
+ (serv-busstop-14 of Bus_stop (geo_lat 9600) (geo_long 20300))
+ (serv-busstop-15 of Bus_stop (geo_lat 10000) (geo_long 19900))
+ (serv-busstop-16 of Bus_stop (geo_lat 10100) (geo_long 20200))
+ (serv-busstop-17 of Bus_stop (geo_lat 9800) (geo_long 20000))
+ (serv-busstop-18 of Bus_stop (geo_lat 10700) (geo_long 20800))
+ (serv-busstop-19 of Bus_stop (geo_lat 10900) (geo_long 20900))
+ (serv-busstop-20 of Bus_stop (geo_lat 10600) (geo_long 20700))
+
+ (serv-clinic-2 of Clinic (geo_lat 10350) (geo_long 19650))
+ (serv-clinic-3 of Clinic (geo_lat 9700) (geo_long 20650))
+ (serv-pharmacy-1 of Pharmacy (geo_lat 9950) (geo_long 20150))
+ (serv-pharmacy-2 of Pharmacy (geo_lat 9600) (geo_long 20450))
+ (serv-pharmacy-3 of Pharmacy (geo_lat 10400) (geo_long 19750))
+ (serv-pharmacy-4 of Pharmacy (geo_lat 10150) (geo_long 19950))
+ (serv-gym-1 of Gym (geo_lat 10250) (geo_long 19850))
+ (serv-gym-2 of Gym (geo_lat 9450) (geo_long 20550))
+ (serv-gym-3 of Gym (geo_lat 10800) (geo_long 20850))
+ (serv-park-2 of Park (geo_lat 9400) (geo_long 20600))
+ (serv-park-3 of Park (geo_lat 10750) (geo_long 19750))
+ (serv-park-4 of Park (geo_lat 9900) (geo_long 20550))
+ (serv-green-1 of Green_zone (geo_lat 11100) (geo_long 21050))
+ (serv-green-2 of Green_zone (geo_lat 9300) (geo_long 20350))
+ (serv-pool-1 of Pool (geo_lat 10550) (geo_long 19950))
+ (serv-pool-2 of Pool (geo_lat 9550) (geo_long 20250))
+ (serv-cinema-1 of Cinema (geo_lat 10200) (geo_long 19700))
+ (serv-cinema-2 of Cinema (geo_lat 9800) (geo_long 20480))
+ (serv-museum-1 of Museum (geo_lat 10050) (geo_long 19850))
+ (serv-sport-1 of Sport_center (geo_lat 9700) (geo_long 20050))
+ (serv-sport-2 of Sport_center (geo_lat 10900) (geo_long 20950))
+ (serv-beach-1 of Beach (geo_lat 12000) (geo_long 21500))
+ (serv-restaurant-1 of Restaurant (geo_lat 10300) (geo_long 19880))
+ (serv-restaurant-2 of Restaurant (geo_lat 9600) (geo_long 20480))
+ (serv-nightlife-1 of Nightlife (geo_lat 10150) (geo_long 19820))
+
+ ; Propiedades ubicadas coherentemente cerca del centro de su zona
+ (apt-101 of Apartment
+     (is_located_in_zone [zone-residential])
+     (AC yes)
+     (Heating yes)
+     (Appliances full)
+     (Balcony yes)
+     (Condition good)
+     (Elevator yes)
+     (Furnished yes)
+     (Garage yes)
+     (Garden no)
+     (Noise_Allowed no)
+     (Noise_level low)
+     (Num_Bathrooms 1)
+     (Num_Double_Rooms 1)
+     (Num_Single_Rooms 0)
+     (Pets_Allowed yes)
+     (Pool no)
+     (Sun_Time morning)
+     (Terrace no)
+     (Views garden)
+     (deposit_months 1)
+     (geo_lat 9500)
+     (geo_long 20400)
+     (internal_floors 1)
+     (monthly_price 850.0)
+     (square_meters 55.0))
+
  (zone-urbancore of Urban_core
      (Noise_Level medium)
      (Safety_Level high)
@@ -1875,4 +2095,36 @@
  (serv-school-2 of School (geo_lat 9400) (geo_long 20620))
  (serv-pharmacy-5 of Pharmacy (geo_lat 10380) (geo_long 19840))
  (serv-restaurant-3 of Restaurant (geo_lat 10120) (geo_long 19910))
+
+  ;; Servicios extra cerca de apt-101 (perfil mayores)
+ (serv-clinic-apt101 of Clinic (geo_lat 9500) (geo_long 20400))
+ (serv-pharmacy-apt101 of Pharmacy (geo_lat 9500) (geo_long 20400))
+ (serv-supermarket-apt101 of Supermarket (geo_lat 9500) (geo_long 20410))
+ (serv-busstop-apt101 of Bus_stop (geo_lat 9500) (geo_long 20390))
+ (serv-park-apt101 of Park (geo_lat 9510) (geo_long 20400))
+
+ ;; Servicios extra cerca de studio-201 (jóvenes / estudiante / adulto)
+ (serv-university-4 of University (geo_lat 10000) (geo_long 19990))
+ (serv-supermarket-ucore of Supermarket (geo_lat 10010) (geo_long 19990))
+ (serv-mall-ucore of Mall (geo_lat 10020) (geo_long 19980))
+ (serv-cinema-ucore of Cinema (geo_lat 10005) (geo_long 20010))
+ (serv-nightlife-ucore of Nightlife (geo_lat 9990) (geo_long 20010))
+ (serv-gym-ucore of Gym (geo_lat 10030) (geo_long 19990))
+ (serv-restaurant-ucore of Restaurant (geo_lat 10015) (geo_long 20005))
+ (serv-busstop-ucore of Bus_stop (geo_lat 10000) (geo_long 20020))
+
+ ;; Servicios extra cerca de house-402 (familia en zona segura)
+ (serv-school-3 of School (geo_lat 9550) (geo_long 20600))
+ (serv-green-3 of Green_zone (geo_lat 9560) (geo_long 20600))
+ (serv-park-6 of Park (geo_lat 9550) (geo_long 20610))
+ (serv-supermarket-res2 of Supermarket (geo_lat 9560) (geo_long 20610))
+ (serv-busstop-res2 of Bus_stop (geo_lat 9540) (geo_long 20600))
+ (serv-clinic-res2 of Clinic (geo_lat 9550) (geo_long 20590))
+
+ ;; Servicios extra cerca de flat-202 (grupo genérico)
+ (serv-mall-res1 of Mall (geo_lat 9800) (geo_long 20240))
+ (serv-cinema-res1 of Cinema (geo_lat 9810) (geo_long 20250))
+ (serv-nightlife-res1 of Nightlife (geo_lat 9790) (geo_long 20240))
+ (serv-gym-res1 of Gym (geo_lat 9820) (geo_long 20260))
+ (serv-supermarket-res1 of Supermarket (geo_lat 9800) (geo_long 20260))
 )
