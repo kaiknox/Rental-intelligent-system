@@ -11,6 +11,7 @@
 \usepackage{booktabs}
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage{float}
 
 \geometry{margin=2.5cm}
 
@@ -25,8 +26,7 @@
 }
 
 \title{Práctica de Sistemas Basados en el Conocimiento \\ Recomendación de Viviendas en Alquiler}
-\author{Grupo XX \\ Nombres de los integrantes}
-\date{\today}
+\author{Kirian Roca, Kai Knox e Iván Alcubierre}
 
 \begin{document}
 
@@ -39,7 +39,7 @@
 \label{sec:intro}
 
 \subsection{Estructura del documento}
-Este documento se organiza en tres partes principales, siguiendo las directrices de la rúbrica de evaluación:
+Este documento se organiza en tres partes principales:
 
 \begin{itemize}
     \item \textbf{Parte 1 (Introducción)}: Planteamiento del problema, objetivos y metodología.
@@ -74,7 +74,7 @@ El objetivo principal de esta práctica es diseñar e implementar un \textbf{Sis
 \end{itemize}
 
 \subsection{Metodología de desarrollo}
-Para abordar este problema, se ha seguido la metodología de \textbf{Ingeniería del Conocimiento} explicada en clase, estructurada en las siguientes fases:
+Para desarollar el trabajo hemos seguido estos 5 pasos:
 
 \begin{enumerate}
     \item \textbf{Identificación}: Análisis del enunciado, definición de objetivos y alcance.
@@ -94,7 +94,131 @@ Para abordar este problema, se ha seguido la metodología de \textbf{Ingeniería
 \label{subsec:conceptualizacion}
 
 \subsubsection{Extracción de conocimiento}
-Si se usó modelo de lenguaje: contexto dado, preguntas realizadas, conocimiento extraído. Si no, explicar cómo se obtuvo el conocimiento (sentido común, investigación).
+\textbf{Entrevista con experto IA (Gemini 3.0)}\\\\
+%
+    \textbf{Interviewer:} "We are going to do a role playing exercise. You are going to help a knowledge engineer perform knowledge elicitation for building a rule-based expert system for the recommendation of home rentals. You are a real estate agent with wide experience in this problem who knows how to match different kinds of people (families with or without children, students, single people, elderly) according to the characteristics of the home and its neighborhood. The knowledge engineer is going to ask about the characteristics, criteria, and knowledge that you use for making the decisions. Your answer should be direct and precise. The answers should be helpful for building rules for making decisions from the answers of people who are looking to rent a flat or a house."
+% Contexto
+	\textbf{Expert:} To build a robust recommendation system, we must classify clients into four specific archetypes, each with distinct priorities:
+\begin{itemize}
+\item \textbf{Elderly:} Their non-negotiable priority is Accessibility. If a property is not on the ground floor, it must have an elevator. They require essential services (Pharmacy, Supermarket) within short walking distance and strictly reject "Nightlife" zones due to noise.
+\item \textbf{Families:} They prioritize Space and Safety. They need a specific number of bedrooms to match their family size. They prioritize proximity to Schools and Green Areas and avoid "High Noise" or "Tourist" districts.
+\item \textbf{Students:} They are budget-driven but have specific technical needs. Internet and Furnishing are mandatory hard constraints. They will tolerate noise or older building conditions if the price is right. They prioritize proximity to the University or Public Transport.
+\item \textbf{Young Couples/Professionals:} They prioritize Lifestyle. They value proximity to Gyms, Restaurants, and Leisure. If they own a car, a Garage becomes a critical requirement due to the Lifestyle urban location.
+\end{itemize}
+
+% Atributos iniciales proporcionados
+	\textbf{Interviewer:} "Now I will send you a basis of the attributes for clients and properties that I am sure they have to be. Can you use your expert knowledge to suggest some attributes to make it more complete? 
+
+% Property
+\begin{enumerate}
+\item Monthly price in euros.
+\item Location (city district, address, GPS coordinates).
+\item Usable floor area in m$^2$.
+\item Number of bedrooms and whether they are double or single.
+\item Whether the dwelling has a terrace or balcony.
+\item Whether the dwelling is rented furnished and/or with appliances.
+\item Type of dwelling: flat, duplex, single-family house. For flats or duplexes, the floor level (mezzanine, first, second...).
+\item Other features such as: no-pets rule, heating/air conditioning, whether the flat gets sunlight (morning, afternoon, all day), access to a communal pool, parking space included, property with views. 
+\end{enumerate}
+
+% Clients
+\begin{enumerate}
+\item Maximum price they are willing to pay and whether the limit is strict or they could pay more if the offer is worth it.
+\item Restrictions regarding the number/size of the bedrooms.
+\item Minimum price, below which they believe the offer is too cheap to be adequate.
+\item Specific restriction or preference regarding distance to certain services (schools nearby, public transport nearby...).
+\item Whether they prefer to use public transport for commuting.
+\item Age of the applicants.
+\item Type of applicants: couple without children, couple planning to have children soon, family (single-parent, two-parent) with children/elderly dependents (number), group of students (number), individual...
+\item Whether they work/study in the city and where the workplace/place of study is located.
+\item Whether they own a car."
+\end{enumerate}
+
+% Atributos añadidos por el experto
+	\textbf{Expert:} To strengthen the system and reduce ambiguity in decision rules, we need additional measurable attributes for both Property and Clients. These enable clearer constraints, preference scoring, and rule branching.
+\paragraph{Property – Suggested Additional Attributes}
+\begin{itemize}
+\item Noise Level Classification: Quiet / Moderate / High. Necessary for Families and Elderly.
+\item Accessibility Indicators: Presence of elevator, ramp access, door width for wheelchair. Critical for Elderly.
+\item Energy Efficiency Rating: Impacts long-term cost; students and families react strongly to energy bills.
+\item Internet Availability and Speed: Mandatory for Students; highly relevant for Couples/Professionals working remotely.
+\item Heating Type and Insulation Quality: Relevant in older buildings; impacts comfort and utility expenses.
+\item Proximity Metrics: Walking time (not just distance) to public transport, university/schools, supermarkets, pharmacy.
+\item Neighborhood Category: Residential / Tourist / Nightlife / Business. Used to match lifestyle vs. noise tolerance.
+\item Safety Indicators: Crime level or “perceived safe area” flag. Families care; students tolerate lower.
+\item Building Age and Renovation Condition: Students tolerate older; families avoid degraded.
+\item Contract Constraints: Minimum rental duration, deposit size. People with strict budgets (students) react strongly.
+\item Pets Allowed / Forbidden: Already noted, but must be categorical because it blocks many options.
+\end{itemize}
+
+\paragraph{Clients – Suggested Additional Attributes}
+\begin{itemize}
+\item Noise Tolerance Level: Critical decision boundary between Elderly/Families vs. Students/Professionals.
+\item Mobility or Accessibility Needs: Presence of disability or reduced mobility; elevator becomes hard constraint.
+\item Internet Requirement: Binary but decisive.
+\item Expected Lease Duration: Students short-term; families long-term. Impacts landlord suitability.
+\item Work Modality: Remote/hybrid/on-site. Remote workers require strong internet and quiet environment.
+\item Lifestyle Priority: Quiet, central/leisure-oriented, green areas, nightlife. Makes rule pruning more accurate.
+\item Commute Distance Tolerance: Define acceptable walking/public transport travel time.
+\item Car Usage Frequency: Not only ownership; usage defines need for guaranteed parking.
+\end{itemize}
+These additions allow the rules to be actionable and conflict-resolving instead of vague.
+
+\subparagraph{}
+	\textbf{Interviewer:} “Can you suggest some filters that you apply to decide if a Property is good to a certain client?”
+	\textbf{Expert:} First, we must apply a hard financial filter before looking at preferences.
+\paragraph{Financial Filters}
+\begin{itemize}
+\item The 40\% Rule: The monthly rent must not exceed 40\% of the household's total monthly income. This is a safety check for solvency.
+\item Budget Limit: We respect the client's "Maximum Price," but we should allow a small margin (e.g., +10\%) if the property is "Ideal," unless the client marks their budget as "Strict."
+\end{itemize}
+Next, we apply structural and capacity filters to guarantee functional suitability:
+\paragraph{Structural Filters}
+\begin{itemize}
+\item Bedroom/Occupancy Consistency: The number and type of bedrooms must align with the household size. A family of four cannot be matched with a single-bedroom flat. Couples planning children should not be placed in a studio.
+\item Accessibility Compliance: If any applicant has reduced mobility or is elderly, the property must have either ground-floor access or a functioning elevator. Absence of these eliminates the property immediately.
+\item Mandatory Utility Requirements: If the client requires high-speed internet (students, remote workers), or heating/air conditioning (elderly, families in cold/hot climates), properties without these features are discarded.
+\item Transportation or Parking Constraint: If the client relies on public transport, the property must be within a reasonable walking radius of a reliable connection. If the client owns a car and parking is required, the property must provide either a garage or a guaranteed parking spot.
+\item Neighborhood Compatibility: Noise and security conditions must be aligned with the sensitivity of the client type. Nightlife areas are automatically excluded for elderly or families. Tourist zones are low priority for families but acceptable for students.
+\end{itemize}
+These filters eliminate structurally incompatible options before any ranking or preference scoring begins.
+
+\paragraph{Relación entre el conocimiento del experto y el código CLIPS:}
+
+\subparagraph{Aplicado}
+\begin{enumerate}
+\item \textbf{Presupuesto}  
+Se solicita precio máximo y si es estricto o flexible.  
+Se descartan propiedades que superan el máximo; si es flexible se permite hasta 10\%.
+\item \textbf{Dormitorios y espacio}  
+Filtrado por número de dormitorios dobles y simples.
+\item \textbf{Mascotas}  
+Se descartan viviendas donde no se permiten mascotas.
+\item \textbf{Coche}  
+Atr. \texttt{owns-car}, propiedades con \texttt{Garage}. Eliminación o penalización según cliente.
+\item \textbf{Trabajo/estudio}  
+Se registran coordenadas de trabajo/estudio.
+\item \textbf{Regla del 40\%}  
+Se registra ingreso mensual total y se descartan viviendas fuera del presupuesto.
+\item \textbf{Accesibilidad}  
+Atributos de ascensor y planta; reglas para clientes sensibles.
+\item \textbf{Ruido}  
+Atributos de ruido recibidos; filtros por tipo de cliente.
+\item \textbf{Seguridad}  
+Atributo de nivel de seguridad; filtrado según cliente.
+\item \textbf{Proximidad a servicios}  
+Coordenadas de servicios y propiedades.
+\item \textbf{Condiciones climáticas (sol)}  
+Atributos de AC, heating y orientación solar.
+\end{enumerate}
+
+\subparagraph{No aplicado}
+\begin{enumerate}
+\item \textbf{Internet}  
+Se considera que cada cliente contrata su propio servicio.
+\item \textbf{Clima adicional no relacionado con sol}  
+Se omiten factores climáticos globales para reducir complejidad del modelo.
+\end{enumerate}
 
 \subsubsection{Conceptos y relaciones principales}
 A partir del análisis del dominio y de la experiencia en portales inmobiliarios, identificamos los siguientes conceptos clave, que posteriormente se formalizarán en la ontología:
@@ -141,15 +265,6 @@ A partir del análisis del dominio y de la experiencia en portales inmobiliarios
         \item Mascotas, ruido tolerado, características deseadas (terraza, ascensor, amueblado, etc.).
     \end{itemize}
     \item Una \textbf{Vivienda} \textit{puede satisfacer o no} dichas preferencias, lo que determina su \textbf{grado de recomendación} (parcialmente adecuada, adecuada, muy recomendable).
-\end{itemize}
-
-\subsubsection{Descomposición en subproblemas}
-Explicar cómo se divide el problema global en tareas más pequeñas:
-\begin{itemize}
-    \item Subproblema 1: Captura de preferencias del usuario.
-    \item Subproblema 2: Evaluación de viviendas respecto a preferencias.
-    \item Subproblema 3: Cálculo de distancias a servicios.
-    \item Subproblema 4: Clasificación y recomendación final.
 \end{itemize}
 
 \subsection{Formalización}
@@ -216,7 +331,28 @@ Se han usado tipos de datos específicos (\texttt{boolean}, \texttt{int}, \textt
 \end{itemize}
 
 \subsubsection{Metodología de resolución de problemas}
-Explicar qué metodología se ha elegido (p. ej., clasificación, razonamiento basado en casos) y cómo los subproblemas identificados encajan en ella.
+Usamos clasificación huerística como metodología de resolución de problemas y la dividimos en estas partes: 
+
+\begin{enumerate}
+    \item \textbf{Reglas de abstracción:} 
+    Para transformar datos concretos (coordenadas, edades, precios) en categorías simbólicas que permiten una evaluación cualitativa. Esto incluye:
+    \begin{itemize}
+        \item Abstracción implícita (datos ya categóricos).
+        \item Abstracción inducida (preferencias deducidas del perfil demográfico).
+        \item Abstracción explícita (cálculo de distancias y ratios).
+    \end{itemize}
+
+    \item \textbf{Reglas de Clasificación Heurística:} 
+    Cada propiedad se evalúa contra una lista de criterios derivados del perfil del cliente. En lugar de una puntuación numérica, se utiliza un sistema de \textit{checklist} cualitativo que registra cumplimientos, fallos y extras.
+
+    \item \textbf{Clasificación por categorías predefinidas:} 
+    El resultado de la evaluación de clasificación heurística se traduce a una de cuatro categorías de recomendación, facilitando la interpretación por parte del usuario final.
+
+    \item \textbf{Estrategia de búsqueda exhaustiva:} 
+    El sistema evalúa \textbf{todas} las propiedades disponibles contra el perfil del cliente, sin poda temprana, garantizando que ninguna opción potencialmente adecuada sea descartada prematuramente.
+\end{enumerate}
+
+Esta metodología permite un balance entre flexibilidad (acepta múltiples tipos de clientes y propiedades) y transparencia (el usuario puede ver qué criterios se cumplen o fallan).
 
 \subsubsection{Diseño del Sistema de Reglas}
 \label{subsubsec:diseno-reglas}
@@ -345,22 +481,246 @@ Propiedad apt-101 -> muy-adecuado
 \label{subsec:implementacion}
 
 \subsubsection{Estructura del proyecto}
-Organización de módulos, templates, hechos iniciales.
+El sistema está organizado en varias partes claramente separadas mediante comentarios en el código CLIPS, que se ejecutan en un orden lógico controlado por salience (prioridad):
+
+\begin{enumerate}
+    \item \textbf{Lógica de startup y cálculo de proximidad (salience 100-99):} 
+    Inicializa las conexiones entre propiedades y servicios cercanos mediante reglas \texttt{inicio-calcular-cercania} e \texttt{inicio-calcular-media-cercania}.
+
+    \item \textbf{Herramientas de entrevista (funciones):} 
+    Contiene funciones utilitarias para la interacción con el usuario: \texttt{ask-number}, \texttt{ask-int-range}, \texttt{ask-yes-no}, \texttt{ask-coordinate}, etc.
+
+    \item \textbf{Estructura de datos temporal:} 
+    Define el \texttt{deftemplate user-responses} que almacena las respuestas del cuestionario paso a paso.
+
+    \item \textbf{Reglas del flujo de preguntas (salience variable):} 
+    Implementa el cuestionario guiado mediante reglas encadenadas que modifican el paso actual en \texttt{user-responses}. Incluye detección automática de perfiles (parejas, estudiantes).
+
+    \item \textbf{Lógica de clasificación y creación de instancia:} 
+    Contiene la regla \texttt{determine-and-create-client-final} que, mediante un árbol de decisión, clasifica al cliente en una subclase específica y crea la instancia correspondiente.
+
+    \item \textbf{Cálculo de distancias trabajo/estudio y densidad (salience -20):} 
+    Calcula atributos abstractos para cada propiedad respecto al cliente creado: \texttt{work-place}, \texttt{study-place}, \texttt{room-density}.
+
+    \item \textbf{Recomendación cualitativa por criterios (salience -40 a -45):} 
+    Evalúa cada propiedad contra los criterios del cliente, genera listas de cumplimientos/fallos/extras, y clasifica la propiedad en una categoría final de recomendación.
+\end{enumerate}
+
+\textbf{Hechos iniciales:} El sistema se inicia con el hecho \texttt{(start-execution)} y las instancias predefinidas en \texttt{definstances} (zonas, servicios y propiedades con atributos realistas y coordenadas coherentes).
 
 \subsubsection{Ejemplo de reglas clave}
-Fragmentos de código comentados que ilustren el razonamiento.
 
-\begin{lstlisting}[language=Lisp, caption=Ejemplo de regla en CLIPS]
-(defrule evaluar-precio
-    ?s <- (solicitante (precio-max ?pmax) (flexible ?flex))
-    ?v <- (vivienda (precio ?p) (id ?id))
-    (test (<= ?p ?pmax))
-    =>
-    (assert (candidata (id ?id) (motivo "Dentro de presupuesto"))))
+El sistema implementa diversos tipos de reglas que cubren desde la inicialización del sistema hasta la recomendación final. A continuación se muestran fragmentos comentados de algunas reglas representativas.
+
+\begin{lstlisting}[language=Lisp, caption=Regla de inicialización: cálculo de proximidad a servicios]
+;; Conecta propiedades con servicios cercanos (<=200m)
+(defrule inicio-calcular-cercania
+   (declare (salience 100)) ; Prioridad máxima: se ejecuta primero
+   ?p <- (object (is-a Property) 
+                 (geo_lat ?plat) (geo_long ?plong) 
+                 (is_near_service $?lista))
+   ?s <- (object (is-a Service) 
+                 (geo_lat ?slat) (geo_long ?slong))
+   
+   ;; Evita duplicados: solo si el servicio NO está ya en la lista
+   (test (eq (member$ ?s ?lista) FALSE))
+   ;; Condición de distancia: 200 metros o menos
+   (test (<= (euclid-dist ?plat ?plong ?slat ?slong) 200))
+   =>
+   ;; Acción: añade el servicio a la lista de cercanías
+   (send ?p put-is_near_service (insert$ ?lista 1 ?s))
+   (printout t "Sistema: Conectado " (instance-name ?p) 
+             " con servicio cercano " (instance-name ?s) crlf)
+)
 \end{lstlisting}
 
+Esta regla se ejecuta con prioridad máxima (\texttt{salience 100}) al inicio del sistema. Su función es precalcular las relaciones espaciales entre propiedades y servicios, almacenando en el multislot \texttt{is\_near\_service} todos los servicios ubicados a menos de 200 metros. Este cálculo inicial optimiza el sistema, evitando recalcular distancias durante la evaluación de cada cliente.
+
+\begin{lstlisting}[language=Lisp, caption=Regla del flujo de entrevista: captura de datos económicos]
+;; Paso 3 del cuestionario: información económica básica
+(defrule ask-economics
+   ?f <- (user-responses (step ask-economics))
+   =>
+   ;; Preguntas interactivas al usuario
+   (bind ?inc (ask-number "¿Cual es vuestro ingreso mensual total (neto)?"))
+   (bind ?bud (ask-number "¿Cual es vuestro presupuesto maximo objetivo?"))
+   (bind ?strict (ask-yes-no "¿Es este presupuesto estricto (no podeis pagar mas)?"))
+   (bind ?car (ask-yes-no "¿Teneis coche propio?"))
+   (bind ?pet (ask-yes-no "¿Teneis mascotas?"))
+   
+   ;; Actualiza el template temporal con las respuestas
+   (modify ?f (income ?inc)
+              (max_budget ?bud)
+              (budget_is_strict ?strict)
+              (owns-car ?car)
+              (has-pets ?pet)
+              (step ask-work-logistics)) ; Pasa al siguiente paso
+)
+\end{lstlisting}
+
+Esta regla forma parte del motor de entrevista interactiva. Utiliza funciones auxiliares (\texttt{ask-number}, \texttt{ask-yes-no}) para capturar datos del usuario y actualiza el \texttt{deftemplate} temporal \texttt{user-responses}. El sistema avanza modificando el slot \texttt{step}, lo que activa la siguiente regla del flujo.
+
+\begin{lstlisting}[language=Lisp, caption=Regla de clasificación: árbol de decisión para individuos]
+;; Fragmento de la regla determine-and-create-client-final
+(if (= ?np 1) then  ; CASO 1: INDIVIDUAL
+    (printout t "DEBUG: Rama INDIVIDUAL" crlf)
+    (if ?has-elderly then
+        (bind ?class-name Elderly)
+        (printout t "DEBUG: Asignado ELDERLY" crlf)
+    else
+        (if (eq ?s-any yes) then
+            (bind ?class-name Student)
+            (printout t "DEBUG: Asignado STUDENT" crlf)
+        else
+            (if (<= (nth$ 1 ?ages) 30) then 
+                (bind ?class-name Young)
+                (printout t "DEBUG: Asignado YOUNG" crlf)
+            else 
+                (bind ?class-name Adult)
+                (printout t "DEBUG: Asignado ADULT" crlf)
+            )
+        )
+    )
+)
+\end{lstlisting}
+
+Este fragmento muestra la lógica de clasificación para clientes individuales. El sistema evalúa secuencialmente: 1) si es anciano (edad ≥ 65), 2) si es estudiante (estudia en la ciudad), 3) si es joven (edad ≤ 30), 4) en caso contrario, adulto. Esta estructura de árbol de decisión codifica el conocimiento experto sobre las características distintivas de cada perfil.
+
+\begin{lstlisting}[language=Lisp, caption=Regla de evaluación: cálculo de densidad de habitaciones]
+;; Calcula si la propiedad tiene espacio suficiente para el grupo
+(defrule calculate-room-density
+   (declare (salience -20)) ; Prioridad baja: se ejecuta después
+   (current-client ?client-id)
+   ?client <- (object (is-a Client_Group) 
+                      (num_people ?num-people))
+   ?prop <- (object (is-a Property) 
+                    (Num_Double_Rooms ?double-rooms)
+                    (Num_Single_Rooms ?single-rooms))
+   (not (room-density-done ?prop)) ; Evita recálculos
+   =>
+   ;; Capacidad total: habitaciones dobles cuentan como 2 plazas
+   (bind ?capacity (+ (* ?double-rooms 2) ?single-rooms))
+   
+   ;; Ratio: capacidad / número de personas
+   (bind ?ratio (/ ?capacity ?num-people))
+   
+   ;; Clasificación según umbrales predefinidos
+   (bind ?density
+       (if (< ?ratio 1.0) then saturated
+        else (if (= ?ratio 1.0) then sufficient
+              else spacious)))
+   
+   (send ?prop put-room-density ?density)
+   (assert (room-density-done ?prop)) ; Marca como procesado
+)
+\end{lstlisting}
+
+Esta regla de abstracción transforma datos concretos (número de habitaciones) en categorías simbólicas (\texttt{saturated}, \texttt{sufficient}, \texttt{spacious}). El uso de \texttt{salience -20} asegura que se ejecute después de la creación del cliente, y el hecho \texttt{room-density-done} evita procesamientos redundantes.
+
+\begin{lstlisting}[language=Lisp, caption=Regla de evaluación principal: criterios básicos]
+;; Evalúa múltiples criterios contra una propiedad
+(defrule evaluate-basic-criteria
+   (declare (salience -40))
+   (current-client ?cid)
+   ?c <- (object (is-a Client_Group)
+                 (has_pets ?pets)
+                 (max_budget ?maxb)
+                 (Works_In_City ?works)
+                 (Study_In_City ?studies)
+                 (desired_features $?feat))
+   ?p <- (object (is-a Property)
+                 (monthly_price ?price)
+                 (Pets_Allowed ?pets-ok)
+                 (room-density ?dens)
+                 (work-place ?workplace)
+                 (study-place ?studyplace))
+   =>
+   (bind ?fails (create$))
+   (bind ?mets (create$))
+   
+   ;; Criterio 1: Presupuesto (filtro duro)
+   (if (> ?price ?maxb)
+       then (bind ?fails (insert$ ?fails 1 fuera-de-presupuesto))
+       else (bind ?mets  (insert$ ?mets  1 entra-en-presupuesto)))
+   
+   ;; Criterio 2: Mascotas
+   (if (eq ?pets yes) then
+       (if (eq ?pets-ok no)
+            then (bind ?fails (insert$ ?fails 1 no-admite-mascotas))
+            else (bind ?mets  (insert$ ?mets  1 admite-mascotas))))
+   
+   ;; Criterios 3-5: Densidad, trabajo, estudio
+   (if (eq ?dens saturated)
+       then (bind ?fails (insert$ ?fails 1 poco-espacio)))
+   
+   (if (eq ?works yes) then
+       (if (eq ?workplace lejos)
+           then (bind ?fails (insert$ ?fails 1 lejos-trabajo))
+           else (bind ?mets  (insert$ ?mets  1 cerca-trabajo))))
+   
+   ;; Evaluación de características deseadas dinámicamente
+   (foreach ?f ?feat
+     (if (feature-satisfied ?p ?f)
+         then (bind ?mets (insert$ ?mets 1 (sym-cat cumple- ?f)))
+         else (bind ?fails (insert$ ?fails 1 (sym-cat falta- ?f)))))
+   
+   (assert (prop-assessment (prop (instance-name ?p))
+                            (failed-criteria ?fails)
+                            (met-criteria ?mets)))
+)
+\end{lstlisting}
+
+Esta regla es el núcleo del sistema de evaluación. Implementa una estrategia de \textit{checklist} múltiple donde cada propiedad se evalúa contra todos los criterios relevantes del cliente. Los resultados se almacenan en el template \texttt{prop-assessment} para su posterior clasificación. La función \texttt{feature-satisfied} permite evaluar dinámicamente características específicas solicitadas por el cliente.
+
+\paragraph{Resumen de tipos de reglas implementadas:}
+
+\begin{table}[H]
+\centering
+\caption{Clasificación de reglas en el sistema CLIPS}
+\begin{tabular}{p{0.25\textwidth}|p{0.3\textwidth}|p{0.25\textwidth}}
+\toprule
+\textbf{Tipo de regla} & \textbf{Función principal} & \textbf{Ejemplo} \\
+\midrule
+Reglas de inicialización & Precalcular relaciones espaciales & \texttt{inicio-calcular-cercania} \\
+Reglas de flujo & Guiar la entrevista interactiva & \texttt{ask-economics}, \texttt{ask-work-logistics} \\
+Reglas de clasificación & Determinar perfil del cliente & \texttt{determine-and-create-client-final} \\
+Reglas de abstracción & Transformar datos en categorías & \texttt{calculate-room-density} \\
+Reglas de clasificación heurística & Comparar propiedad con criterios & \texttt{evaluate-basic-criteria} \\
+Reglas de recomendación & Asignar categoría final & \texttt{classify-property} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+El sistema utiliza \texttt{salience} (prioridad) para controlar el orden de ejecución: las reglas de inicialización tienen prioridad alta (100-99), las de evaluación media (-20 a -40), y las de recomendación prioridad baja (-45). Este diseño asegura que todos los datos necesarios estén calculados antes de tomar decisiones de recomendación.
+
 \subsubsection{Desarrollo incremental}
-Descripción de los prototipos desarrollados, evolución desde el primer prototipo funcional hasta la versión final.
+\label{subsubsec:desarrollo-incremental}
+
+El desarrollo del sistema siguió una estrategia incremental, construyendo prototipos funcionales que evolucionaron hasta la versión final:
+
+\begin{enumerate}
+    \item \textbf{Prototipo 1: Ontología y datos básicos.} 
+    Se creó la ontología en Protégé con las cuatro jerarquías principales (Client\_Group, Property, Service, Zone) y se exportó a CLIPS mediante la herramienta \texttt{owl2clips}. Se definieron instancias de prueba mínimas (3 propiedades, 5 servicios) para validar la estructura básica.
+    
+    \item \textbf{Prototipo 2: Entrevista y clasificación del cliente.} 
+    Se implementó el flujo de preguntas interactivo con reglas encadenadas (\texttt{ask-economics}, \texttt{ask-work-logistics}, etc.) y la lógica de clasificación demográfica en la regla \texttt{determine-and-create-client-final}. En esta versión, las recomendaciones se basaban únicamente en edad y número de personas, sin considerar servicios ni distancias.
+    
+    \item \textbf{Prototipo 3: Cálculo de proximidades y distancias.} 
+    Se añadieron las funciones de distancia euclidiana (\texttt{euclid-dist}) y las reglas de startup \texttt{inicio-calcular-cercania} e \texttt{inicio-calcular-media-cercania} para conectar propiedades con servicios. También se implementó el cálculo de distancias a trabajo/estudio mediante las reglas \texttt{calculate-work-distances} y \texttt{calculate-study-distances}.
+    
+    \item \textbf{Prototipo 4: Implementación de reglas de abstracción y asociación heurística.} 
+    Se desarrollaron dos categorías principales de reglas:
+    \begin{itemize}
+        \item \textbf{Reglas de abstracción:} Transforman datos concretos en categorías simbólicas. Se implementaron reglas como \texttt{calculate-room-density} (clasifica densidad de habitaciones como \texttt{saturated}, \texttt{sufficient} o \texttt{spacious}) y las funciones de clasificación de distancias (\texttt{classify-distance}).
+        \item \textbf{Reglas de asociación heurística:} Aplican conocimiento experto para evaluar compatibilidad entre propiedades y clientes. La regla principal \texttt{evaluate-basic-criteria} implementa un sistema de \textit{checklist} que compara múltiples atributos del cliente con los de la propiedad, generando listas de criterios cumplidos y fallados.
+    \end{itemize}
+    Se introdujo la clasificación final mediante la regla \texttt{classify-property} que, basándose en los resultados de las reglas anteriores, asigna categorías de recomendación (\texttt{parcial}, \texttt{adecuado}, \texttt{muy-adecuado}, \texttt{ideal}).
+    
+    \item \textbf{Prototipo final: Depuración y datos realistas.} 
+    Se expandió el conjunto de instancias en \texttt{definstances} a 20 propiedades y 50+ servicios con coordenadas coherentes. Se afinaron los umbrales de distancia, se añadieron criterios extras (orientación solar, calefacción, mobiliario) y se implementaron mecanismos para evitar bucles infinitos (\texttt{test (member\$ ...)}) y reprocesamiento (\texttt{work-distance-done}, \texttt{study-distance-done}). Se ajustaron las prioridades (\texttt{salience}) para optimizar el flujo de ejecución.
+\end{enumerate}
+
+Cada prototipo fue probado con casos específicos, permitiendo detectar y corregir inconsistencias (ej: servicios duplicados en listas, clasificación errónea de parejas sin hijos, manejo de coordenadas múltiples). Este enfoque incremental permitió validar cada componente del sistema de forma aislada antes de integrarlo en el conjunto, reduciendo la complejidad del proceso de depuración y facilitando la identificación temprana de problemas de diseño.
 
 % ============================
 % TERCERA PARTE: RESULTADOS Y CONCLUSIONES
