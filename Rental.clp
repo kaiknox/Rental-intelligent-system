@@ -472,6 +472,10 @@
         (allowed-symbols low medium high)
         (type SYMBOL)
         (create-accessor read-write))
+    (slot Safety_level
+        (allowed-symbols low medium high)
+        (type SYMBOL)
+        (create-accessor read-write))
     (slot Num_Bathrooms
         (type INTEGER)
         (create-accessor read-write))
@@ -1081,12 +1085,12 @@
 (defrule calculate-work-distances
    (declare (salience -20))
    (current-client ?client-id)
-   ?client <- (object (is-a Client_Group) 
+   ?client <- (object (is-a Client_Group)
                       (Works_In_City ?works)
                       (work_lat $?wlats)
                       (work_long $?wlongs))
-   ?prop <- (object (is-a Property) 
-                    (geo_lat ?plat) 
+   ?prop <- (object (is-a Property)
+                    (geo_lat ?plat)
                     (geo_long ?plong))
    (not (work-distance-done ?prop))
    =>
@@ -1185,6 +1189,9 @@
    (multislot extra-criteria)
    (slot category))
 
+(deftemplate zone-attrs-initialized
+   (slot prop))
+
 ;; Helper: ¿la propiedad tiene un servicio cercano de cierta clase?
 (deffunction has-near-service-of-class (?prop ?cls)
    (bind ?svcs (send ?prop get-is_near_service))
@@ -1199,31 +1206,58 @@
       (case "pets-allowed" then (return (eq (send ?p get-Pets_Allowed) yes)))
       (case "elevator" then
          (return (or
-                  ;; Tiene ascensor
                   (eq (send ?p get-Elevator) yes)
-                  ;; Es casa de una sola planta (no necesita ascensor)
                   (and (<= (send ?p get-internal_floors) 1)
                        (or (eq (class ?p) Detached_House)
                            (eq (class ?p) Row_House)
                            (eq (class ?p) Semidetached_House)
                            (eq (class ?p) Single-family_House)))
-                  ;; Es bajo en edificio (solo clases con floor_level)
                   (and (or (eq (class ?p) Apartment)
                            (eq (class ?p) Studio)
                            (eq (class ?p) Room))
                        (<= (send ?p get-floor_level) 1)))))
       (case "quiet" then (return (eq (send ?p get-Noise_level) low)))
-      (case "single-floor" then (return ( eq (send ?p get-internal_floors) 1)))
+      (case "single-floor" then (return (eq (send ?p get-internal_floors) 1)))
       (case "public-transport" then (return (or (has-near-service-of-class ?p Bus_stop)
                                                 (has-near-service-of-class ?p Metro_station))))
+      (case "transport" then (return (or (has-near-service-of-class ?p Bus_stop)
+                                         (has-near-service-of-class ?p Metro_station)
+                                         (has-near-service-of-class ?p Train_station)
+                                         (has-near-service-of-class ?p Clable_car_station)
+                                         (has-near-service-of-class ?p Parking))))
       (case "healthcare" then (return (or (has-near-service-of-class ?p Clinic)
                                           (has-near-service-of-class ?p Hospital))))
-      (case "park" then (return (has-near-service-of-class ?p Park)))
       (case "pharmacy" then (return (has-near-service-of-class ?p Pharmacy)))
-      (case "school" then (return (has-near-service-of-class ?p School)))
       (case "education" then (return (or (has-near-service-of-class ?p School)
                                          (has-near-service-of-class ?p University))))
+      (case "school" then (return (has-near-service-of-class ?p School)))
+      (case "park" then (return (has-near-service-of-class ?p Park)))
+      (case "recreation" then (return (or (has-near-service-of-class ?p Park)
+                                          (has-near-service-of-class ?p Green_zone)
+                                          (has-near-service-of-class ?p Beach)
+                                          (has-near-service-of-class ?p Pool))))
+      (case "sport" then (return (or (has-near-service-of-class ?p Sport_center)
+                                     (has-near-service-of-class ?p Gym))))
+      (case "nightlife" then (return (has-near-service-of-class ?p Nightlife)))
+      (case "restaurant" then (return (has-near-service-of-class ?p Restaurant)))
+      (case "shopping" then (return (or (has-near-service-of-class ?p Mall)
+                                        (has-near-service-of-class ?p Supermarket)
+                                        (has-near-service-of-class ?p Store)
+                                        (has-near-service-of-class ?p Hipermarket))))
+      (case "beach" then (return (has-near-service-of-class ?p Beach)))
+      (case "gym" then (return (has-near-service-of-class ?p Gym)))
+      (case "safe-area" then
+         (return (eq (send ?p get-Safety_level) high)))
       (default (return FALSE))))
+
+(defrule init-prop-zone-attrs
+   (declare (salience 300))
+   ?p <- (object (is-a Property) (is_located_in_zone ?z))
+   =>
+   (bind ?n (send ?z get-Noise_Level))
+   (bind ?s (send ?z get-Safety_Level))
+   (send ?p put-Noise_level ?n)
+   (send ?p put-Safety_level ?s))
 
 ;; Evalúa criterios básicos y registra qué se cumple y qué falla
 (defrule evaluate-basic-criteria
@@ -1298,13 +1332,15 @@
    (if (eq ?cond excellent)
      then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) estado-excelente)))
    (if (has-near-service-of-class ?p Park)
-     then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) parque-cerca)))
+     then
+       (if (eq (member$ "park" ?feat) FALSE)
+         then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) parque-cerca))))
    (if (eq ?terrace yes)
      then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) tiene-terraza)))
    (if (eq ?pool yes)
      then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) tiene-piscina)))
    (if (eq ?heating yes)
-     then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) tiene-calentamiento)))
+     then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) tiene-calefacción)))
    (if (eq ?ac yes)
       then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) tiene-aire-acondicionado)))
    (if (eq ?sun_time all_day) ;;De momento solo cuenta si hay luz solar todo el día pq si es parcial no es tan bueno
@@ -1466,7 +1502,7 @@
 
  ; Propiedades ubicadas coherentemente cerca del centro de su zona
  (apt-101 of Apartment
-     (is_located_in_zone zone-residential)
+     (is_located_in_zone [zone-residential])
      (AC yes)
      (Heating yes)
      (Appliances full)
@@ -1494,7 +1530,7 @@
      (square_meters 55.0))
 
  (studio-201 of Studio
-     (is_located_in_zone zone-urbancore)
+     (is_located_in_zone [zone-urbancore])
      (AC no)
      (Heating no)
      (Appliances basic)
@@ -1522,7 +1558,7 @@
      (square_meters 28.0))
 
  (house-301 of Detached_House
-     (is_located_in_zone zone-residential)
+     (is_located_in_zone [zone-residential])
      (AC yes)
      (Heating no)
      (Appliances full)
@@ -1550,7 +1586,7 @@
      (square_meters 120.0))
 
  (room-401 of Room
-     (is_located_in_zone zone-downtown)
+     (is_located_in_zone [zone-downtown])
      (AC no)
      (Heating yes)
      (Appliances basic)
@@ -1578,7 +1614,7 @@
      (square_meters 18.0))
 
  (loft-999 of Apartment
-     (is_located_in_zone zone-industrial)
+     (is_located_in_zone [zone-industrial])
      (AC no)
      (Heating no)
      (Appliances none)
@@ -1606,7 +1642,7 @@
      (square_meters 20.0))
 
  (flat-202 of Apartment
-     (is_located_in_zone zone-residential)
+     (is_located_in_zone [zone-residential])
      (AC yes)
      (Heating yes)
      (Appliances full)
@@ -1634,7 +1670,7 @@
      (square_meters 68.0))
 
  (house-401 of Row_House
-     (is_located_in_zone zone-urbancore)
+     (is_located_in_zone [zone-urbancore])
      (AC yes)
      (Heating yes)
      (Appliances full)
@@ -1660,4 +1696,156 @@
      (internal_floors 1)
      (monthly_price 1000.0)
      (square_meters 95.0))
+
+ (penthouse-501 of Penthouse
+     (is_located_in_zone [zone-downtown])
+     (AC yes) (Heating yes) (Appliances full)
+     (Balcony yes) (Condition excellent)
+     (Elevator yes) (Furnished yes)
+     (Garage yes) (Garden no)
+     (Noise_Allowed no) (Noise_level medium)
+     (Num_Bathrooms 2) (Num_Double_Rooms 2) (Num_Single_Rooms 1)
+     (Pets_Allowed yes) (Pool no)
+     (Sun_Time all_day) (Terrace yes) (Views garden)
+     (deposit_months 2)
+     (geo_lat 10150) (geo_long 19850)
+     (internal_floors 1) (monthly_price 1900.0) (square_meters 140.0))
+
+ (duplex-601 of Duplex
+     (is_located_in_zone [zone-business])
+     (AC yes) (Heating yes) (Appliances full)
+     (Balcony yes) (Condition good)
+     (Elevator no) (Furnished partial)
+     (Garage yes) (Garden small)
+     (Noise_Allowed no) (Noise_level medium)
+     (Num_Bathrooms 2) (Num_Double_Rooms 2) (Num_Single_Rooms 1)
+     (Pets_Allowed yes) (Pool no)
+     (Sun_Time afternoon) (Terrace yes) (Views street)
+     (deposit_months 2)
+     (geo_lat 10350) (geo_long 19720)
+     (internal_floors 2) (monthly_price 1450.0) (square_meters 115.0))
+
+ (triplex-701 of Triplex
+     (is_located_in_zone [zone-urbancore])
+     (AC yes) (Heating yes) (Appliances full)
+     (Balcony yes) (Condition excellent)
+     (Elevator no) (Furnished yes)
+     (Garage no) (Garden no)
+     (Noise_Allowed yes) (Noise_level medium)
+     (Num_Bathrooms 3) (Num_Double_Rooms 3) (Num_Single_Rooms 1)
+     (Pets_Allowed yes) (Pool no)
+     (Sun_Time morning) (Terrace yes) (Views street)
+     (deposit_months 3)
+     (geo_lat 10250) (geo_long 19920)
+     (internal_floors 3) (monthly_price 2100.0) (square_meters 160.0))
+
+ (semidet-801 of Semidetached_House
+     (is_located_in_zone [zone-residential])
+     (AC yes) (Heating yes) (Appliances full)
+     (Balcony yes) (Condition good)
+     (Elevator no) (Furnished partial)
+     (Garage yes) (Garden yes)
+     (Noise_Allowed no) (Noise_level low)
+     (Num_Bathrooms 2) (Num_Double_Rooms 2) (Num_Single_Rooms 2)
+     (Pets_Allowed yes) (Pool no)
+     (Sun_Time all_day) (Terrace yes) (Views garden)
+     (deposit_months 2)
+     (geo_lat 9700) (geo_long 20550)
+     (internal_floors 1) (monthly_price 1350.0) (square_meters 125.0))
+
+ (detached-901 of Detached_House
+     (is_located_in_zone [zone-industrial])
+     (AC no) (Heating yes) (Appliances basic)
+     (Balcony no) (Condition good)
+     (Elevator no) (Furnished no)
+     (Garage yes) (Garden yes)
+     (Noise_Allowed yes) (Noise_level high)
+     (Num_Bathrooms 1) (Num_Double_Rooms 1) (Num_Single_Rooms 1)
+     (Pets_Allowed yes) (Pool no)
+     (Sun_Time afternoon) (Terrace no) (Views street)
+     (deposit_months 1)
+     (geo_lat 10950) (geo_long 20950)
+     (internal_floors 1) (monthly_price 700.0) (square_meters 80.0))
+
+ (studio-502 of Studio
+     (is_located_in_zone [zone-downtown])
+     (AC yes) (Heating no) (Appliances basic)
+     (Balcony no) (Condition good)
+     (Elevator yes) (Furnished yes)
+     (Garage no) (Garden no)
+     (Noise_Allowed yes) (Noise_level high)
+     (Num_Bathrooms 1) (Num_Double_Rooms 0) (Num_Single_Rooms 1)
+     (Pets_Allowed no) (Pool no)
+     (Sun_Time morning) (Terrace no) (Views street)
+     (deposit_months 1)
+     (geo_lat 10080) (geo_long 19870)
+     (internal_floors 1) (monthly_price 550.0) (square_meters 32.0))
+
+ (apt-303 of Apartment
+     (is_located_in_zone [zone-business])
+     (AC yes) (Heating yes) (Appliances full)
+     (Balcony yes) (Condition excellent)
+     (Elevator yes) (Furnished yes)
+     (Garage yes) (Garden no)
+     (Noise_Allowed no) (Noise_level medium)
+     (Num_Bathrooms 2) (Num_Double_Rooms 2) (Num_Single_Rooms 1)
+     (Pets_Allowed yes) (Pool yes)
+     (Sun_Time all_day) (Terrace yes) (Views garden)
+     (deposit_months 2)
+     (geo_lat 10320) (geo_long 19820)
+     (internal_floors 1) (monthly_price 1600.0) (square_meters 130.0))
+
+ (room-402 of Room
+     (is_located_in_zone [zone-industrial])
+     (AC no) (Heating no) (Appliances none)
+     (Balcony no) (Condition bad)
+     (Elevator no) (Furnished no)
+     (Garage no) (Garden no)
+     (Noise_Allowed yes) (Noise_level high)
+     (Num_Bathrooms 1) (Num_Double_Rooms 0) (Num_Single_Rooms 1)
+     (Pets_Allowed no) (Pool no)
+     (Sun_Time afternoon) (Terrace no) (Views street)
+     (deposit_months 1)
+     (geo_lat 11100) (geo_long 21100)
+     (internal_floors 1) (monthly_price 300.0) (square_meters 15.0))
+
+ (flat-203 of Apartment
+     (is_located_in_zone [zone-residential])
+     (AC yes) (Heating yes) (Appliances full)
+     (Balcony yes) (Condition excellent)
+     (Elevator yes) (Furnished partial)
+     (Garage yes) (Garden no)
+     (Noise_Allowed no) (Noise_level low)
+     (Num_Bathrooms 2) (Num_Double_Rooms 2) (Num_Single_Rooms 1)
+     (Pets_Allowed yes) (Pool no)
+     (Sun_Time afternoon) (Terrace yes) (Views garden)
+     (deposit_months 1)
+     (geo_lat 9700) (geo_long 20350)
+     (internal_floors 1) (monthly_price 1250.0) (square_meters 95.0))
+
+ (house-402 of Single-family_House
+     (is_located_in_zone [zone-residential])
+     (AC yes) (Heating yes) (Appliances full)
+     (Balcony yes) (Condition excellent)
+     (Elevator no) (Furnished yes)
+     (Garage yes) (Garden yes)
+     (Noise_Allowed no) (Noise_level low)
+     (Num_Bathrooms 3) (Num_Double_Rooms 3) (Num_Single_Rooms 2)
+     (Pets_Allowed yes) (Pool yes)
+     (Sun_Time all_day) (Terrace yes) (Views garden)
+     (deposit_months 2)
+     (geo_lat 9550) (geo_long 20600)
+     (internal_floors 1) (monthly_price 2200.0) (square_meters 180.0))
+
+ ;; Servicios extra para más combinaciones
+ (serv-hospital-2 of Hospital (geo_lat 9700) (geo_long 20500))
+ (serv-university-3 of University (geo_lat 9500) (geo_long 20450))
+ (serv-park-5 of Park (geo_lat 9600) (geo_long 20380))
+ (serv-gym-4 of Gym (geo_lat 10350) (geo_long 19850))
+ (serv-busstop-21 of Bus_stop (geo_lat 10450) (geo_long 19810))
+ (serv-busstop-22 of Bus_stop (geo_lat 9650) (geo_long 20520))
+ (serv-metro-2 of Metro_station (geo_lat 10220) (geo_long 19780))
+ (serv-school-2 of School (geo_lat 9400) (geo_long 20620))
+ (serv-pharmacy-5 of Pharmacy (geo_lat 10380) (geo_long 19840))
+ (serv-restaurant-3 of Restaurant (geo_lat 10120) (geo_long 19910))
 )
