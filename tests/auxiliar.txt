@@ -1,0 +1,56 @@
+Test 1: Family young, workers + one student
+
+Checks client classification to Family/No_Elderly.
+Exercises work-place and study-place distance calculation with multiple coordinates.
+Verifies room-density categorization with 3 people vs listed rooms.
+Runs basic property evaluation and classification.
+Test 2: Young couple, no car/pets, 2 workers downtown
+
+Checks couple handling without explicit “is-couple” prompt (still classifies via ages/np).
+Focuses on work-place distance around urban core/metro.
+Evaluates constraints related to budget vs price (non-strict).
+Ensures no student distances are computed.
+Test 3: Family with minors, workers and students
+
+Forces Family classification due to minors.
+Exercises both distance rules with multiple work and study locations.
+Validates desired_features enrichment for families (garden/park/safe-area).
+Checks room-density against larger group and mixed preferences.
+Test 4: Student group of 3, no workers
+
+Classifies as Student_Group (students yes, works no, no elderly/minors).
+Stresses study-place distances with three campuses.
+Validates student-oriented desired_features (education/public-transport/internet/nightlife).
+Ensures budget impacts evaluation for lower budgets.
+Test 5: Elderly individual
+
+Classifies as Elderly (np=1, age ≥ 65).
+Skips work/study distances.
+Validates elderly-oriented desired_features (elevator/quiet/single-floor/healthcare).
+Checks evaluation under moderate budget and accessibility-oriented properties.
+
+Test 6: Strict low budget, 2 people, no work/study
+
+Focus: Budget constraints with budget_is_strict=yes.
+Ensures properties over max_budget are rejected and no distance rules run.
+Good baseline for minimal logistics.
+Test 7: Pets + car; 3 people; workers only
+
+Focus: Desired features pets-allowed and parking.
+Exercises work distances from residential/metro areas.
+Checks non-strict budget tolerance and family-like preferences.
+Test 8: Elderly couple; no work/study
+
+Focus: Elderly classification and accessibility preferences (elevator, quiet, single-floor, healthcare).
+Skips logistics; evaluates suitability of properties for mobility/access.
+Validates room-density for 2 people vs listed rooms.
+Test 9: Student group with multiple campuses
+
+Focus: calculate-study-distances with several campus coordinates.
+Classifies as Student_Group; verifies student-oriented features (education, public-transport, nightlife).
+Budget impact on lower shared budgets.
+Test 10: Room-density extreme; 5 people, few rooms
+
+Focus: calculate-room-density categorization under capacity shortage.
+With 5 people and limited rooms, expects saturated unless a property has enough doubles/singles.
+Also tests work-place distance with a single work location.
