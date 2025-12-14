@@ -848,6 +848,9 @@
    =>
    (bind ?inc (ask-number "¿Cual es vuestro ingreso mensual total (neto)?"))
    (bind ?bud (ask-number "¿Cual es vuestro presupuesto maximo objetivo?"))
+   (while (> ?bud ?inc) do
+      (printout t "El presupuesto maximo no puede ser mayor que el ingreso mensual. Introdúcelo de nuevo." crlf)
+      (bind ?bud (ask-number "¿Cual es vuestro presupuesto maximo objetivo?")))
    (bind ?strict (ask-yes-no "¿Es este presupuesto estricto (no podeis pagar mas)?"))
    (bind ?car (ask-yes-no "¿Teneis coche propio?"))
    (bind ?pet (ask-yes-no "¿Teneis mascotas?"))
@@ -1416,13 +1419,16 @@
    (bind ?missing (create$))
 
    ;; C1: Presupuesto
-   (if (> ?price ?maxb)
-       then (if (eq ?strict no)
-            then (if (> ?price (* ?maxb 1.1))
-                then (bind ?fails (insert$ ?fails (+ (length$ ?fails) 1) fuera-de-presupuesto))
-                else (bind ?mets  (insert$ ?mets  (+ (length$ ?mets)  1) entra-en-presupuesto)))
-            else (bind ?fails (insert$ ?fails (+ (length$ ?fails) 1) fuera-de-presupuesto)))
-       else (bind ?mets  (insert$ ?mets  (+ (length$ ?mets)  1) entra-en-presupuesto)))
+   (if (eq ?strict yes) then
+       ;; Presupuesto estricto: precio debe estar por debajo del budget
+       (if (> ?price ?maxb)
+           then (bind ?fails (insert$ ?fails (+ (length$ ?fails) 1) fuera-de-presupuesto))
+           else (bind ?mets  (insert$ ?mets  (+ (length$ ?mets)  1) entra-en-presupuesto)))
+   else
+       ;; Presupuesto no estricto: precio debe ser < 40% del ingreso mensual
+       (if (> ?price (* ?monthinc 0.4))
+           then (bind ?fails (insert$ ?fails (+ (length$ ?fails) 1) fuera-de-presupuesto))
+           else (bind ?mets  (insert$ ?mets  (+ (length$ ?mets)  1) entra-en-presupuesto))))
 
    ;; C2: Mascotas
    (if (eq ?pets yes) then
