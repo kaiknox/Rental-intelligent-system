@@ -451,6 +451,7 @@ Una vez obtenidos los atributos abstractos, el sistema evalúa cada propiedad co
     \item \texttt{met-criteria}: Criterios que satisface.
     \item \texttt{failed-criteria}: Criterios que no satisface.
     \item \texttt{extra-criteria}: Características adicionales positivas no solicitadas explícitamente.
+    \item \texttt{missing-criteria}: Características negativas no solicitadas explícitamente.
 \end{itemize}
 
 \paragraph{2.2.3.3 Reglas de Clasificación y Recomendación}
