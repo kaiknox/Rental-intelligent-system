@@ -330,6 +330,13 @@ Se han usado tipos de datos específicos (\texttt{boolean}, \texttt{int}, \textt
     \item \textit{Disjoint} entre clases: evita que una misma instancia sea, por ejemplo, un \texttt{Apartment} y una \texttt{Detached\_House}.
 \end{itemize}
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,  clip]{ontologia.jpeg}
+\caption{Jerarquía de clases de la ontología.}
+\label{fig:ontologia}
+\end{figure}
+
 \subsubsection{Metodología de resolución de problemas}
 Usamos clasificación huerística como metodología de resolución de problemas y la dividimos en estas partes: 
 
@@ -1035,82 +1042,8 @@ Para validar el funcionamiento del sistema, se ejecutaron los 10 casos de prueba
 
 Los resultados demuestran que el sistema aplica consistentemente el conocimiento experto codificado, priorizando criterios según el perfil del cliente y proporcionando explicaciones detalladas (pros, contras, extras) que facilitan la comprensión de las recomendaciones. No obstante, cabe recalcar que estos juegos de pruebas se han saltado algunas restricciones del dominio como la regla del cuarenta por ciento o estudios con coordenadas que no corresponden a ningún centro educativo existente. Esto se debe a que hemos querido llegar a casos más extremos. Por ende, algunos juegos de pruebas necesitan ejecutarse directamente con un testX.clp en vez de poder hacerse a mano. 
 
-\subsection{Conclusiones}
+\subsection{Conclusión}
 \label{subsec:conclusiones}
-
-\subsubsection{Logros y dificultades}
-
-El desarrollo de este sistema de recomendación de viviendas en alquiler ha permitido alcanzar los objetivos establecidos, aunque también ha presentado desafíos significativos durante su implementación.
-
-\textbf{Principales logros:}
-
-\begin{itemize}
-    \item \textbf{Ontología completa y formal:} Se ha diseñado e implementado una ontología coherente que modela los cuatro conceptos fundamentales del dominio (cliente, propiedad, servicio, zona) con sus respectivas jerarquías, propiedades y restricciones. La exportación automática desde Protégé a CLIPS mediante \texttt{owl2clips} demostró ser efectiva para mantener la consistencia entre la representación formal y la implementación.
-    
-    \item \textbf{Sistema de reglas funcional:} Se ha implementado un sistema de reglas que abarca desde la entrevista interactiva hasta la recomendación final, incluyendo reglas de abstracción, asociación heurística y clasificación. La arquitectura modular con control de prioridades mediante \texttt{salience} garantiza un flujo de ejecución lógico y predecible.
-    
-    \item \textbf{Mecanismo de evaluación multicriterio:} El sistema implementa una evaluación cualitativa detallada que no solo clasifica propiedades, sino que proporciona explicaciones comprensibles (pros, contras, extras) que facilitan la transparencia en las recomendaciones.
-    
-    \item \textbf{Validación exhaustiva:} Los 10 casos de prueba diseñados cubren de forma sistemática todos los perfiles de cliente y funcionalidades del sistema, demostrando su robustez y consistencia en diferentes escenarios.
-\end{itemize}
-
-\textbf{Dificultades encontradas:}
-
-\begin{itemize}
-    \item \textbf{Complejidad de la integración espacial:} La implementación del cálculo de distancias y proximidades requirió un diseño cuidadoso para evitar bucles infinitos y reprocesamientos. La solución mediante hechos de control (\texttt{work-distance-done}, etc.) y el uso de \texttt{member\$} para evitar duplicados fue necesaria pero añadió complejidad al código.
-    
-    \item \textbf{Manejo de datos temporales:} La entrevista interactiva requirió la creación de un \texttt{deftemplate} temporal (\texttt{user-responses}) con un sistema de estados que, aunque funcional, resultó más complejo de depurar que un enfoque puramente procedural.
-    
-    \item \textbf{Equilibrio entre flexibilidad y simplicidad:} Se tomó la decisión consciente de omitir ciertos factores sugeridos por el experto (como calidad de internet, eficiencia energética) para mantener el sistema manejable dentro del alcance de la práctica, reconociendo que esto limita su realismo.
-    
-    \item \textbf{Rendimiento en cálculos de distancia:} El uso de distancias euclidianas en coordenadas enteras simplifica los cálculos pero introduce imprecisiones en la modelización de rutas reales. En un sistema de producción, sería necesario utilizar algoritmos de ruta más sofisticados.
-\end{itemize}
-
-\subsubsection{Trabajo en equipo}
-
-El desarrollo del sistema siguió una metodología colaborativa que permitió distribuir las tareas según las fortalezas individuales y mantener un ritmo de trabajo constante.
-
-\textbf{Organización y metodología:}
-
-\begin{itemize}
-    \item \textbf{División de responsabilidades:} El trabajo se distribuyó en tres áreas principales: diseño de ontología (Protégé), implementación del motor de reglas (CLIPS), y diseño de casos de prueba y documentación.
-    
-    \item \textbf{Reuniones de seguimiento:} Se mantuvieron reuniones semanales para revisar el progreso, coordinar la integración de componentes y resolver problemas de diseño. Se utilizó un repositorio compartido con control de versiones para gestionar los cambios en el código CLIPS y el documento LaTeX.
-    
-    \item \textbf{Enfoque incremental:} Siguiendo la metodología de desarrollo incremental descrita en la sección~\ref{subsubsec:desarrollo-incremental}, cada miembro del equipo contribuyó a prototipos sucesivos, permitiendo una integración gradual y una depuración temprana.
-    
-    \item \textbf{Validación cruzada:} Cada caso de prueba fue ejecutado y verificado por al menos dos miembros del equipo, garantizando la consistencia de los resultados y la detección temprana de errores.
-\end{itemize}
-
-\textbf{Lecciones aprendidas:}
-
-\begin{itemize}
-    \item La planificación detallada de la ontología antes de la implementación en CLIPS ahorró tiempo significativo en fases posteriores.
-    
-    \item La creación de un conjunto de datos sintético realista fue más laboriosa de lo anticipado, pero resultó crucial para una validación exhaustiva.
-    
-    \item La documentación simultánea al desarrollo, aunque exigente, facilitó la comprensión del sistema y la preparación de este informe.
-\end{itemize}
-
-\subsubsection{Possibles mejoras}
-
-El sistema actual, aunque funcional y validado, presenta oportunidades de mejora que podrían implementarse en versiones futuras:
-
-\begin{itemize}
-    \item \textbf{Integración con datos reales:} Conectar el sistema con APIs de servicios de mapas (Google Maps, OpenStreetMap) para obtener coordenadas reales y calcular rutas peatonales/vehiculares en lugar de usar distancias euclidianas simplificadas.
-    
-    \item \textbf{Sistema de ponderación adaptativo:} Implementar un mecanismo de aprendizaje que ajuste automáticamente los pesos de los diferentes criterios basándose en las elecciones previas de usuarios similares, pasando de una evaluación cualitativa a una cuantitativa.
-    
-    \item \textbf{Interfaz gráfica de usuario:} Desarrollar una interfaz web o de escritorio que reemplace la interacción por línea de comandos de CLIPS, haciendo el sistema más accesible para usuarios finales no técnicos.
-    
-    \item \textbf{Reglas de refinamiento iterativo:} Añadir reglas de refinamiento que permitan ajustar recomendaciones iniciales basándose en análisis de compromisos, por ejemplo, sugiriendo propiedades ligeramente por encima del presupuesto si ofrecen características excepcionales.
-    
-    \item \textbf{Expansión del conocimiento experto:} Incorporar factores adicionales sugeridos por el experto pero omitidos en esta versión, como calidad de internet, eficiencia energética, tendencias del mercado de alquiler, y consideraciones sobre comunidades de vecinos.
-    
-    \item \textbf{Sistema explicativo mejorado:} Generar explicaciones en lenguaje natural más elaboradas, conectando específicamente las características de la propiedad con las necesidades del perfil del cliente identificado.
-    
-    \item \textbf{Mecanismos de aprendizaje automático:} Integrar técnicas de \textit{machine learning} para refinar automáticamente las preferencias inducidas (\texttt{desired\_features}) basándose en patrones de elección de usuarios reales.
-\end{itemize}
 
 \textbf{Conclusión final:} El sistema desarrollado demuestra la viabilidad de aplicar técnicas de Sistemas Basados en el Conocimiento al problema de recomendación de viviendas en alquiler. Aunque presenta limitaciones propias de un proyecto académico, establece una base sólida sobre la que construir sistemas más sofisticados. La combinación de una ontología formal bien diseñada, un sistema de reglas estructurado y un enfoque de validación exhaustiva resulta efectiva para capturar y aplicar conocimiento experto en un dominio complejo como el inmobiliario.
 
