@@ -1187,6 +1187,7 @@
    (multislot failed-criteria)
    (multislot met-criteria)
    (multislot extra-criteria)
+   (multislot missing-criteria)
    (slot category))
 
 (deftemplate zone-attrs-initialized
@@ -1281,6 +1282,7 @@
                  (Pool ?pool)
                  (Sun_Time ?sun_time)
                  (Terrace ?terrace)
+                 (Balcony ?balcony)
                  (Garage ?garage)
                  (Elevator ?elevator)
                  (Garden ?garden)
@@ -1293,6 +1295,7 @@
    (bind ?fails (create$))
    (bind ?mets (create$))
    (bind ?extras (create$))
+   (bind ?missing (create$))
 
    ;; C1: Presupuesto
    (if (> ?price ?maxb)
@@ -1362,10 +1365,20 @@
     (if (and (eq ?elevator yes) (eq (member$ "elevator" ?feat) FALSE))
       then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) tiene-ascensor)))
 
+    ;; Añadimos cosas "malas" que no forme parte de requisitos en missing
+    ;; Se podria añadir a fails pero entinces contaria igual que la falta de requisitos obligatorios
+   (if (not (eq ?sun_time all_day))
+      then (bind ?missing (insert$ ?missing (+ (length$ ?missing) 1) falta-sol-todo-dia)))
+   (if (and (and (eq ?balcony no) (eq ?garden no)) (eq ?terrace no))
+      then (bind ?missing (insert$ ?missing (+ (length$ ?missing) 1) falta-exterior)))
+    (if (eq ?noise high)
+      then (bind ?missing (insert$ ?missing (+ (length$ ?missing) 1) falta-quiet))) 
+
    (assert (prop-assessment (prop (instance-name ?p))
                             (failed-criteria ?fails)
                             (met-criteria ?mets)
-                            (extra-criteria ?extras)))
+                            (extra-criteria ?extras)
+                            (missing-criteria ?missing)))
  )
 
 ;; Clasifica: >=2 fallo -> parcial; 0 fallos + sin extra -> adecuado; 0 fallos + extra -> muy-adecuado
@@ -1375,6 +1388,7 @@
                            (failed-criteria $?fails)
                            (met-criteria $?mets)
                            (extra-criteria $?extras)
+                           (missing-criteria $?missing)
                            (category ?cat&:(eq ?cat nil)))
    ?pobj <- (object (is-a Property)
                     (name ?p))
@@ -1382,20 +1396,23 @@
    (bind ?mets-count (length$ ?mets))
    (bind ?fail-count (length$ ?fails))
    (bind ?extra-count (length$ ?extras))
+   (bind ?missing-count (length$ ?missing))
 
    (bind ?cat
       (if (> ?fail-count 0)
           then (if (> ?fail-count 3) then no-recomendado else parcial)
           else (if (> (length$ ?extras) 0) 
-            then if (> (length$ ?extras) 3) then ideal else muy-adecuado
+            then (if (and (> ?extra-count 3) (< ?missing-count 1)) then ideal else muy-adecuado)
             else adecuado)))
 
    (modify ?pa (category ?cat))
 
+
    (printout t "Propiedad " (instance-name ?p) " -> " ?cat crlf
              "  Pros: " (if (= ?mets-count 0) then "ninguno" else ?mets) crlf
              "  Contras: " (if (= ?fail-count 0) then "ninguno" else ?fails) crlf
-             "  Extras: " (if (= ?extra-count 0) then "ninguno" else ?extras) crlf))
+             "  Extras: " (if (= ?extra-count 0) then "ninguno" else ?extras) crlf
+             "  Faltantes: " (if (= ?missing-count 0) then "ninguno" else ?missing) crlf))
 
 (definstances instances
  ; Zonas con centro geográfico para coherencia espacial
