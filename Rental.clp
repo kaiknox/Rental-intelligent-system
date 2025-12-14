@@ -1273,6 +1273,8 @@
                  (monthly_price ?price)
                  (Pets_Allowed ?pets-ok)
                  (room-density ?dens)
+                 (Furnished ?furnished)
+                 (Appliances ?appliances)
                  (work-place ?workplace)
                  (study-place ?studyplace)
                  (Condition ?cond)
@@ -1346,6 +1348,12 @@
    (if (eq ?sun_time all_day) ;;De momento solo cuenta si hay luz solar todo el día pq si es parcial no es tan bueno
       then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) tiene-sol-todo-dia)))
     
+   (if (eq ?furnished yes)
+      then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) tiene-mobiliario)))
+    
+   (if (eq ?appliances yes)
+      then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) tiene-electrodomésticos)))
+    
     ;; Garaje, ascensor y quiet como extras si no son requeridos
     (if (and (feature-satisfied ?p "quiet") (eq (member$ "quiet" ?feat) FALSE))
         then (bind ?extras (insert$ ?extras (+ (length$ ?extras) 1) tiene-quiet)))
@@ -1378,7 +1386,9 @@
    (bind ?cat
       (if (> ?fail-count 0)
           then (if (> ?fail-count 3) then no-recomendado else parcial)
-          else (if (> (length$ ?extras) 0) then muy-adecuado else adecuado)))
+          else (if (> (length$ ?extras) 0) 
+            then if (> (length$ ?extras) 3) then ideal else muy-adecuado
+            else adecuado)))
 
    (modify ?pa (category ?cat))
 
